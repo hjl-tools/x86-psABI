@@ -19,7 +19,8 @@ abi.dvi: $(ALL_FILES)
 	latex abi
 	latex abi
 
-pdf abi.pdf: $(ALL_FILES)
+# Depend on abi.dvi to get index.
+pdf abi.pdf: abi.dvi
 	pdflatex abi
 
 ps abi.ps: abi.dvi
