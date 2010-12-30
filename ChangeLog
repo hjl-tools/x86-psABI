@@ -1,0 +1,847 @@
+2010-01-13  Michael Matz  <matz@suse.de>
+
+	* low-level-sys-info.tex (Parameter passing): Specify only the
+	lowest 8 bit for passing or returning _Bool.
+	* low-level-sys-info.tex (Stackframe): %rsp+8, not %rsp-8 is aligned
+	to 16 or 32 (makes a difference only for alignment 16).
+	* macros.tex (version): Set to 0.99.4.
+
+2009-05-11  Michael Matz  <matz@suse.de>
+
+	from H.J. Lu <hjl.tools@gmail.com>
+
+	* low-level-sys-info.tex: Clarify post merger cleanup for
+	aggregate with X87UP is not preceded by X87.  Replace SSE register
+	with vector register.  Remove AVX class. Pass aggregate with one
+	eightbyte in SSE class and rest in SSEUP class in register.  Pass
+	aggregate > 32 bytes in memory.  Add a footnote to explain
+	compatibility without AVX.
+
+2009-03-11  Michael Matz  <matz@suse.de>
+
+	* dl.tex (Program Header): Add PT_SUNW_UNWIND with value
+	0x6464e550, like it's used in actual Solaris.  Add PT_SUNW_EH_FRAME
+	with old value (to have something in the Solaris namespace).
+
+2009-01-23  Michael Matz  <matz@suse.de>
+
+	from H.J. Lu <hjl.tools@gmail.com>
+
+	* low-level-sys-info.tex (Fundamental Types, Bit Fields,
+	Registers and the Stack Frame, The Stack Frame, Classification,
+	Parameter Passing Example, Variable Argument Lists): Add __m256
+	type and AVX info.
+
+2009-01-23  Michael Matz  <matz@suse.de>
+
+	* low-level-sys-info.tex: Refer to Dwarf 3 and mention its website.
+
+2007-12-07  Michael Matz  <matz@suse.de>
+
+	* abi.tex (changelog): Describe 0.99.
+	* macros.tex: Make this work with TeX Live.
+	(version): Increase to 0.99.
+	* prelim2e.sty: New file for convenience, for tex distributions
+	which don't include it.
+
+2007-12-07  Michael Matz  <matz@suse.de>
+
+	from H.J. Lu  <hjl@lucon.org>
+
+	* low-level-sys-info.tex (Types, Classification): Mention and deal
+	with _Decimal32, _Decimal64 and _Decimal128.
+
+2007-12-07  Michael Matz  <matz@suse.de>
+
+	from  Alexandre Oliva  <aoliva@redhat.com>
+
+	* object-files.tex (Relocation Types): Add
+	R_X86_64_GOTPC32_TLSDESC, R_X86_64_TLSDESC_CALL and
+	R_X86_64_TLSDESC.  Add pointer to description.  Add short
+	description of all TLS relocations.  Fix typo in DTPMOD64.
+	* dl.tex (Procedure Linkage Table): Mention lazy relocation of TLS
+	descriptors.  Add short description.
+
+2007-02-26  Michael Matz  <matz@suse.de>
+
+	* low-level-sys-info.tex (CIE Augmentations <L> figure): Correct
+	typo specifying sdata2 three times.
+
+2006-04-07  Michael Matz  <matz@suse.de>
+
+	* low-level-sys-info.tex (Passing): Clarify that _Bools are
+	converted to 0/1 at the caller.
+
+2006-01-17  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (paragraph{Definitions}): Add note about
+	decimal data types.
+
+2005-12-13  Michael Matz  <matz@suse.de>
+
+	From <Terrence.Miller@Sun.COM>:
+	* low-level-sys-info.tex (Classification): Correct classification
+	of C++ objects.
+
+2005-09-15  Michael Matz  <matz@suse.de>
+
+	* object-files.tex (Number of Program Headers): New subsection.
+
+2005-09-15  Michael Matz  <matz@suse.de>
+
+	* object-files.tex (Relocation Types): Add R_X86_64_SIZE32 and
+	R_X86_64_SIZE64, and description of 'Z' field.
+
+2005-09-13  Michael Matz  <matz@suse.de>
+
+	From Jan Beulich <JBeulich@novell.com>:
+	* low-level-sys-info.tex (DWARF Register Number Mapping):
+	Add rflags,es,cs,ss,ds,fs,gs,fs.base,gs.base,tr,ldtr,mxcsr,fcw,
+	fsw numbers.
+
+2005-08-24  Evandro Menezes <evandro.menezes@amd.com>
+
+	Fix typo.
+	* abi.tex (changelog): Fixed my name.
+	(conventions): Moved footnote here from...
+	* conventions.tex (Conventions): ... here.
+	* low-level-sys-info.tex (Scalar Types): Fixed table grid.
+	(Architectural Constraints): Added conversion of powers of two
+	to hexadecimal.
+	
+2005-08-24  Michael Matz  <matz@suse.de>
+
+	Include Sun feedback.
+	* abi.tex (changelog): Describe 0.98.
+	* macros.tex (version): Increase to 098.
+	* conventions.tex (GOT pointer and IP relative addressing): Remove.
+	* dl.tex (Function Addresses): Label it.
+	* introduction.tex (Differences from the intelabi): Remove.
+	* low-level-sys-info.tex (Scalar Types): Explain "enum".
+	(Bit-Field Ranges): Include more types.
+	(Stack Frame with Base Pointer): Clarify.
+	(Thread State): New subsection.
+	(Small code model): Explain the "24".
+	(Position-Independent Function Prologue): Merge with removed section
+	of conventions.tex.
+	* object-files.tex (Symbol Table): Refer to Function Addresses.
+	(Relocation Types): Refer to table.
+	* sw-installation.tex: Specify that nothing is specified here.
+
+2005-06-28  Michael Matz  <matz@suse.de>
+
+	Merge fortran ABI.
+	* abi.tex (changelog): Describe 0.97.
+	* macros.tex (version): Increase to 0.97.
+	(ifpdf): Copy over from ifpdf.sty.
+
+	2005-04-25  Michael Matz  <matz@suse.de>
+
+		* fortran.tex (Fortran Types): LOGICAL is an int.
+		Use COMPLEX*4 and COMPLEX*8.
+		(Argument Passing): Length is passed by value.
+		(COMMON blocks): The blank COMMON should go to .lbss.
+
+	2005-03-14  Michael Matz  <matz@suse.de>
+
+		* fortran.tex: Specify layout of COMMON blocks, add more
+		intrinsics, add signatures and descriptions for them.
+
+	2005-02-24  Michael Matz  <matz@suse.de>
+
+		* low-evel-sys-info.tex (Function Calling Sequence):
+		Specify MXCSR and x87 SW and CW caller-save behaviour.
+
+	2004-12-02  Michael Matz  <matz@suse.de>
+
+		* conventions.tex (Fortran): Move to ...
+		* fortran.tex: ... this new file.
+		* Makefile: Change accordingly.
+		* abi.tex: Ditto.
+
+2005-06-10  Michael Matz  <matz@suse.de>
+
+	* development.tex: Capitalization, spelling and wording fixes
+	from mfhaigh@acm.org.
+	* dl.tex: Ditto.
+	* introduction.tex: Ditto.
+	* kernel.tex: Ditto.
+	* libraries.tex: Ditto.
+	* low-level-sys-info.tex: Ditto.
+	* object-files.tex: Ditto.
+
+2005-06-10  Michael Matz  <matz@suse.de>
+
+	* introduction.tex: Correct typos, run ispell.
+	* kernel.tex: Ditto.
+	* libraries.tex: Ditto.
+	* dl.tex: Ditto.
+	* abi.tex: Ditto.
+	* low-level-sys-info.tex: Ditto.
+	* macros.tex: Ditto.
+	* object-files.tex: Ditto.
+
+2005-06-06  Michael Matz  <matz@suse.de>
+
+	* macros.tex (version): Increase to 0.96.
+	* abi.tex (changelog): Describe 0.96.
+
+2005-06-06  Michael Matz  <matz@suse.de>
+
+	* low-level-sys-info.tex: Various grammatical issues noted
+	by mfhaigh@acm.org.  Plus, there are no global VLAs.
+
+2005-04-18  Michael Matz  <matz@suse.de>
+
+	By Evandro Menenez.
+	* object-files.tex: Use SHF_X86_64_LARGE instead of SHF_AMD64_LARGE.
+
+2004-11-09  Michael Matz  <matz@suse.de>
+
+	* development.tex (table): Rename title.
+	* low-level-sys-info.tex (Conventions): Replace GPREL with GOTPC.
+	* object-files.tex (large model relocations): Replace GOTPC64
+	calculation with the one from GPREL64.  Delete GPREL64.
+
+2004-11-03  Michael Matz  <matz@suse.de>
+
+	* Makefile (clean): Delete *.cb too.
+	* abi.tex (changelog): Describe 0.95.
+	* macros.tex (version): Increase to 0.95.
+	* dl.tex (Procedure Linkage Table): Clarify that it's for small/medium.
+	Add subsubsection "Large Models".
+	* low-level-sys-info.tex (Architectural Constraints): Use 2^24.
+	(Medium Code Model, Large Code Model): Clarify.
+	(Conventions): New section.
+	(PIC Function Prologue): Add descriptions for medium and large models.
+	<Code Examples>: Update.  Add them for medium and large models.
+	(Implementation Advice): New section.
+	* object-files.tex (Section Flags): New.
+	(Special Sections): Add large sections.
+	(Relocation Types): Add medium and large model relocations.
+	
+2004-11-03  Michael Matz  <matz@suse.de>
+
+	* abi.tex (changelog): Describe 0.94.
+	* macros.tex (version): Increase to 0.94.
+	(usepackage): Include changebar package.
+	(cbnew): New command.
+	* development.tex (Development Environment): Describe predefined
+	pre-processor symbols.
+	* dl.tex (Program Loading): Describe self-contained.
+	(Dynamic Section, Global Offset Table, Function Addresses): Ditto.
+	* libraries.tex (_Unwind_GetCFA): Define and describe function.
+	(Personality Routine): New subsection.
+	* low-level-sys-info.tex (Aggregates and Unions): Refine.
+	(Bit-Fields): Ditto.
+	(Special Registers): Move to ...
+	(Initial Stack and Register State): ... this new section.
+	(Stack State): New section.
+	(Auxiliary Vector): Describe self-contained.
+	* object-files.tex (EH_FRAME sections): New section.
+
+2004-10-01  Michael Matz  <matz@suse.de>
+
+	* Makefile (abi.dvi): Run latex three times.
+	* abi.tex: Correct version information.
+	* dl.tex (Program Header): New subsection by Michael Walker
+	(Michael.Walker@Sun.COM).
+	* object-files.tex (Section Types, Special Sections): Ditto.
+
+2004-08-28  Andreas Jaeger  <aj@suse.de>
+
+	* kernel.tex (subsection{Stack Layout}): New section.
+
+2004-07-19  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (section{Stack unwind algorithm}): New
+	section by Jan Hubicka <jh@suse.cz>.
+
+	* conventions.tex (section{Fortran}): New section by Steven
+	Bosscher <stevenb@suse.de>.
+
+2004-07-13  Andreas Jaeger  <aj@suse.de>
+
+	* kernel.tex (subsection{Required Processor Features}): Remove
+	mmxext feature.
+
+2004-05-12  Andreas Jaeger  <aj@suse.de>
+
+	* libraries.tex (section{Unwinding Through Assembler Code}): Add
+	new section.  Patch by Michal Ludvig.
+
+2004-03-24  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (paragraph{Returning of Values}): Remove
+	extra tokens.
+
+2004-01-30  Andreas Jaeger  <aj@suse.de>
+
+	* dl.tex (subsubsection{Procedure Linkage Table}): Fix typos.
+	* libraries.tex (subsection{Floating Point Environment
+	Functions}): Likewise.
+	* low-level-sys-info.tex (paragraph{Passing}): Likewise
+	Patch by Bryan Ford <baford@mit.edu>.
+
+2003-12-18  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (subsection{Registers and the Stack
+	Frame}): Clarify x87 mode.  Patch by Hans Peter Anvin.
+
+	* macros.tex: Increase version.
+
+	* abi.tex (section*{Revision History}): Add new entry.
+
+2003-04-22  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Describe passing of complex types.
+
+	* kernel.tex (section{Execution of 32-bit programs}): Move from
+	conventions.tex to here.  Change titel and section names.
+
+2003-03-19  David O'Brien  <obrien@FreeBSD.org>
+
+	* conventions.tex, low-level-sys-info.tex: Use \intelabi consisently.
+	* conventions.tex, low-level-sys-info.tex: Spell "ia" "IA-".
+
+Mon Mar 17 16:56:05 CET 2003  Jan Hubicka  <jh@suse.cz>
+
+	* abi.tex: Fix my name.
+	* low-level-sys-info.tex: Some minor formating fixes; Mention that
+	X87 class is not used for passing; Update examples of small model
+	that match medium and large too.
+
+2002-09-30  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (subsection{The Stack Frame}): Fix
+	figure.  Noticed by Eric Young.
+
+2002-09-04  Andreas Jaeger  <aj@suse.de>
+
+	* Various textual fixes from Michael Matz.
+	* low-level-sys-info.tex (paragraph{Classification}): Clarify that
+	__int128 is passed in registers.
+	(paragraph{Passing}): %al is used for varargs.
+
+2002-07-11  Andreas Jaeger  <aj@suse.de>
+
+	* libraries.tex (subsection{Floating Point Environment
+	Functions}): New.
+
+	* low-level-sys-info.tex (subsubsection{Fundamental Types}): Add
+	size_t.
+
+2002-05-13  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (subsection{DWARF Register Number
+	Mapping}): Renumbered to reflect reality.
+	(subsubsection{Fundamental Types}): Fix dagger usage.
+
+2002-03-26  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (paragraph{Passing}): Mention RBX as
+	frame pointer in summary table.
+
+2002-03-08  H. Peter Anvin <hpa@zytor.com>
+
+	* low-level-sys-info.tex: Define the ABI for booleans, and make
+	the handling of sub-64-bit integer types in registers well
+	defined.
+
+2001-12-06  Bo Thorsen  <bo@suse.co.uk>
+
+	* dl.tex (subsection{Program Interpreter}): Set name of Linux
+	dynamic linker.
+
+2001-12-03  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (paragraph{Passing}): Mention %fs.
+
+2001-10-15  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Change example so that text segment
+	starts higher.
+
+2001-08-15  Andreas Jaeger  <aj@suse.de>
+
+	* macros.tex: Increment version number.
+
+	* low-level-sys-info.tex (Passing): Only use first 8 SSE registers
+	for passing.
+	(Data Objects): Add an example for PIC static data access.
+
+2001-05-13  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix typos and layout problems.
+	* macros.tex: Likewise.
+	* dl.tex: Likewise.
+	* libraries.tex: Likewise.
+
+2001-05-10  Andreas Jaeger  <aj@suse.de>
+
+	* macros.tex: Update version numbers.
+
+	* low-level-sys-info.tex: Add information about floating point
+	control words.
+
+2001-05-03  Andreas Jaeger  <aj@suse.de>
+
+	* libraries.tex: Fix some typos.
+
+2001-04-30  Andreas Jaeger  <aj@suse.de>
+
+	* object-files.tex (subsection{Relocation Types}): Describe
+	relocations.
+
+2001-04-24  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Don't confuse the user with doubleword
+	etc.
+
+	* abi.tex: Include kernel.
+
+	* Makefile (INCLUDES): Add kernel.tex
+
+2001-03-19  Geert Bosch  <bosch@gnat.com>
+
+	* libraries.tex: (Unwind Library Interface): New section.
+
+2001-03-19  Andreas Jaeger  <aj@suse.de>
+
+	* conventions.tex,low-level-sys-info.tex,object-files.tex: Fix
+	typos.
+
+2001-03-07  Andreas Jaeger  <aj@suse.de>, Jan Hubicka <jh@suse.cz>
+
+	* low-level-sys-info.tex: Add section on auxiliary vectors,
+	rewrite register passing conventions.
+
+2001-02-27  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Add *word to the index.
+
+2001-02-27  Bo Thorsen  <bo@suse.de>
+
+	* low-level-sys-info.tex: Don't use '*' for both pointer types and
+	footnote reference.
+
+2001-02-21  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix layout problems.
+
+2001-02-20  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix long double passing conventions.
+	General cleanup.
+	* macros.tex: Increment version.
+
+2001-02-14  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Some cleanups:
+	The __int128, __float128, __m64 and __m128 types are optional.
+	The CPU will be in x87 mode.
+	Values of type __m64 will be passed in XMM registers.
+	Values of type __m64 will be returned in XMM registers.
+	Values of type long double will be passed on the stack
+	A value of type long double will be returned in %st.
+
+	* dl.tex: Fix LaTeX bug in last patch.
+
+Wed Feb 14 12:16:04 CET 2001  Jan Hubicka  <jh@suse.cz>
+
+	* dl.tex: Fix the PLT figure.
+
+2001-02-12  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Clarify right-to-left order.
+
+2001-01-26  Geert Bosch  <bosch@gnat.com>
+
+	* low-level-sys-info.tex: (Exception Interface): New subsection.
+	(DWARF Definition): New section.
+	* macros.tex: Update version to 0.11
+	(\RIP): New command.
+	* object-files.tex (Special Sections): New subsection.
+
+2001-02-02  Bo Thorsen  <bo@suse.de>
+
+	* low-level-sys-info.tex: __int128 16 bytes aligned.
+
+2001-01-15  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Spelling fixes as suggested by Philipp
+	Thomas.
+
+2001-01-14  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Clean up va_* changes.
+
+Sun Jan 14 13:58:08 MET 2001  Jan Hubicka  <jh@suse.cz>
+
+	* low-level-sys-info.tex: Document va_* machinery.
+
+2001-01-12  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix typo, reported by Philipp Thomas
+	<pthomas@suse.de>.
+
+2001-01-11  Jan Hubicka <jh@suse.cz>,  Philipp Thomas <pthomas@suse.de>
+
+	* low-level-sys-info.tex: Document Code models.
+
+2001-01-10  Andreas Jaeger  <aj@suse.de>
+
+	* object-files.tex: Replace R_X86_64_JMP_SLOT with R_X86_64_JUMP_SLOT.
+	Use PLT32 instead 64.
+
+	* dl.tex: Likewise.
+
+2001-01-09  Andreas Jaeger  <aj@suse.de>
+
+	* dl.tex: Fix PLT.
+
+2001-01-08  Andreas Jaeger  <aj@suse.de>
+
+	* object-files.tex: Document 16 and 8 bit relocations.
+
+	* dl.tex: Fix relocation name; use pushq for pushing GOT[1] since
+	we need a 64 bit value.
+
+	* object-files.tex: Use EM_X86_64 as this is now the official
+	name.
+
+2000-12-20  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix return register documentation.
+	Enhance register table.
+
+2000-12-19  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Add table describing usage of generic
+	registers.
+
+Mon Dec 11 15:11:21 MET 2000  Jan Hubicka  <jh@suse.cz>
+
+	* low-level-sys-info.tex: Make r11 global; dedicate r10 as static
+	chain pointer.
+
+Thu Dec  7 19:45:29 MET 2000  Jan Hubicka  <jh@suse.cz>
+
+	* low-level-sys-info.tex: Update for the new register passing
+	sequence and global/local registers split.
+
+2000-12-06  Andreas Jaeger  <aj@suse.de>
+
+	* libraries.tex (subsection{Global Data Symbols}): New section.
+
+2000-11-13  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix typos, clarify return registers.
+
+2000-10-18  Andreas Jaeger  <aj@suse.de>
+
+	* object-files.tex: Use R_X86_64 instead of R_X8664.
+
+2000-10-17  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Do not align arrays inside structures on
+	16-byte boundaries just because they have more than 16 bytes.
+
+2000-10-01  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Fix some typos in the calling
+	conventions.  Document use of R9 in varargs functions.
+	* dl.tex: Make /lib/ld64.so.1 the dynamic linker.
+
+2000-09-25  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Make RAX the return register again.
+
+2000-09-25  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Tweak register allocation for
+	parameter-passing.
+
+2000-09-24  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix typos in red zone description.
+
+2000-09-23  Jan Hubicka  <jh@suse.cz>
+            Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Allow R8 and R9 to be scratch registers.
+	Add red zone.  Allow structures containing multiple floating
+	point values in a single doubleword to be passed in an SSE
+	register.
+
+2000-09-22  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Make all XMM registers caller-saved.
+	Fix typo.  Add footnote about PODs.
+
+2000-09-21  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Fix typo.
+
+	Cleanups throughout.
+	* conventions.tex: Clarify.
+	* dl.tex: Likewise.
+	* introducion.tex: Clarify scope of ABI.
+	* low-level-sys-info.tex: Reword calling convention description
+	* macros.tex: Change layout of registers.
+	(\intelabi): New command.
+	* sw-installation.tex: Tidy.
+
+2000-09-01  Mark Mitchell  <mark@codesourcery.com>
+
+	* object-files.tex: Add R_X8664_32S relocation.
+
+2000-08-29  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Remove extra periods.
+
+2000-08-28  Mark Mitchell  <mark@codesourcery.com>
+
+	* object-files.tex: Add R_X8664_32 relocation.
+
+2000-08-24  Mark Mitchell  <mark@codesourcery.com>
+
+	* object-files.tex: Make GOTPCREL relocate only 32 bits.
+
+2000-08-18  Andreas Jaeger  <aj@suse.de>
+
+	* macros.tex: Add \xspace for \reg.
+
+	* low-level-sys-info.tex (subsubsection {SSE registers}): Clarify
+	XMM0 usage.
+
+	* conventions.tex: Cleanup and add some index entries.
+
+	* macros.tex: Add new macros for easier indexing.
+
+	* low-level-sys-info.tex: Some cleanups.
+
+2000-08-17  Andreas Jaeger  <aj@suse.de>
+
+	* conventions.tex (Execution of 32bit programs): Libraries go to
+	/lib64.
+
+	* low-level-sys-info.tex (The Stack Frame): Clarify RBP/RSP usage
+	as suggested by Robert Dewar.
+
+2000-08-16  Andreas Jaeger  <aj@suse.de>
+
+	* object-files.tex (Relocation Types): Use RELA instead of REL.
+
+	* introduction.tex (Differences from the Intel386 psABI): Mention
+	RELA.
+
+	* low-level-sys-info.tex (Virtual Address Space}:
+	0x0000ffffffffffff is not a canonical address.
+
+2000-08-15  Andreas Jaeger  <aj@suse.de>
+
+	* conventions.tex: Fix typos.
+
+	* introduction.tex: Mention C++ section.
+
+	* low-level-sys-info.tex: Lots of minor fixes to language.
+
+	* conventions.tex: Add label.
+
+	* low-level-sys-info.tex: Shrink too large Scalar Types table.
+
+	* object-files.tex: Add extra word to avoid overfull paragraph.
+
+	* low-level-sys-info.tex: Describe long double.
+	Clarify some stuff as suggested by Rich Brunner.
+
+2000-08-14  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Fix alignment of long double.
+
+	* low-level-sys-info.tex: Tidy up.
+
+	* dl.tex: Change name of program interpreter.
+
+2000-08-14  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (Processor Architecture): Use \url for
+	URLs.
+
+2000-08-13  Mark Mitchell  <mark@codesourcery.com>
+
+	* introduction.tex: Clean up.
+	* low-level-sys-info.tex: Define long double as having x86
+	floating-point format.  Define __float128.  Tidy up.
+	* object-files.tex: Fix typos.
+
+2000-08-11  Andreas Jaeger  <aj@suse.de>
+
+	* Whole document: Make it ready for public draft: Lots of small
+	corrections, clarifications and formatting fixes.
+
+2000-08-10  Andreas Jaeger  <aj@suse.de>
+
+	* introduction.tex (Major differences to i386 ABI): New
+	section added.
+
+	* macros.tex: Added Hrule command.
+
+	* dl.tex: Remove proposals.
+
+	* low-level-sys-info.tex (Coding Examples): Added.
+
+2000-08-09  Andreas Jaeger  <aj@suse.de>
+
+	* macros.tex: Increment version to 0.10.
+
+2000-08-02  Andreas Jaeger  <aj@suse.de>
+
+	* dl.tex (subsection{Initialization and Termination Functions}):
+	Added.
+
+	* conventions.tex (section{C++}): Add section.
+
+2000-08-01  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix references.
+
+	* object-files.tex (Machine Information): Use "H" as table specifier.
+
+	* introduction.tex (Introduction}: Add some clarification.
+
+	* Makefile: Add mising files.
+
+2000-08-01  Mark Mitchell  <mark@codesourcery.com>
+
+	* object-files.tex (Machine Information): Set machine id.
+	(Relocations): Change R_X8664_GOTPC to X8664_GOTPCREL.
+
+2000-07-31  Andreas Jaeger  <aj@suse.de>
+
+	* dl.tex (Proposal 1: RW-PLT): Rewrite.
+
+2000-07-29  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fix typo in LaTeX command.
+
+2000-07-28  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex: Tidy up.
+
+2000-07-28  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex (Fundamental Types): Add __float80,
+	describe __float80 and long double.
+
+	* abi-index.tex: Don't make it a chapter.
+
+	* Makefile (INCLUDES): Add new files.
+
+	* low-level-sys-info.tex (Fundamental Types): Make table a bit
+	smaller.
+	Some minor cleanup.
+
+2000-07-27  Mark Mitchell  <mark@codesourcery.com>
+
+	* low-level-sys-info.tex (Fundamental Types): Tidy up.
+
+	* object-files.tex (Relocation Types): Update GOT relocations.
+
+2000-07-27  Andreas Jaeger  <aj@suse.de>
+
+	* dl.tex (paragraph{Proposal 2: RO-PLT}): Finish section.
+
+	* macros.tex: New macro threednow.
+
+2000-07-26  Andreas Jaeger  <aj@suse.de>
+
+	* conventions.tex (section{Execution of 32bit programs}):
+	Rewritten, follows ia64 now.
+
+2000-07-25  Andreas Jaeger  <aj@suse.de>
+
+	* introduction.tex: Spell check.
+	* low-level-sys-info.tex: Likewise.
+	* object-files.tex: Likewise.
+
+	* dl.tex: Spell check.
+	* conventions.tex: Likewise.
+
+	* development.tex: Add default sentence.
+
+	* dl.tex: Further explain proposals.
+
+	* macros.tex: Added some more commands, use xspace.
+
+	* conventions.tex: New chapter.
+
+	* abi.tex: Include conventions.
+
+Mon Jul 24 21:33:42 CEST 2000  Jan Hubicka  <jh@suse.cz>
+
+	* low-level-sys-info.tex: Increase alignment of arrays
+	to 16 bytes; fix some formating problems;
+	new integer-only passing scheme proposal.
+
+2000-07-20  Andreas Jaeger  <aj@suse.de>
+
+	* dl.tex: Added lots of tables for dynamic linking.
+
+	* low-level-sys-info.tex: Fix typos.
+
+2000-07-19  Andreas Jaeger  <aj@suse.de>
+
+	* macros.tex: Use here style.
+
+Tue Jul 18 20:33:36 CEST 2000  Jan Hubicka  <jh@suse.cz>
+
+	* macros.tex (\reg, \RAX, \RBX, \RCX, \RDX, \RSI, \RDI, \RBP, \RSP,
+	\op): New.
+	* low-level-sys-info.tex: (Registers): MMX registers are no longer
+	used to pass arguments.
+	(The Stack Frame): Rewrite.
+	(Parameter Passing Conventions): Rewrite.
+	(Variable Argument List): New.
+
+2000-07-15  Andreas Jaeger  <aj@suse.de>
+
+	* low-level-sys-info.tex: Fixed some typos.
+
+	* abi.tex: Generate list of figures.
+
+	* dl.tex: Added section headers and a first figure.
+
+Sat Jul 15 12:58:29 MET DST 2000  Jan Hubicka  <jh@suse.cz>
+	* low-level-sys-info.tex (Basic data types): Document NULL to have
+	value of zero.
+	(Function Calling Sequence): Rewrite.
+
+2000-07-15  Andreas Jaeger  <aj@suse.de>
+
+	* abi-index.tex: New file.
+
+	* macros.tex: Include commands for index generation.
+
+	* Makefile (abi.dvi): Run makeindex.
+
+	* abi.tex: Include abi-index.
+
+2000-07-12  Andreas Jaeger  <aj@suse.de>
+
+	* abi.tex: Add object-files.
+
+	* object-files.tex: New file.
+
+	* low-level-sys-info.tex (subsubsection{Fundamental Types}):
+	Described long double format.
+
+	* macros.tex: Add Emacs macros and some comments.
+	Add macros to print version and date on every page.
+
+	* sw-installation.tex: Add Emacs macros.
+
+2000-07-07  Andreas Jaeger  <aj@suse.de>
+
+	* Initial checkin of files.

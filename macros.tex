@@ -1,0 +1,125 @@
+% All macros
+
+%  First find out if we're running pdftex
+\newif\ifpdf
+
+\ifx\pdfoutput\undefined
+\else
+  \ifx\pdfoutput\relax
+  \else
+    \ifcase\pdfoutput
+    \else
+      \pdftrue
+    \fi
+  \fi
+\fi
+
+
+\ifpdf
+\pdfcompresslevel 5
+\fi
+
+% Times is nicer with pdf
+\usepackage{times}
+% American style
+\usepackage[american]{babel}
+
+\usepackage[T1]{fontenc}
+
+% To make typesetting easier
+\usepackage{xspace}
+
+% Generate an index
+\usepackage{makeidx}
+\makeindex
+
+% Some convenient macros:
+%  Add text to index and print it also
+\newcommand{\textindex}[1]{#1\index{#1}\xspace}
+% Add text to index and print it also with \code{}
+\newcommand{\codeindex}[1]{\code{#1}\index{#1@\texttt{#1}}\xspace}
+% A version without xspace - I had some strange problems with commas
+% afterwards.
+\newcommand{\codeindexwo}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
+
+% Control placement of floats
+%\usepackage{here}
+\usepackage{float}
+
+% Version number of document - increment occasionally ;-)
+\newcommand{\version}{0.99.4}
+
+% Print a footer everywhere with current date
+% prelim2e needs \thistime
+\newcount\hours
+\newcount\minutes
+\def\SetTime{\hours=\time
+        \global\divide\hours by 60
+        \minutes=\hours
+        \multiply\minutes by 60
+        \advance\minutes by-\time
+        \global\multiply\minutes by-1 }
+\SetTime
+\def\thistime{\number\hours:\ifnum\minutes<10 0\fi\number\minutes}
+\usepackage[time]{prelim2e}
+\renewcommand{\PrelimWords}{AMD64 ABI Draft \version}
+
+% Some commands:
+\newcommand{\editornote}[1]{\footnote{#1}}
+
+%Typesetting of registers
+\newcommand{\reg}[1]{{\texttt{\%#1}}\xspace}
+\newcommand{\RAX}{\reg{rax}}
+\newcommand{\RBX}{\reg{rbx}}
+\newcommand{\RCX}{\reg{rcx}}
+\newcommand{\RDX}{\reg{rdx}}
+\newcommand{\RSI}{\reg{rsi}}
+\newcommand{\RDI}{\reg{rdi}}
+\newcommand{\RBP}{\reg{rbp}}
+\newcommand{\RSP}{\reg{rsp}}
+\newcommand{\RIP}{\reg{rip}}
+
+%Typesetting of opcodes
+\newcommand{\op}[1]{\texttt{#1}}
+
+%Typesetting common names
+\newcommand{\MMX}{\emph{MMX}\xspace}
+\newcommand{\xARCH}{AMD64\xspace}
+\newcommand{\threednow}{3DNow!\xspace}
+
+% Typesetting paths and files
+\newcommand{\path}[1]{\texttt{#1}\xspace}
+
+% Typesetting program code
+\newcommand{\code}[1]{\texttt{#1}\xspace}
+
+% Long Hrule
+\newcommand{\Hrule}{\noindent\rule{\linewidth}{0.3mm}}
+
+% Use Hyperref for PDF support - this should be last
+\ifpdf
+\usepackage[pdftex]{hyperref}
+\usepackage{changebar}
+\else
+\usepackage[dvips]{hyperref,changebar}
+\fi
+
+% Make `_' an ordinary character.
+\catcode`_=12
+
+% The Intel386 psABI document.
+\newcommand{\intelabi}{Intel386 ABI\xspace}
+
+\newcommand{\byte}{byte\xspace}
+\newcommand{\twobyte}{twobyte\xspace}
+\newcommand{\fourbyte}{fourbyte\xspace}
+\newcommand{\eightbyte}{eightbyte\xspace}
+\newcommand{\eightbytes}{eightbytes\xspace}
+\newcommand{\sixteenbyte}{sixteenbyte\xspace}
+
+\newcommand*{\cbnew}{\marginpar{\textsf{New}}}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "abi"
+%%% End:

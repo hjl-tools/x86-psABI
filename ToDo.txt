@@ -1,0 +1,66 @@
+
+This file documents a number of open topics in the ABI:
+
+- Geert Bosch has a number of smaller nitpits.  Let's get hold of them
+  and integrate them.
+
+- Check layout.  All figures should look the same
+
+- Run a spell checker on the document.
+
+- Proof-read and check english, most of us aren't native speakers.
+
+- Should we enforce alignment for SSE?
+
+- Should we declare some global XMM registers?
+
+- The figure "Stack Frame" should be clarified: %rbp is optional
+
+- Is vararg passing really the same as non-vararg passing?  Is this
+  handled correctly?
+
+- Check that all examples are correct according to the ABI.
+
+- Define Exception handling (see Geert's proposal)
+
+- Add more examples
+
+- sizeof (long double) is 16 - is this still needed?
+
+- Define handling of complex arguments
+
+- Ideas for passing of arguments:
+
+   1) we may want to merge "SSE" and "integer" to "SSE" instead of integer,
+      since we can do quite a lot of integer operations in SSE, but not vice
+      versa.
+   2) we may want to increase size of aggregates passed in registers - unlike
+      runtime approach this is just change of single constant
+   3) what about packed types?
+   4) overall idea of classifying doublewords is based on the fact, that
+      we are using a direct mapping between argument area and regnos.
+      This is no-longer true, so for instance we may want to pass
+      structures as if each field was a distinct argument.  The advantage
+      is more direct access to types smaller than 64 bits.  The
+      disadvantage is that we will need more moves if the structure is in
+      memory and waste more registers.
+   5) we may want to be more aggresive on using SSEUP - for instance
+      array for 4 floats can be easily passed in SSE.  A problem is with
+      alignment.  Just few structures will get so large alignment, so
+      maybe this is doomed.
+   6) (HPA) Should we pass long doubles on the stack?
+
+
+- Write "Process Initialization" section
+
+- Return values: Should we set \RDI for returning?
+   In this case, the called function also sets \RDI to the value of
+   the original address in the callee's area before it returns.  Thus
+   when the caller receives control again, the address of the returned
+   object resides in register \RDI and can be used to access the
+   object.
+
+
+
+Status: May, 13th 2001
+Andreas Jaeger
