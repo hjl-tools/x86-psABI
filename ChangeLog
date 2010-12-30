@@ -1,3 +1,9 @@
+2010-09-03  Michael Matz  <matz@suse.de>
+
+	* low-level-sys-info.tex (Returning of Values): Clarify that
+	a return buffer really has to be new temporary storage.
+	* macros.tex (version): Set to 0.99.5.
+
 2010-01-13  Michael Matz  <matz@suse.de>
 
 	* low-level-sys-info.tex (Parameter passing): Specify only the
