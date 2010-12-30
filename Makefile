@@ -28,5 +28,5 @@ ps abi.ps: abi.dvi
 
 
 clean:
-	rm -f *.log *.aux *.dvi *.ilg *.ind *~ *.idx *.lof *.lot *.out *.pdf *.ps *.toc *.cb \#*\# *.rej
+	rm -f *.log *.aux *.dvi *.ilg *.ind *~ *.idx *.lof *.lot *.out *.pdf *.ps *.toc *.cb* \#*\# *.rej
 

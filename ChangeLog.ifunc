@@ -1,7 +1,11 @@
-2010-10-30  H.J. Lu  <hongjiu.lu@intel.com>
+2010-12-30  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* Makefile (clean): Remove *.cb*.
+
+2010-12-30  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* object-files.tex: Document STT_GNU_IFUNC and R_X86_64_IRELATIVE.
 
-2010-10-30  H.J. Lu  <hongjiu.lu@intel.com>
+2010-12-30  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* Makefile (abi.pdf): Depend on abi.dvi to get index.
