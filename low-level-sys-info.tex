@@ -32,7 +32,7 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
   \caption{Scalar Types}\label{basic-types}
 { % Use small here - the table is still too large
   % Has anybody an idea how to shrink the table so that it fits the page?
-  \small
+  \myfontsize
   \begin{tabular}{l|l|c|c|l}
     \hline\noalign{\smallskip}
      & &  & \multicolumn{1}{c|}{Alignment} & \multicolumn{1}{c|}{\xARCH} \\
@@ -58,12 +58,19 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
     \cline{2-5}
     & \texttt{unsigned int} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
-    & \texttt{long} & 8 & 8 & signed \eightbyte \\
-    & \texttt{signed long} & & \\
-    & \texttt{long long} & & \\
+    & \texttt{long (LP64)} & 8 & 8 & signed \eightbyte \\
+    & \texttt{signed long (LP64)} & & \\
+    \cline{2-5}
+    & \texttt{unsigned long (LP64)} & 8 & 8 & unsigned \eightbyte \\
+    \cline{2-5}
+    & \texttt{long (ILP32)} & 4 & 4 & signed \fourbyte \\
+    & \texttt{signed long (ILP32)} & & \\
+    \cline{2-5}
+    & \texttt{unsigned long (ILP32)} & 4 & 4 & unsigned \fourbyte \\
+    \cline{2-5}
+    & \texttt{long long} & 8 & 8 & signed \eightbyte \\
     & \texttt{signed long long} & & \\
     \cline{2-5}
-    & \texttt{unsigned long} & 8 & 8 & unsigned \eightbyte \\
     & \texttt{unsigned long long} & 8 & 8 & unsigned \eightbyte \\
     \cline{2-5}
     & \texttt{__int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
@@ -71,8 +78,12 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
     \cline{2-5}
     & \texttt{unsigned __int128}$^{\dagger\dagger}$ & 16 & 16 & unsigned \sixteenbyte \\
     \hline
-    Pointer & \texttt{\textit{any-type} *} & 8 & 8 & unsigned \eightbyte \\
-    & \texttt{\textit{any-type} (*)()} & & \\
+    Pointer
+    & \texttt{\textit{any-type} * (LP64)} & 8 & 8 & unsigned \eightbyte \\
+    & \texttt{\textit{any-type} (*)() (LP64)} & & \\
+    \cline{2-5}
+    & \texttt{\textit{any-type} * (ILP32)} & 4 & 4 & unsigned \fourbyte \\
+    & \texttt{\textit{any-type} (*)() (ILP32)} & & \\
     \hline
     Floating-& \texttt{float} & 4 & 4 & single (IEEE-754) \\
     \cline{2-5}
@@ -188,9 +199,16 @@ integral values of a specified size.
       \texttt{int} & 1 to 32 & 0 to $2^{w}-1$ \\
       \texttt{unsigned int} & & 0 to $2^{w}-1$ \\
       \hline
-      \texttt{signed long} & & $-2^{w - 1}$ to $2^{w-1}-1$ \\
-      \texttt{long} & 1 to 64 & 0 to $2^{w}-1$ \\
-      \texttt{unsigned long} & & 0 to $2^{w}-1$ \\
+      \texttt{signed long (LP64)} & & $-2^{w - 1}$ to $2^{w-1}-1$ \\
+      \texttt{long (LP64)} & 1 to 64 & 0 to $2^{w}-1$ \\
+      \texttt{unsigned long (LP64)} & & 0 to $2^{w}-1$ \\
+      \hline
+      \texttt{long (ILP32)} & 1 to 32 & 0 to $2^{w}-1$ \\
+      \texttt{unsigned long (ILP32)} & & 0 to $2^{w}-1$ \\
+      \hline
+      \texttt{signed long long} & & $-2^{w - 1}$ to $2^{w-1}-1$ \\
+      \texttt{long long} & 1 to 64 & 0 to $2^{w}-1$ \\
+      \texttt{unsigned long long} & & 0 to $2^{w}-1$ \\
     \end{tabular}
   \end{center}
 \Hrule
@@ -1100,7 +1118,7 @@ operations such as calling functions, accessing static objects, and
 transferring control from one part of a program to another.  Unlike
 previous material, this material is not normative.
 
-\subsection{Architectural Constraints}
+\subsection{Architectural Constraints\label{models}}
 
 The \xARCH architecture usually does not allow an instruction to encode
 arbitrary
@@ -1230,6 +1248,9 @@ that are of general interest:
   references into the text segments, including branches.
 
 \end{description}
+
+Only small code model and small position independent code model
+(\textindex{PIC}) are used in ILP32 binaries.
 
 \subsection{Conventions}
 

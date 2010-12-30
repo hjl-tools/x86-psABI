@@ -1,0 +1,81 @@
+2010-12-29  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex: Remove EF_X86_64_ABI32.  Don't allow
+	ELFCLASS32 for LP64.
+
+2010-12-29  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex: Add wordclass.  Update R_X86_64_RELATIVE.
+	Remove R_X86_64_IRELATIVE32.  Restore R_X86_64_IRELATIVE.
+
+2010-12-28  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex: Restore R_X86_64_TLSDESC.  Remove
+	R_X86_64_DTPMOD32 and R_X86_64_TLSDESC32.
+
+2010-12-28  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* ilp32.tex: Mention small PIC model.
+
+2010-12-28  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Mention small model for ILP32.
+
+2010-12-27  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex: Update title.
+
+2010-12-27  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* ilp32.tex: Minor update.
+
+	* low-level-sys-info.tex: Use \myfontsize instead of \small on
+	Scalar Types table.
+
+	* macros.tex (myfontsize): New.
+
+2010-12-27  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* ilp32.tex: Add coding examples for indirect branches.
+
+2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* dl.tex: List ILP32 program interpreter.
+
+	* low-level-sys-info.tex: Add ILP32/LP64 to long and long long.
+
+2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex: Rename R_X86_64_TLSDESC to R_X86_64_TLSDESC64.
+	Add R_X86_64_IRELATIVE32, R_X86_64_DTPMOD32 and R_X86_64_TLSDESC32.
+
+2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex: Mention ILP32 in title.  Include ilp32.tex.
+
+	* ilp32.tex: New.
+
+	* introduction.tex: Add a label.
+
+	* low-level-sys-info.tex: Add a lebel.
+
+	* object-files.tex: Support ILP32.  Add EF_X86_64_ABI32.
+
+2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* introduction.tex: Minor updates.
+
+2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex (author): Add H.J. and Milind.
+
+2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* introduction.tex: Add ILP32 and LP64.
+
+	* low-level-sys-info.tex: Modify long and pointer types for
+	ILP32 and LP64.
+
+	* macros.tex (version): Set to 0.01.
+
+	* Makefile (abi.pdf): Depend on abi.dvi for index.
