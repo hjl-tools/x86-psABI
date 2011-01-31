@@ -1,3 +1,16 @@
+2011-01-19  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex: Replace ILP32/ilp32 with ILP32/X32.
+	* dl.tex: Likewise.
+	* introduction.tex: Likewise.
+	* low-level-sys-info.tex: Likewise.
+	* object-files.tex: Likewise.
+
+	* ilp32.tex: Renamed to ...
+	* x32.tex: This.
+
+	* macros.tex (version): Set to 0.1.
+
 2010-12-29  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* object-files.tex: Remove EF_X86_64_ABI32.  Don't allow

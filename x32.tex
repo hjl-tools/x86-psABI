@@ -1,8 +1,8 @@
-\chapter{ILP32 Programming Model\label{ilp32}}
+\chapter{X32 Programming Model\label{x32}}
 
 \section{Address Space}
 
-\xARCH ILP32 binaries reside in the lower 32bits of the 64bit virtual
+\xARCH X32 binaries reside in the lower 32bits of the 64bit virtual
 address space and all addresses are 32bits in size.  They should conform
 to \textindex{small code model} or
 \textindex{small position independent code model} (\textindex{PIC})
@@ -14,14 +14,14 @@ bewteen $0x00000000$ to $0xffffffff$.
 
 \section{Coding Examples}
 
-Although ILP32 binaries run in the 64bit mode, not all 64bit instructions
+Although X32 binaries run in the 64bit mode, not all 64bit instructions
 are supported. This section discusses example code sequences for
 fundamental operations which are different from the 64bit mode.
 
 \subsection{Indirect Branch}
 
 Since indirect branch via memory loads a 64bit address at the memory
-location, it is not supported in ILP32.  Indirect branch via register
+location, it is not supported in X32.  Indirect branch via register
 should be used instead.
 
 \begin{table}[H]
@@ -30,7 +30,7 @@ should be used instead.
 \begin{center}
 \code{
 \begin{tabular}{ll|ll}
-\multicolumn{2}{c}{LP64} & \multicolumn{2}{c}{ILP32} \\
+\multicolumn{2}{c}{LP64} & \multicolumn{2}{c}{X32} \\
 \hline
 call & *\%rax          & call & *\%rax \\
 \hline

@@ -63,10 +63,10 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
     \cline{2-5}
     & \texttt{unsigned long (LP64)} & 8 & 8 & unsigned \eightbyte \\
     \cline{2-5}
-    & \texttt{long (ILP32)} & 4 & 4 & signed \fourbyte \\
-    & \texttt{signed long (ILP32)} & & \\
+    & \texttt{long (X32)} & 4 & 4 & signed \fourbyte \\
+    & \texttt{signed long (X32)} & & \\
     \cline{2-5}
-    & \texttt{unsigned long (ILP32)} & 4 & 4 & unsigned \fourbyte \\
+    & \texttt{unsigned long (X32)} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
     & \texttt{long long} & 8 & 8 & signed \eightbyte \\
     & \texttt{signed long long} & & \\
@@ -82,8 +82,8 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
     & \texttt{\textit{any-type} * (LP64)} & 8 & 8 & unsigned \eightbyte \\
     & \texttt{\textit{any-type} (*)() (LP64)} & & \\
     \cline{2-5}
-    & \texttt{\textit{any-type} * (ILP32)} & 4 & 4 & unsigned \fourbyte \\
-    & \texttt{\textit{any-type} (*)() (ILP32)} & & \\
+    & \texttt{\textit{any-type} * (X32)} & 4 & 4 & unsigned \fourbyte \\
+    & \texttt{\textit{any-type} (*)() (X32)} & & \\
     \hline
     Floating-& \texttt{float} & 4 & 4 & single (IEEE-754) \\
     \cline{2-5}
@@ -203,8 +203,8 @@ integral values of a specified size.
       \texttt{long (LP64)} & 1 to 64 & 0 to $2^{w}-1$ \\
       \texttt{unsigned long (LP64)} & & 0 to $2^{w}-1$ \\
       \hline
-      \texttt{long (ILP32)} & 1 to 32 & 0 to $2^{w}-1$ \\
-      \texttt{unsigned long (ILP32)} & & 0 to $2^{w}-1$ \\
+      \texttt{long (X32)} & 1 to 32 & 0 to $2^{w}-1$ \\
+      \texttt{unsigned long (X32)} & & 0 to $2^{w}-1$ \\
       \hline
       \texttt{signed long long} & & $-2^{w - 1}$ to $2^{w-1}-1$ \\
       \texttt{long long} & 1 to 64 & 0 to $2^{w}-1$ \\
@@ -1252,7 +1252,7 @@ that are of general interest:
 \end{description}
 
 Only small code model and small position independent code model
-(\textindex{PIC}) are used in ILP32 binaries.
+(\textindex{PIC}) are used in X32 binaries.
 
 \subsection{Conventions}
 
