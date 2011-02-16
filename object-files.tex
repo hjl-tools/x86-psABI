@@ -446,7 +446,7 @@ the relocation addend.
       \multicolumn{1}{c}{Calculation} \\
       \hline
       \texttt{R_X86_64_NONE}  & 0 & none & none \\
-      \texttt{R_X86_64_64}    & 1 & \textit{word64} & \texttt{S + A} \\
+      \texttt{R_X86_64_64} $^\dagger$ & 1 & \textit{word64} & \texttt{S + A} \\
       \texttt{R_X86_64_PC32}  & 2 & \textit{word32} & \texttt{S + A - P} \\
       \texttt{R_X86_64_GOT32} & 3 & \textit{word32} & \texttt{G + A} \\
       \texttt{R_X86_64_PLT32} & 4 & \textit{word32} & \texttt{L + A - P} \\
@@ -469,17 +469,19 @@ the relocation addend.
       \texttt{R_X86_64_DTPOFF32}   & 21 & \textit{word32} &  \\
       \texttt{R_X86_64_GOTTPOFF}   & 22 & \textit{word32} &  \\
       \texttt{R_X86_64_TPOFF32}   & 23 & \textit{word32} &  \\
-      \texttt{R_X86_64_PC64}  & 24 & \textit{word64} & \texttt{S + A - P} \\
-      \texttt{R_X86_64_GOTOFF64} & 25 & \textit{word64} & \texttt{S + A - GOT} \\
+      \texttt{R_X86_64_PC64} $^\dagger$ & 24 & \textit{word64} & \texttt{S + A - P} \\
+      \texttt{R_X86_64_GOTOFF64} $^\dagger$ & 25 & \textit{word64} & \texttt{S + A - GOT} \\
       \texttt{R_X86_64_GOTPC32} & 26 & \textit{word32} & \texttt{GOT + A - P} \\
       \texttt{R_X86_64_SIZE32} & 32 & \textit{word32} & \texttt{Z + A} \\
-      \texttt{R_X86_64_SIZE64} & 33 & \textit{word64} & \texttt{Z + A} \\
+      \texttt{R_X86_64_SIZE64} $^\dagger$ & 33 & \textit{word64} & \texttt{Z + A} \\
       \texttt{R_X86_64_GOTPC32_TLSDESC} & 34 & \textit{word32} &  \\
       \texttt{R_X86_64_TLSDESC_CALL} & 35 & none &  \\
       \texttt{R_X86_64_TLSDESC} & 36 & \textit{word64}$\times 2$ & \\
       \texttt{R_X86_64_IRELATIVE} & 37 & \textit{wordclass} & \texttt{indirect (B + A)}\\
 %      \texttt{R_X86_64_GOT64} & 16 & \textit{word64} & \texttt{G + A} \\
 %      \texttt{R_X86_64_PLT64} & 17 & \textit{word64} & \texttt{L + A - P} \\
+     \cline{1-4}
+    \multicolumn{3}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
     \end{tabular}
   \end{center}
 \Hrule

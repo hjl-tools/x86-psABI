@@ -1,3 +1,13 @@
+2011-02-16  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* dl.tex: Change x32 ld.so paths to /lib/ldx32.so.1 and
+	/libx32/ld-linux-x32.so.2.
+
+	* macros.tex: Update version to 0.2.
+
+	* object-files.tex: Mark R_X86_64_64, R_X86_64_PC64,
+	R_X86_64_GOTOFF64 and R_X86_64_SIZE64 used only for LP64.
+
 2011-01-19  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* abi.tex: Replace ILP32/ilp32 with ILP32/X32.
