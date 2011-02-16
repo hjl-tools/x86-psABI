@@ -1,5 +1,9 @@
 2011-02-16  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* .gitignore: New.
+
+2011-02-16  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* dl.tex: Change x32 ld.so paths to /lib/ldx32.so.1 and
 	/libx32/ld-linux-x32.so.2.
 
