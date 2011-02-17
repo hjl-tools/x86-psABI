@@ -1,3 +1,8 @@
+2011-02-17  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex: Mark R_X86_64_GLOB_DAT and R_X86_64_JUMP_SLOT
+	with wordclass.
+
 2011-02-16  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* .gitignore: New.
