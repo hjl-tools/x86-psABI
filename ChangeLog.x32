@@ -1,3 +1,10 @@
+2011-02-21  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* macros.tex: Update version to 0.3.
+
+	* object-files.tex: Allow Elf32_Rel relocations within x32
+	executable files or shared objects.
+
 2011-02-17  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* object-files.tex: Mark R_X86_64_GLOB_DAT and R_X86_64_JUMP_SLOT

@@ -429,9 +429,14 @@ The following notations are used for specifying relocations in table
   relocation entry.
 \end{description}
 
-The \xARCH ABI architectures uses only \texttt{Elf64_Rela} relocation
+The \xARCH LP64 ABI architecture uses only \texttt{Elf64_Rela} relocation
 entries with explicit addends.  The \code{r_addend} member serves as
 the relocation addend.
+
+The \xARCH X32 ABI architecture uses only \texttt{Elf32_Rela} relocation
+entries in relocatable files.  Relocations contained within executable
+files or shared objects may use either \texttt{Elf32_Rela} relocation
+or \texttt{Elf32_Rel} relocation.
 
 \begin{table}[H]
 \Hrule
