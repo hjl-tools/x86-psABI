@@ -1,5 +1,9 @@
 2011-06-23  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* x32.tex: Remove footnote on pointer passing.
+
+2011-06-23  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* macros.tex: Update version to 0.4.
 
 	* x32.tex: Zero-extend pointer to 64bit when returned or passed
