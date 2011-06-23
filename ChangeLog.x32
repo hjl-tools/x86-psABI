@@ -1,3 +1,10 @@
+2011-06-23  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* macros.tex: Update version to 0.4.
+
+	* x32.tex: Zero-extend pointer to 64bit when returned or passed
+	in a register.
+
 2011-02-21  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* macros.tex: Update version to 0.3.

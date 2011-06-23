@@ -1,5 +1,12 @@
 \chapter{X32 Programming Model\label{x32}}
 
+\section{Parameter Passing}
+When a value of pointer type is returned or passed in a register, bits 32
+to 63 shall be zero\footnote{\xARCH zero-extends 32-bit result to 64-bit
+in the destination general-purpose register, hence the supplier side and
+the consumer side of those values don't need to explicitly zero-extend
+32-bit pointer values to 64bit.}.
+
 \section{Address Space}
 
 \xARCH X32 binaries reside in the lower 32bits of the 64bit virtual
