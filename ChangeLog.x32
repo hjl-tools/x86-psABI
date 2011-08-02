@@ -1,3 +1,9 @@
+2011-08-01  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* macros.tex: Update version to 0.5.
+
+	* object-files.tex: Allow R_X86_64_64 for x32.
+
 2011-06-23  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* x32.tex: Remove footnote on pointer passing.
