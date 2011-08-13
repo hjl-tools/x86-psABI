@@ -1,3 +1,9 @@
+2011-08-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* macros.tex: Update version to 0.6.
+
+	* object-files.tex: Add R_X86_64_RELATIVE64 for x32.
+
 2011-08-01  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* macros.tex: Update version to 0.5.

@@ -483,10 +483,13 @@ or \texttt{Elf32_Rel} relocation.
       \texttt{R_X86_64_TLSDESC_CALL} & 35 & none &  \\
       \texttt{R_X86_64_TLSDESC} & 36 & \textit{word64}$\times 2$ & \\
       \texttt{R_X86_64_IRELATIVE} & 37 & \textit{wordclass} & \texttt{indirect (B + A)}\\
+      \texttt{R_X86_64_RELATIVE64} $^{\dagger\dagger}$ & 38 & \textit{word64} & \texttt{B + A} \\
 %      \texttt{R_X86_64_GOT64} & 16 & \textit{word64} & \texttt{G + A} \\
 %      \texttt{R_X86_64_PLT64} & 17 & \textit{word64} & \texttt{L + A - P} \\
      \cline{1-4}
     \multicolumn{3}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
+    \multicolumn{3}{l}{\small $^{\dagger\dagger}$ This relocation only
+    appears in X32 executable files or shared objects.}\\
     \end{tabular}
   \end{center}
 \Hrule
