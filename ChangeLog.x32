@@ -1,3 +1,9 @@
+2012-02-10  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* macros.tex: Update version to 0.7.
+
+	* development.tex: Also document _LP64 and __LP64__.
+
 2011-08-13  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* macros.tex: Update version to 0.6.

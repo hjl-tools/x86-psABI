@@ -2,7 +2,9 @@
 \chapter{Development Environment}
 
 During compilation of C or C++ code at least the symbols in
-table \ref{prepro_defines} are defined by the pre-processor.
+table \ref{prepro_defines} are defined by the pre-processor and additional
+symbols \footnote{Those symbols were added to GCC in March, 2003.} in table
+\ref{prepro_defines_lp64} are also defined for LP64 programming model.
 
 \begin{table}[H]
 \Hrule
@@ -14,6 +16,19 @@ table \ref{prepro_defines} are defined by the pre-processor.
       __amd64__\\
       __x86_64\\
       __x86_64__\\
+    \end{tabular}
+  }\end{center}
+\Hrule
+\end{table}
+
+\begin{table}[H]
+\Hrule
+\caption{Predefined Pre-Processor Symbols for LP64 Programming Model}
+\label{prepro_defines_lp64}
+  \begin{center}\code{
+    \begin{tabular}[t]{l}
+      __LP64\\
+      __LP64__\\
     \end{tabular}
   }\end{center}
 \Hrule
