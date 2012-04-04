@@ -105,7 +105,7 @@ static __thread int x;
 
 \begin{table}[H]
 \Hrule
-\caption{Local Dynamic Model Code Sequence}
+\caption{Local Dynamic Model Code Sequence With Lea}
 \begin{center}
 \code\small{
 \begin{tabular}{lll|lll}
@@ -120,8 +120,46 @@ static __thread int x;
 \Hrule
 \end{table}
 
+or
+
+\begin{table}[H]
+\Hrule
+\caption{Local Dynamic Model Code Sequence With Add}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & leaq & x@tlsld(\%rip),\%rdi\\
+0x07 & call  & \_\_tls\_get\_addr@plt	& 0x07 & call & \_\_tls\_get\_addr@plt\\
+0x0c & addq  & \$x@dtpoff,\%rax		& 0x0c & addl & \$x@dtpoff,\%eax\\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[\textindex{Local Dynamic Model, II}]
+  Load value of \code{x} into \reg{edi}
+
+\begin{table}[H]
+\Hrule
+\caption{Local Dynamic Model Code Sequence, II}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x09 & movl & x@dtpoff(\%rax),\%edi	& 0x08 & movl & x@dtpoff(\%rax),\%edi \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
 \item[\textindex{Local Exec Model}]
-  Load address of \code{x} into \reg{rax}/\reg{eax}
+  Load address of \code{x} into \reg{rax}
 
 \begin{table}[H]
 \Hrule
@@ -131,7 +169,7 @@ static __thread int x;
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
 \hline
-0x01 & movl & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
 0x09 & leaq & x@tpoff(\%rax),\%rax	& 0x08 & leal & x@tpoff(\%rax),\%eax \\
 \end{tabular}
 }
@@ -143,14 +181,14 @@ or
 
 \begin{table}[H]
 \Hrule
-\caption{Local Exec Model Code Sequence with Add}
+\caption{Local Exec Model Code Sequence With Add}
 \begin{center}
 \code\small{
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
 \hline
-0x01 & movl & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
-0x09 & addq & x@tpoff,\%rax		& 0x08 & addl & x@tpoff,\%eax \\
+0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x09 & addq & \$x@tpoff,\%rax		& 0x08 & addl & \$x@tpoff,\%eax \\
 \end{tabular}
 }
 \end{center}
@@ -168,7 +206,7 @@ or
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
 \hline
-0x01 & movl & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
 0x09 & movl & x@tpoff(\%rax),\%edi	& 0x08 & movl & x@tpoff(\%rax),\%edi \\
 \end{tabular}
 }
@@ -226,7 +264,7 @@ or
 \begin{center}
 \code\small{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{GD} & \multicolumn{3}{c}{IE} \\
+\multicolumn{3}{c}{GD} & \multicolumn{3}{c}{LE} \\
 \hline
 0x00 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x00 & movl  & \%fs:0, \%eax \\
 0x07 & .word & 0x6666			& 0x08 & leal  & x@tpoff(\%rax),\%eax\\
@@ -268,7 +306,7 @@ or
 \multicolumn{3}{c}{IE} & \multicolumn{3}{c}{LE} \\
 \hline
 0x01 & movl & \%fs:0,\%eax		& 0x01 & movl & \%fs:0,\%eax \\
-0x08 & addl & x@gottpoff(\%rip),\%eax	& 0x08 & addl & x@tpoff,\%eax \\
+0x08 & addl & \$x@gottpoff(\%rip),\%eax	& 0x08 & addl & \$x@tpoff,\%eax \\
 \end{tabular}
 }
 \end{center}
@@ -288,6 +326,45 @@ or
 \hline
 0x01 & movq & x@gottpoff(\%rip),\%rax	& 0x01 & movq & x@tpoff,\%rax \\
 0x07 & movl & \%fs:(\%rax),\%edi	& 0x07 & movl & \%fs:(\%rax),\%edi \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[\textindex{Local Dynamic to Local Exec}]
+  Load address of \code{x} into \reg{rax}
+
+\begin{table}[H]
+\Hrule
+\caption{LD -> LE Code Transition With Lea}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LD} & \multicolumn{3}{c}{LE} \\
+\hline
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & nopl & 0x0(\%rax) \\
+0x07 & call  & \_\_tls\_get\_addr@plt	& 0x04 & movl & \%fs:0,\%eax\\
+0x0c & leal  & x@dtpoff(\%rax),\%eax	& 0x0c & leal & x@tpoff(\%rax),\%eax\\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+or
+
+\begin{table}[H]
+\Hrule
+\caption{LD -> LE Code Transition With Add}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LD} & \multicolumn{3}{c}{LE} \\
+\hline
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & nopl & 0x0(\%rax) \\
+0x07 & call  & \_\_tls\_get\_addr@plt	& 0x04 & movl & \%fs:0,\%eax\\
+0x0c & addq  & \$x@dtpoff,\%rax		& 0x0c & addl & \$x@tpoff,\%eax\\
 \end{tabular}
 }
 \end{center}
