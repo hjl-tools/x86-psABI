@@ -1,5 +1,9 @@
 2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* x32.tex: Add TLS LD and LE specification.
+
+2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* x32.tex: Add TLS GD and IE specification.
 
 2012-02-10  H.J. Lu  <hongjiu.lu@intel.com>

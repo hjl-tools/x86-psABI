@@ -27,7 +27,7 @@ extern __thread int x;
 
 \begin{description}
 \item[\textindex{General Dynamic Model}]
-  Load address of \code{x} into \reg{rax}/\reg{eax}
+  Load address of \code{x} into \reg{rax}
 
 \begin{table}[H]
 \Hrule
@@ -49,7 +49,7 @@ extern __thread int x;
 \end{table}
 
 \item[\textindex{Initial Exec Model}]
-  Load address of \code{x} into \reg{rax}/\reg{eax}
+  Load address of \code{x} into \reg{rax}
 
 \begin{table}[H]
 \Hrule
@@ -68,7 +68,10 @@ extern __thread int x;
 \end{table}
 
 \item[\textindex{Initial Exec Model, II}]
-  Load value of \code{x} into \reg{edi}
+  Load value of \code{x} into \reg{edi}.  \code{\%fs:(\%eax)} memory
+  operand can't be used for x32 since the effective address will be
+  the base address of \code{\%fs} + value of \reg{eax} zero-extended
+  to 64bit, which is incorrect with negative value in \reg{eax}.
 
 \begin{table}[H]
 \Hrule
@@ -80,6 +83,111 @@ extern __thread int x;
 \hline
 0x01 & movq & x@gottpoff(\%rip),\%rax	& 0x01 & movq & x@gottpoff(\%rip),\%rax \\
 0x07 & movl & \%fs:(\%rax),\%edi	& 0x08 & movl & \%fs:(\%rax),\%edi \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\end{description}
+
+\subsection{Static Thread-Local Variable}
+
+For a static thread-local variable x:
+
+\begin{verbatim}
+static __thread int x;
+\end{verbatim}
+
+\begin{description}
+\item[\textindex{Local Dynamic Model}]
+  Load address of \code{x} into \reg{rax}
+
+\begin{table}[H]
+\Hrule
+\caption{Local Dynamic Model Code Sequence}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & leaq & x@tlsld(\%rip),\%rdi\\
+0x07 & call  & \_\_tls\_get\_addr@plt	& 0x07 & call & \_\_tls\_get\_addr@plt\\
+0x0c & leaq  & x@dtpoff(\%rax),\%rax	& 0x0c & leal & x@dtpoff(\%rax),\%eax\\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[\textindex{Local Exec Model}]
+  Load address of \code{x} into \reg{rax}/\reg{eax}
+
+\begin{table}[H]
+\Hrule
+\caption{Initial Exec Model Code Sequence With Lea}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x01 & movl & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x09 & leaq & x@tpoff(\%rax),\%rax	& 0x08 & leal & x@tpoff(\%rax),\%eax \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+or
+
+\begin{table}[H]
+\Hrule
+\caption{Initial Exec Model Code Sequence with Add}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x01 & movl & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x09 & addq & x@tpoff,\%rax		& 0x08 & addl & x@tpoff,\%eax \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[\textindex{Local Exec Model, II}]
+  Load value of \code{x} into \reg{edi}
+
+\begin{table}[H]
+\Hrule
+\caption{Local Exec Model Code Sequence, II}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x01 & movl & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x09 & movl & x@tpoff(\%rax),\%edi	& 0x08 & movl & x@tpoff(\%rax),\%edi \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[\textindex{Local Exec Model, III}]
+  Load value of \code{x} into \reg{edi}
+
+\begin{table}[H]
+\Hrule
+\caption{Local Exec Model Code Sequence, III}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x00 & movl & \%fs:x@tpoff,\%edi	& 0x00 & movl & \%fs:x@tpoff,\%edi \\
 \end{tabular}
 }
 \end{center}
