@@ -371,6 +371,26 @@ or
 \Hrule
 \end{table}
 
+\item[\textindex{Local Dynamic To Local Exec, II}]
+  Load value of \code{x} into \reg{edi}.
+
+\begin{table}[H]
+\Hrule
+\caption{LD -> LE Code Transition, II}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LD} & \multicolumn{3}{c}{LE} \\
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & nopl & 0x0(\%rax) \\
+0x07 & call  & \_\_tls\_get\_addr@plt	& 0x04 & movl & \%fs:0,\%eax\\
+0x0c & movl  & x@dtpoff(\%rax),\%eax	& 0x0c & movl & x@tpoff(\%rax),\%eax\\
+\hline
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
 \end{description}
 
 \section{Kernel Support}

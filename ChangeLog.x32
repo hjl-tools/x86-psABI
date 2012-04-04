@@ -1,5 +1,9 @@
 2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* x32.tex: Add TLS LD value load optimization.
+
+2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* x32.tex: Add TLS LD address load optimizations.
 
 2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
