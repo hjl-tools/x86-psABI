@@ -12,6 +12,82 @@ to \textindex{small code model} or
 \textindex{small position independent code model} (\textindex{PIC})
 described in Section \ref{models}.
 
+\section{Thread-Local Storage Support}
+
+X32 Thread-Local Storage (TLS) support is based on LP64 TLS
+implementation with some modifcations.
+
+\subsection{Global Thread-Local Variable}
+
+For a global thread-local variable x:
+
+\begin{verbatim}
+extern __thread int x;
+\end{verbatim}
+
+\begin{description}
+\item[\textindex{General Dynamic Model}]
+  Load address of \code{x} into \reg{rax}/\reg{eax}
+
+\begin{table}[H]
+\Hrule
+\caption{General Dynamic Model Code Sequence}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x00 & .byte & 0x66			& 0x00 & leaq  & x@tlsgd(\%rip),\%rdi \\
+0x01 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x07 & .word & 0x6666 \\
+0x08 & .word & 0x6666			& 0x09 & rex64 & \\
+0x0a & rex64 &				& 0x0b & call  & \_\_tls\_get\_addr@plt \\
+0x0b & call  & \_\_tls\_get\_addr@plt	&      &       & \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[\textindex{Initial Exec Model}]
+  Load address of \code{x} into \reg{rax}/\reg{eax}
+
+\begin{table}[H]
+\Hrule
+\caption{Initial Exec Model Code Sequence}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x09 & addq & x@gottpoff(\%rip),\%rax	& 0x08 & addl & x@gottpoff(\%rip),\%eax \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[\textindex{Initial Exec Model, II}]
+  Load value of \code{x} into \reg{edi}
+
+\begin{table}[H]
+\Hrule
+\caption{Initial Exec Model Code Sequence, II}
+\begin{center}
+\code\small{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\hline
+0x01 & movq & x@gottpoff(\%rip),\%rax	& 0x01 & movq & x@gottpoff(\%rip),\%rax \\
+0x07 & movl & \%fs:(\%rax),\%edi	& 0x08 & movl & \%fs:(\%rax),\%edi \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\end{description}
+
 \section{Kernel Support}
 Kernel should limit stack and addresses returned from system calls
 bewteen $0x00000000$ to $0xffffffff$.
