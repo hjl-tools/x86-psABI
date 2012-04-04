@@ -125,7 +125,7 @@ static __thread int x;
 
 \begin{table}[H]
 \Hrule
-\caption{Initial Exec Model Code Sequence With Lea}
+\caption{Local Exec Model Code Sequence With Lea}
 \begin{center}
 \code\small{
 \begin{tabular}{lll|lll}
@@ -143,7 +143,7 @@ or
 
 \begin{table}[H]
 \Hrule
-\caption{Initial Exec Model Code Sequence with Add}
+\caption{Local Exec Model Code Sequence with Add}
 \begin{center}
 \code\small{
 \begin{tabular}{lll|lll}
@@ -295,6 +295,7 @@ or
 \end{table}
 
 \end{description}
+
 \section{Kernel Support}
 Kernel should limit stack and addresses returned from system calls
 bewteen $0x00000000$ to $0xffffffff$.
