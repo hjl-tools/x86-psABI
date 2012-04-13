@@ -1,5 +1,9 @@
 2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* x32.tex: Replace \code\small with \small\code.
+
+2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* introduction.tex: Remove "the".
 
 2012-04-08  H.J. Lu  <hongjiu.lu@intel.com>
