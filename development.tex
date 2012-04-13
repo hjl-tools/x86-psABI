@@ -2,33 +2,24 @@
 \chapter{Development Environment}
 
 During compilation of C or C++ code at least the symbols in
-table \ref{prepro_defines} are defined by the pre-processor and additional
-symbols \footnote{Those symbols were added to GCC in March, 2003.} in table
-\ref{prepro_defines_lp64} are also defined for LP64 programming model.
+table \ref{prepro_defines} are defined by the pre-processor
+\footnote{\code{__LP64} and \code{__LP64__} were added to GCC 3.3 in
+March, 2003.}.
 
 \begin{table}[H]
 \Hrule
 \caption{Predefined Pre-Processor Symbols}
 \label{prepro_defines}
-  \begin{center}\code{
-    \begin{tabular}[t]{l}
-      __amd64\\
-      __amd64__\\
-      __x86_64\\
-      __x86_64__\\
-    \end{tabular}
-  }\end{center}
-\Hrule
-\end{table}
-
-\begin{table}[H]
-\Hrule
-\caption{Predefined Pre-Processor Symbols for LP64 Programming Model}
-\label{prepro_defines_lp64}
-  \begin{center}\code{
-    \begin{tabular}[t]{l}
-      __LP64\\
-      __LP64__\\
+  \begin{center}\small\code{
+    \begin{tabular}[t]{ll}
+      __amd64      & Defined for both LP64 and X32 programming models.\\
+      __amd64__    & Defined for both LP64 and X32 programming models.\\
+      __x86_64     & Defined for both LP64 and X32 programming models.\\
+      __x86_64__   & Defined for both LP64 and X32 programming models.\\
+      _LP64        & Defined for LP64 programming model.\\
+      __LP64__     & Defined for LP64 programming model.\\
+      _ILP32       & Defined for X32 programming model.\\
+      __ILP32__    & Defined for X32 programming model.\\
     \end{tabular}
   }\end{center}
 \Hrule

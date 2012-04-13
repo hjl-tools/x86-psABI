@@ -1,5 +1,11 @@
 2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* development.tex: Add _ILP32 and __ILP32__ for x32.
+
+	* macros.tex: Update version to 0.9.
+
+2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* x32.tex: Replace \code\small with \small\code.
 
 2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
