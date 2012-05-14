@@ -1,5 +1,9 @@
 2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* .gitignore: Add *.ps.
+
+2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* x32.tex: Replace 32bits with 32 bits and 64bit with 64-bit.
 	* macros.tex: Update version to 1.0.
 
