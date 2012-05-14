@@ -1,7 +1,9 @@
 % All macros
 
 %  First find out if we're running pdftex
-\newif\ifpdf
+\usepackage{ifpdf}
+
+\newif\ifpdflocal
 
 \ifx\pdfoutput\undefined
 \else
@@ -15,7 +17,7 @@
 \fi
 
 
-\ifpdf
+\ifpdflocal
 \pdfcompresslevel 5
 \fi
 
@@ -47,7 +49,7 @@
 \usepackage{float}
 
 % Version number of document - increment occasionally ;-)
-\newcommand{\version}{0.99.5}
+\newcommand{\version}{0.99.6}
 
 % Print a footer everywhere with current date
 % prelim2e needs \thistime
@@ -97,7 +99,7 @@
 \newcommand{\Hrule}{\noindent\rule{\linewidth}{0.3mm}}
 
 % Use Hyperref for PDF support - this should be last
-\ifpdf
+\ifpdflocal
 \usepackage[pdftex]{hyperref}
 \usepackage{changebar}
 \else

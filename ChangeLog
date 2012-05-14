@@ -1,3 +1,14 @@
+2012-05-11  Michael Matz  <matz@suse.de>
+
+	* macros.tex (version): Set to 0.99.6.
+	(ifpdflocal): Rename from ifpdf (which conflicts with the one from
+	ifpdf.sty).
+	(ifpdf): Use this package.
+
+2012-05-11  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex: Document STT_GNU_IFUNC and R_X86_64_IRELATIVE.
+
 2010-09-03  Michael Matz  <matz@suse.de>
 
 	* low-level-sys-info.tex (Returning of Values): Clarify that

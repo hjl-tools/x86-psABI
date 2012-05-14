@@ -344,6 +344,23 @@ the section until the end, counting entries as they are encountered.
 The discussion of "Function Addresses" in Section \ref{function_addresses}
 defines some special values for symbol table fields.
 
+The \texttt{STT_GNU_IFUNC}
+\footnote{It is specified in {\bf ifunc.txt}
+at \url{http://groups.google.com/group/generic-abi/files}}
+symbol type is optional. It is the same as
+\texttt{STT_FUNC} except that it always points to a function or piece of
+executable code which takes no arguments and returns a function pointer.
+If an \texttt{STT_GNU_IFUNC} symbol is referred to by a relocation, then
+evaluation of that relocation is delayed until load-time.  The value
+used in the relocation is the function pointer returned by an invocation
+of the \texttt{STT_GNU_IFUNC} symbol.
+ 
+The purpose of the \texttt{STT_GNU_IFUNC} symbol type is to allow the
+run-time to select between multiple versions of the implementation of
+a specific function.  The selection made in general will take the
+currently available hardware into account and select the most
+appropriate version.
+
 \section{Relocation}
 
 \subsection{Relocation Types}
@@ -451,6 +468,7 @@ the relocation addend.
       \texttt{R_X86_64_GOTPC32_TLSDESC} & 34 & \textit{word32} &  \\
       \texttt{R_X86_64_TLSDESC_CALL} & 35 & none &  \\
       \texttt{R_X86_64_TLSDESC} & 36 & \textit{word64}$\times 2$ & \\
+      \texttt{R_X86_64_IRELATIVE} & 37 & \textit{word64} & \texttt{indirect (B + A)}\\
 %      \texttt{R_X86_64_GOT64} & 16 & \textit{word64} & \texttt{G + A} \\
 %      \texttt{R_X86_64_PLT64} & 17 & \textit{word64} & \texttt{L + A - P} \\
     \end{tabular}
@@ -562,6 +580,16 @@ resolves to the PC-relative address of a TLS descriptor corresponding
 to the named symbol.  \texttt{R_X86_64_TLSDESC_CALL} must annotate the
 instruction used to call the TLS Descriptor resolver function, so as
 to enable relaxation of that instruction.
+
+\texttt{R_X86_64_IRELATIVE} is similar to \texttt{R_X86_64_RELATIVE}
+except that the value used in this relocation is the program address
+returned by the function, which takes no arguments, at the address of
+the result of the corresponding \texttt{R_X86_64_RELATIVE} relocation.
+
+One use of the \texttt{R_X86_64_IRELATIVE} relocation is to avoid name
+lookup for the locally defined \texttt{STT_GNU_IFUNC} symbols at
+load-time.  Support for this relocation is optional, but is required for
+the \texttt{STT_GNU_IFUNC} symbols.
 
 \subsection{Large Models}
 
