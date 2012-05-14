@@ -1,5 +1,9 @@
 2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* x32.tex: Expand indirect branch.
+
+2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* .gitignore: Add *.ps.
 
 2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>

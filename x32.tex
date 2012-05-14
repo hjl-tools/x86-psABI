@@ -407,7 +407,10 @@ fundamental operations which are different from the 64-bit mode.
 
 Since indirect branch via memory loads a 64-bit address at the memory
 location, it is not supported in X32.  Indirect branch via register
-should be used instead.
+should be used instead.  The 32-bit address from memory is loaded into
+the lower 32 bits of a register, which will automatically zero-extend
+the upper 32 bits of the register.  Then the indirect call can be
+performed via the 64-bit register. 
 
 \begin{table}[H]
 \Hrule
