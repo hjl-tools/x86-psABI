@@ -1,3 +1,8 @@
+2012-05-14  Michael Matz  <matz@suse.de>
+
+	* macros.tex (ifpdflocal): Remove, change references to ifpdf,
+	which we have since last commit.
+
 2012-05-11  Michael Matz  <matz@suse.de>
 
 	* macros.tex (version): Set to 0.99.6.

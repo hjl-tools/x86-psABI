@@ -3,21 +3,7 @@
 %  First find out if we're running pdftex
 \usepackage{ifpdf}
 
-\newif\ifpdflocal
-
-\ifx\pdfoutput\undefined
-\else
-  \ifx\pdfoutput\relax
-  \else
-    \ifcase\pdfoutput
-    \else
-      \pdftrue
-    \fi
-  \fi
-\fi
-
-
-\ifpdflocal
+\ifpdf
 \pdfcompresslevel 5
 \fi
 
@@ -99,7 +85,7 @@
 \newcommand{\Hrule}{\noindent\rule{\linewidth}{0.3mm}}
 
 % Use Hyperref for PDF support - this should be last
-\ifpdflocal
+\ifpdf
 \usepackage[pdftex]{hyperref}
 \usepackage{changebar}
 \else
