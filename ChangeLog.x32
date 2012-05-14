@@ -1,3 +1,8 @@
+2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* x32.tex: Replace 32bits with 32 bits and 64bit with 64-bit.
+	* macros.tex: Update version to 1.0.
+
 2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* development.tex: Add _ILP32 and __ILP32__ for x32.

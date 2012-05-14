@@ -6,8 +6,8 @@ to 63 shall be zero.
 
 \section{Address Space}
 
-\xARCH X32 binaries reside in the lower 32bits of the 64bit virtual
-address space and all addresses are 32bits in size.  They should conform
+\xARCH X32 binaries reside in the lower 32 bits of the 64-bit virtual
+address space and all addresses are 32 bits in size.  They should conform
 to \textindex{small code model} or
 \textindex{small position independent code model} (\textindex{PIC})
 described in Section \ref{models}.
@@ -69,9 +69,9 @@ extern __thread int x;
 
 \item[\textindex{Initial Exec Model, II}]
   Load value of \code{x} into \reg{edi}.  \code{\%fs:(\%eax)} memory
-  operand can't be used for X32 since its effective address is
-  the base address of \code{\%fs} + value of \reg{eax} zero-extended
-  to 64bit, which is incorrect with negative value in \reg{eax}.
+  operand can't be used for X32 since its effective address is the base
+  address of \code{\%fs} + value of \reg{eax} zero-extended to a 64-bit
+  result, which is incorrect with negative value in \reg{eax}.
 
 \begin{table}[H]
 \Hrule
@@ -399,13 +399,13 @@ bewteen $0x00000000$ to $0xffffffff$.
 
 \section{Coding Examples}
 
-Although X32 binaries run in the 64bit mode, not all 64bit instructions
+Although X32 binaries run in the 64-bit mode, not all 64-bit instructions
 are supported. This section discusses example code sequences for
-fundamental operations which are different from the 64bit mode.
+fundamental operations which are different from the 64-bit mode.
 
 \subsection{Indirect Branch}
 
-Since indirect branch via memory loads a 64bit address at the memory
+Since indirect branch via memory loads a 64-bit address at the memory
 location, it is not supported in X32.  Indirect branch via register
 should be used instead.
 
