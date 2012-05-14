@@ -1,19 +1,7 @@
 % All macros
 
 %  First find out if we're running pdftex
-\newif\ifpdf
-
-\ifx\pdfoutput\undefined
-\else
-  \ifx\pdfoutput\relax
-  \else
-    \ifcase\pdfoutput
-    \else
-      \pdftrue
-    \fi
-  \fi
-\fi
-
+\usepackage{ifpdf}
 
 \ifpdf
 \pdfcompresslevel 5
@@ -47,7 +35,7 @@
 \usepackage{float}
 
 % Version number of document - increment occasionally ;-)
-\newcommand{\version}{0.9}
+\newcommand{\version}{1.0}
 
 % Print a footer everywhere with current date
 % prelim2e needs \thistime
