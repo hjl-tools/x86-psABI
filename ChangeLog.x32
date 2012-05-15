@@ -1,3 +1,8 @@
+2012-05-15  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex (author): List the authors in alphabetical order by
+	surname.
+
 2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* dl.tex: Revert format change.
