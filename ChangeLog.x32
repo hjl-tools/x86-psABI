@@ -1,5 +1,9 @@
 2012-05-17  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* x32.tex: Mention x32.
+
+2012-05-17  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* abi.tex: Replace X32 with ILP32.
 	* development.tex: Likewise.
 	* dl.tex: Likewise.

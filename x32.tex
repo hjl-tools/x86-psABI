@@ -1,12 +1,14 @@
 \chapter{ILP32 Programming Model\label{x32}}
 
+"x32" is commonly used to refer to \xARCH ILP32 programming model.
+
 \section{Parameter Passing}
 When a value of pointer type is returned or passed in a register, bits 32
 to 63 shall be zero.
 
 \section{Address Space}
 
-\xARCH ILP32 binaries reside in the lower 32 bits of the 64-bit virtual
+ILP32 binaries reside in the lower 32 bits of the 64-bit virtual
 address space and all addresses are 32 bits in size.  They should conform
 to \textindex{small code model} or
 \textindex{small position independent code model} (\textindex{PIC})
