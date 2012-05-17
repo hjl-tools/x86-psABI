@@ -1,3 +1,13 @@
+2012-05-17  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex: Replace X32 with ILP32.
+	* development.tex: Likewise.
+	* dl.tex: Likewise.
+	* introduction.tex: Likewise.
+	* low-level-sys-info.tex: Likewise.
+	* object-files.tex: Likewise.
+	* x32.tex: Likewise.
+
 2012-05-15  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* abi.tex (author): List the authors in alphabetical order by

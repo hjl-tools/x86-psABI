@@ -1,4 +1,4 @@
-\chapter{X32 Programming Model\label{x32}}
+\chapter{ILP32 Programming Model\label{x32}}
 
 \section{Parameter Passing}
 When a value of pointer type is returned or passed in a register, bits 32
@@ -6,7 +6,7 @@ to 63 shall be zero.
 
 \section{Address Space}
 
-\xARCH X32 binaries reside in the lower 32 bits of the 64-bit virtual
+\xARCH ILP32 binaries reside in the lower 32 bits of the 64-bit virtual
 address space and all addresses are 32 bits in size.  They should conform
 to \textindex{small code model} or
 \textindex{small position independent code model} (\textindex{PIC})
@@ -14,7 +14,7 @@ described in Section \ref{models}.
 
 \section{Thread-Local Storage Support}
 
-X32 Thread-Local Storage (TLS) support is based on LP64 TLS
+ILP32 Thread-Local Storage (TLS) support is based on LP64 TLS
 implementation with some modifcations.
 
 \subsection{Global Thread-Local Variable}
@@ -35,7 +35,7 @@ extern __thread int x;
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x00 & .byte & 0x66			& 0x00 & leaq  & x@tlsgd(\%rip),\%rdi \\
 0x01 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x07 & .word & 0x6666 \\
@@ -57,7 +57,7 @@ extern __thread int x;
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
 0x09 & addq & x@gottpoff(\%rip),\%rax	& 0x08 & addl & x@gottpoff(\%rip),\%eax \\
@@ -69,7 +69,7 @@ extern __thread int x;
 
 \item[\textindex{Initial Exec Model, II}]
   Load value of \code{x} into \reg{edi}.  \code{\%fs:(\%eax)} memory
-  operand can't be used for X32 since its effective address is the base
+  operand can't be used for ILP32 since its effective address is the base
   address of \code{\%fs} + value of \reg{eax} zero-extended to a 64-bit
   result, which is incorrect with negative value in \reg{eax}.
 
@@ -79,7 +79,7 @@ extern __thread int x;
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x01 & movq & x@gottpoff(\%rip),\%rax	& 0x01 & movq & x@gottpoff(\%rip),\%rax \\
 0x07 & movl & \%fs:(\%rax),\%edi	& 0x07 & movl & \%fs:(\%rax),\%edi \\
@@ -109,7 +109,7 @@ static __thread int x;
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & leaq & x@tlsld(\%rip),\%rdi\\
 0x07 & call  & \_\_tls\_get\_addr@plt	& 0x07 & call & \_\_tls\_get\_addr@plt\\
@@ -128,7 +128,7 @@ or
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & leaq & x@tlsld(\%rip),\%rdi\\
 0x07 & call  & \_\_tls\_get\_addr@plt	& 0x07 & call & \_\_tls\_get\_addr@plt\\
@@ -148,7 +148,7 @@ or
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
 0x09 & movl & x@dtpoff(\%rax),\%edi	& 0x08 & movl & x@dtpoff(\%rax),\%edi \\
@@ -167,7 +167,7 @@ or
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
 0x09 & leaq & x@tpoff(\%rax),\%rax	& 0x08 & leal & x@tpoff(\%rax),\%eax \\
@@ -185,7 +185,7 @@ or
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
 0x09 & addq & \$x@tpoff,\%rax		& 0x08 & addl & \$x@tpoff,\%eax \\
@@ -204,7 +204,7 @@ or
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
 0x09 & movl & x@tpoff(\%rax),\%edi	& 0x08 & movl & x@tpoff(\%rax),\%edi \\
@@ -223,7 +223,7 @@ or
 \begin{center}
 \small\code{
 \begin{tabular}{lll|lll}
-\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{X32} \\
+\multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
 0x00 & movl & \%fs:x@tpoff,\%edi	& 0x00 & movl & \%fs:x@tpoff,\%edi \\
 \end{tabular}
@@ -399,14 +399,14 @@ bewteen $0x00000000$ to $0xffffffff$.
 
 \section{Coding Examples}
 
-Although X32 binaries run in the 64-bit mode, not all 64-bit instructions
+Although ILP32 binaries run in the 64-bit mode, not all 64-bit instructions
 are supported. This section discusses example code sequences for
 fundamental operations which are different from the 64-bit mode.
 
 \subsection{Indirect Branch}
 
 Since indirect branch via memory loads a 64-bit address at the memory
-location, it is not supported in X32.  Indirect branch via register
+location, it is not supported in ILP32.  Indirect branch via register
 should be used instead.  The 32-bit address from memory is loaded into
 the lower 32 bits of a register, which will automatically zero-extend
 the upper 32 bits of the register.  Then the indirect call can be
@@ -418,7 +418,7 @@ performed via the 64-bit register.
 \begin{center}
 \code{
 \begin{tabular}{ll|ll}
-\multicolumn{2}{c}{LP64} & \multicolumn{2}{c}{X32} \\
+\multicolumn{2}{c}{LP64} & \multicolumn{2}{c}{ILP32} \\
 \hline
 call & *\%rax          & call & *\%rax \\
 \hline
