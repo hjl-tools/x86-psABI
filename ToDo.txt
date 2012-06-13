@@ -1,4 +1,3 @@
-
 This file documents a number of open topics in the ABI:
 
 - Geert Bosch has a number of smaller nitpits.  Let's get hold of them
