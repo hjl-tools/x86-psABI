@@ -1,3 +1,4 @@
+.svn
 *.aux
 *.cb*
 *.dvi
@@ -8,6 +9,6 @@
 *.log
 *.lot
 *.out
-*.toc
 *.pdf
 *.ps
+*.toc

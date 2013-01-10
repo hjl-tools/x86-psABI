@@ -1,3 +1,7 @@
+2013-01-10  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* .gitignore: Add .svn.
+
 2012-05-17  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* x32.tex: Mention x32.
