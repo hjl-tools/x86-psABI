@@ -26,7 +26,8 @@ object, and the term \emph{\textindex{\sixteenbyte{}}} refers to a
 
 Figure~\ref{basic-types} shows the correspondence between ISO C's
 scalar types and the processor's.  \code{__int128}, \code{__float128},
-\code{__m64}, \code{__m128} and \code{__m256} types are optional.
+\code{__m64}, \code{__m128}, \code{__m256} and \code{__m512} types are
+optional.
 
 \begin{figure}
   \caption{Scalar Types}\label{basic-types}
@@ -104,6 +105,8 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
     & \texttt{__m128}$^{\dagger\dagger}$ & 16 & 16 & SSE and SSE-2 \\
     \cline{2-5}
     & \texttt{__m256}$^{\dagger\dagger}$ & 32 & 32 & AVX \\
+    \cline{2-5}
+    & \texttt{__m512}$^{\dagger\dagger}$ & 64 & 64 & AVX-512 \\
 \noalign{\smallskip}
 \cline{1-5}
 \multicolumn{3}{l}{\small $^\dagger$ This type is called \texttt{bool}
@@ -149,7 +152,8 @@ Like the Intel386 architecture, the \xARCH architecture in general
 does not require all data accesses to be properly aligned.  Misaligned
 data accesses are slower than aligned accesses
 but otherwise behave identically.  The only exceptions are that
-\code{__m128} and \code{__m256} must always be aligned properly.
+\code{__m128}, \code{__m256} and \code{__m512} must always be aligned
+properly.
 
 \subsubsection{Aggregates and Unions}
 
@@ -216,8 +220,8 @@ integral values of a specified size.
 \end{figure}
 
 The ABI does not permit bit-fields having the type \texttt{__m64},
-\texttt{__m128} or \texttt{__m256}.  Programs using bit-fields of
-these types are not portable.
+\texttt{__m128}, \texttt{__m256} or \texttt{__m512}.  Programs using
+bit-fields of these types are not portable.
 
 Bit-fields that are neither signed nor unsigned
 always have non-negative values. Although they may have type char,
@@ -264,10 +268,17 @@ procedures active for a given thread.
 Intel AVX (Advanced Vector Extensions) provides 16 256-bit wide AVX registers
 (\reg{ymm0} - \reg{ymm15}).  The lower 128-bits of \reg{ymm0} - \reg{ymm15}
 are aliased to the respective 128b-bit SSE registers (\reg{xmm0} -
-\reg{xmm15}). For purposes of parameter passing and function return,
-\reg{xmmN} and \reg{ymmN} refer to the same register. Only one of them
-can be used at the same time.  We use vector register to refer to either
-SSE or AVX register.
+\reg{xmm15}).  Intel AVX-512 provides 32 512-bit wide SIMD registers
+(\reg{zmm0} - \reg{zmm31}).  The lower 128-bits of \reg{zmm0} - \reg{zmm31}
+are aliased to the respective 128b-bit SSE registers
+(\reg{xmm0} - \reg{xmm31}).  The lower 256-bits of \reg{zmm0} - \reg{zmm31}
+are aliased to the respective 256-bit AVX registers
+(\reg{ymm0} - \reg{ymm31}).  For purposes of parameter passing
+and function return, \reg{xmmN}, \reg{ymmN} and \reg{zmmN} refer to the
+same register. Only one of them can be used at the same time.  We use
+vector register to refer to either SSE, AVX or AVX-512 register.  In
+addition, Intel AVX-512 also provides 8 vector mask registers (\reg{k0}
+- \reg{k7}), each 64-bit wide.
 
 This subsection discusses usage of each register.  Registers \RBP, \RBX and
 \reg{r12} through \reg{r15} ``belong'' to the calling function and the
@@ -329,9 +340,10 @@ stack.  This stack grows downwards from high addresses.  Figure
 \Hrule
 \end{figure}
 
-The end of the input argument area shall be aligned on a 16 (32, if
-\texttt{__m256} is passed on stack) byte boundary.  In other
-words, the value $(\RSP + 8)$ is always a multiple of $16$ ($32$) when
+The end of the input argument area shall be aligned on a 16 (32 or 64, if
+\texttt{__m256} or \texttt{__m512} is passed on stack) byte boundary. 
+In other words, the value $(\RSP + 8)$ is always a multiple of $16$
+($32$ or $64$) when
 control is transferred to the function entry point.  The
 stack pointer, \RSP, always points to the end of the latest allocated
 stack frame.  \footnote{The conventional use of \RBP{} as a frame
@@ -394,6 +406,10 @@ The basic types are assigned their natural classes:
 \item Arguments of type \code{__m256} are split into four \eightbyte
   chunks.  The least significant one belongs to class SSE and all the
   others to class SSEUP.
+\item Arguments of type \code{__m512} are split into eight \eightbyte
+  chunks.  The least significant one belongs to class SSE and all the
+  others to class SSEUP.
+\item The 64-bit mantissa of arguments of type \code{long double}
 \item The 64-bit mantissa of arguments of type \code{long double}
   belongs to class X87, the 16-bit exponent plus 6 bytes of padding
   belongs to class X87UP.
@@ -559,6 +575,7 @@ arguments & No\\
 \reg{xmm2}--\reg{xmm7} & used to pass floating point arguments & No\\
 \reg{xmm8}--\reg{xmm15} & temporary registers & No\\
 \reg{mm0}--\reg{mm7}& temporary registers & No\\
+\reg{k0}--\reg{k7} & temporary registers & No\\
 \reg{st0},\reg{st1} & temporary registers; used to return \code{long double} arguments & No \\
 \reg{st2}--\reg{st7} & temporary registers & No \\
 \reg{fs}& Reserved for system (as thread specific data register) & No\\
@@ -594,9 +611,9 @@ For calls that may call functions that use varargs or stdargs
 match exactly the number of registers, but must be an upper bound on
 the number of vector registers used and is in the range 0--8 inclusive.
 
-When passing \texttt{__m256} arguments to functions that use varargs
-or stdarg, function prototypes must be provided.  Otherwise, the
-run-time behavior is undefined.
+When passing \texttt{__m256} or \texttt{__m512} arguments to functions
+that use varargs or stdarg, function prototypes must be provided.
+Otherwise, the run-time behavior is undefined.
 
 \paragraph{Returning of Values}
 The returning of values is done according to the following algorithm:
@@ -654,14 +671,16 @@ int e, f, g, h, i, j, k;\\
 long double ld;\\
 double m, n;\\
 __m256 y;\\
+__m512 z;\\
 \\
 extern void func (int e, int f,\\
 \phantom{extern void func (}structparm s, int g, int h,\\
 \phantom{extern void func (}long double ld, double m,\\
 \phantom{extern void func (}__m256 y,\\
+\phantom{extern void func (}__m512 z,\\
 \phantom{extern void func (}double n, int i, int j, int k);\\
 \\
-func (e, f, s, g, h, ld, m, y, n, i, j, k);\\
+func (e, f, s, g, h, ld, m, y, z, n, i, j, k);\\
 \cline{1-1}
 \end{tabular}
 }
@@ -682,8 +701,8 @@ func (e, f, s, g, h, ld, m, y, n, i, j, k);\\
 \RDI:    &\code{e}      &\reg{xmm0}:&\code{s.d}&\code{0:} &\code{ld} \\
 \RSI:    &\code{f}      &\reg{xmm1}:&\code{m}  &\code{16:}&\code{j} \\
 \RDX:    &\code{s.a,s.b}&\reg{ymm2}:&\code{y}  &\code{24:}&\code{k} \\
-\RCX:    &\code{g}      &\reg{xmm3}:&\code{n}  &          & \\
-\reg{r8}:&\code{h}      &           &          &          & \\
+\RCX:    &\code{g}      &\reg{zmm3}:&\code{z}  &          & \\
+\reg{r8}:&\code{h}      &\reg{xmm4}:&\code{n}  &          & \\
 \reg{r9}:&\code{i}      &           &          &          & \\
 \end{tabular}
 
@@ -2041,9 +2060,10 @@ the function in vector registers.%
 %%% XXX: Really only floating pointer parameters?
 %%% XXX: Use %al or %rax?
 
-When \texttt{__m256} is passed as variable-argument, it should always
-be passed on stack. Only named \texttt{__m256} arguments may be passed
-in register as specified in section \ref{sec-calling-conventions}.
+When \texttt{__m256} or \texttt{__m512} is passed as variable-argument,
+it should always be passed on stack. Only named \texttt{__m256} and
+\texttt{__m512} arguments may be passed in register as specified in
+section \ref{sec-calling-conventions}.
 
 \begin{figure}[H]
 \Hrule
@@ -2057,10 +2077,11 @@ int a, b;\\
 long double ld;\\
 double m, n;\\
 __m256 u, y;\\
+__m512 v, z;\\
 \\
-extern void func (int a, double m, __m256 u, ...);\\
+extern void func (int a, double m, __m256 u, __m512 v, ...);\\
 \\
-func (a, m, u, b, ld, y, n);\\
+func (a, m, u, v, b, ld, y, z, n);\\
 \cline{1-1}
 \end{tabular}
 }
@@ -2080,7 +2101,8 @@ func (a, m, u, b, ld, y, n);\\
 \hline
 \RDI: &\code{a}&\reg{xmm0}:&\code{m}&\code{0:} &\code{ld} \\
 \RSI: &\code{b}&\reg{ymm1}:&\code{u}&\code{32:}&\code{y} \\
-\RAX: & 3      &\reg{xmm2}:&\code{n}& \\
+\RAX: & 3      &\reg{zmm2}:&\code{v}& \\
+\     &        &\reg{xmm3}:&\code{n}& \\
 \end{tabular}
 \end{center}
 \Hrule
@@ -2323,6 +2345,9 @@ LDT Register                    & 63    & \reg{ldtr} \\
 128-bit Media Control and Status & 64   & \reg{mxcsr} \\
 x87 Control Word                & 65    & \reg{fcw} \\
 x87 Status Word                 & 66    & \reg{fsw} \\
+Upper Vector Registers 16--31   & 67-82 & \reg{xmm16}--\reg{xmm31} \\
+Reserved                        & 83-117 & \\
+Vector Mask Registers 0--7      & 118-125 & \reg{k0}--\reg{k7} \\
 \end{tabular}
 \end{center}
 \Hrule
