@@ -25,8 +25,9 @@ object, and the term \emph{\textindex{\sixteenbyte{}}} refers to a
 \subsubsection{Fundamental Types}
 
 Figure~\ref{basic-types} shows the correspondence between ISO C's
-scalar types and the processor's.  \code{__int128}, \code{__float128},
-\code{__m64}, \code{__m128} and \code{__m256} types are optional.
+scalar types and the processor's.  \code{__int128}, \code{__float80},
+\code{__float128}, \code{__m64}, \code{__m128} and \code{__m256} types
+are optional.  
 
 \begin{figure}
   \caption{Scalar Types}\label{basic-types}
@@ -89,7 +90,9 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
     \cline{2-5}
     point & \texttt{double} & 8 & 8 & double (IEEE-754) \\
     \cline{2-5}
-    & \texttt{long double} & 16 & 16 & 80-bit extended (IEEE-754) \\
+    & \texttt{__float80}$^{\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & 8 & 8 & double (IEEE-754) \\
     \cline{2-5}
     & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 16 & 128-bit extended (IEEE-754) \\
     \hline
@@ -113,6 +116,9 @@ in C++.}\\
 implementations of C permit enums larger than an int.  The underlying
 type is bumped to an unsigned int, long int or unsigned long int, in
 that order.}\\
+\multicolumn{3}{l}{\small $^{\dagger\dagger\dagger\dagger}$ The
+\texttt{long double} type is 64-bit, the same as the \texttt{double} type,
+on the Android{\texttrademark} platform.}\\
   \end{tabular}
 }
 \end{figure}
