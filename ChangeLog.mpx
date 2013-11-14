@@ -1,3 +1,7 @@
+2013-11-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex: Add R_X86_64_PC32_BND and R_X86_64_PLT32_BND.
+
 2013-11-13  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
 	    David Kreitzer  <david.l.kreitzer@intel.com>
 	    H.J. Lu  <hongjiu.lu@intel.com>
