@@ -1,5 +1,9 @@
 2013-11-14  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* macros.tex: Set version to 0.1.
+
+2013-11-14  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* introduction.tex: Add "Android Platform Information" section.
 
 	* low-level-sys-info.tex: Add __float80 and make long double
