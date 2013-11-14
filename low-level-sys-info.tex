@@ -271,9 +271,13 @@ are aliased to the respective 128b-bit SSE registers (\reg{xmm0} -
 \reg{xmm15}).  Intel AVX-512 provides 32 512-bit wide SIMD registers
 (\reg{zmm0} - \reg{zmm31}).  The lower 128-bits of \reg{zmm0} - \reg{zmm31}
 are aliased to the respective 128b-bit SSE registers
-(\reg{xmm0} - \reg{xmm31}).  The lower 256-bits of \reg{zmm0} - \reg{zmm31}
+(\reg{xmm0} - \reg{xmm31}\footnote{\reg{xmm15} - \reg{xmm31}
+are only available with Intel AVX-512.}).
+The lower 256-bits of \reg{zmm0} - \reg{zmm31}
 are aliased to the respective 256-bit AVX registers
-(\reg{ymm0} - \reg{ymm31}).  For purposes of parameter passing
+(\reg{ymm0} - \reg{ymm31}\footnote{\reg{ymm15} - \reg{ymm31}
+are only available with Intel AVX-512.}).
+For purposes of parameter passing
 and function return, \reg{xmmN}, \reg{ymmN} and \reg{zmmN} refer to the
 same register. Only one of them can be used at the same time.  We use
 vector register to refer to either SSE, AVX or AVX-512 register.  In

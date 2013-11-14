@@ -1,3 +1,7 @@
+2013-11-14  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Add footnotes to [xy]mm15 - [xy]mm31.
+
 2013-11-13  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (Fundamental Types, Bit Fields,
