@@ -283,6 +283,12 @@ vector register to refer to either SSE, AVX or AVX-512 register.  In
 addition, Intel AVX-512 also provides 8 vector mask registers (\reg{k0}
 - \reg{k7}), each 64-bit wide.
 
+Intel MPX (Memory Protection Extensions) provides 4 128-bit wide bound registers
+(\reg{bnd0} - \reg{bnd3}).  For purposes of parameter passing and function return,
+the lower 64 bits of \reg{bndN} specify lower bound of the corresponding
+parameter, and the upper 64 bits specify upper bound of the parameter.
+The upper bound is represented in one's complement form.
+
 This subsection discusses usage of each register.  Registers \RBP, \RBX and
 \reg{r12} through \reg{r15} ``belong'' to the calling function and the
 called function is required to preserve their values.  In other words,
@@ -376,8 +382,9 @@ We first define a number of classes to classify arguments.  The
 classes are corresponding to \xARCH register classes and defined as:
 
 \begin{description}
-\item[INTEGER] This class consists of integral types that fit into one of
-  the general purpose registers.
+\item[POINTER] This class consists of pointer types.
+\item[INTEGER] This class consists of integral types (except pointer types)
+  that fit into one of the general purpose registers.
 \item[SSE] The class consists of types that fit into a vector register.
 \item[SSEUP] The class consists of types that fit into a vector
   register and can be passed and returned in the upper bytes of it.
@@ -398,9 +405,10 @@ The size of each argument gets rounded up to
 
 The basic types are assigned their natural classes:
 \begin{itemize}
+\item Pointers are in the POINTER class.
 \item Arguments of types (signed and unsigned) \code{_Bool}, \code{char},
-  \code{short}, \code{int}, \code{long}, \code{long long}, and
-  pointers are in the INTEGER class.
+  \code{short}, \code{int}, \code{long} and \code{long long}
+  are in the INTEGER class.
 \item Arguments of types \code{float}, \code{double}, \code{_Decimal32},
   \code{_Decimal64} and \code{__m64} are in class SSE.
 \item Arguments of types \code{__float128}, \code{_Decimal128}
@@ -475,7 +483,7 @@ types works as follows:
     \end{itemize}},
     it is passed by invisible reference
     (the object is replaced in the parameter list by a pointer that
-    has class INTEGER)
+    has class POINTER)
   \footnote{An object with either a non-trivial copy
    constructor or a non-trivial destructor cannot be passed by value
    because such objects must have well defined addresses.  Similar
@@ -492,6 +500,7 @@ types works as follows:
       If both classes are equal, this is the resulting class.
    \item If one of the classes is NO_CLASS, the resulting class is the other class.
    \item If one of the classes is MEMORY, the result is the MEMORY class.
+   \item If one of the classes is POINTER, the result is the POINTER.
    \item If one of the classes is INTEGER, the result is the INTEGER.
    \item If one of the classes is X87, X87UP, COMPLEX\_X87 class,
      MEMORY is used as class.
@@ -503,7 +512,7 @@ types works as follows:
   \item If X87UP is not preceded by X87, the whole argument is passed in
     memory.
   \item If the size of the aggregate exceeds two \eightbytes and the first
-    \eightbyte isn't SSE or any other \eightbyte isn't SSEUP, the whole
+     \eightbyte isn't SSE or any other \eightbyte isn't SSEUP, the whole
     argument is passed in memory.
   \item If SSEUP is not preceded by SSE or SSEUP, it is converted to SSE.
   \end{enumerate}
@@ -516,8 +525,8 @@ left-to-right order) for passing as follows:
 \begin{enumerate}
 \item If the class is MEMORY, pass the argument on the stack.
 
-\item If the class is INTEGER, the next available register of the
-  sequence \RDI, \RSI, \RDX, \RCX, \reg{r8} and \reg{r9} is
+\item If the class is INTEGER or POINTER, the next available register
+  of the sequence \RDI, \RSI, \RDX, \RCX, \reg{r8} and \reg{r9} is
   used\footnote{Note that \reg{r11} is neither required to be
     preserved, nor is it used to pass arguments.  Making this register
     available as scratch register means that code in the PLT need not
@@ -584,6 +593,7 @@ arguments & No\\
 \code{mxcsr}& SSE2 control and status word & partial\\
 \code{x87 SW}& x87 status word & No\\
 \code{x87 CW}& x87 control word & Yes\\
+\reg{bnd0}--\reg{bnd3} & used to pass/return bounds of pointer arguments/return values & No\\
     \end{tabular}
 
   \end{center}
@@ -617,6 +627,66 @@ When passing \texttt{__m256} or \texttt{__m512} arguments to functions
 that use varargs or stdarg, function prototypes must be provided.
 Otherwise, the run-time behavior is undefined.
 
+\paragraph{Bounds passing}
+\label{bounds_passing}
+Intel MPX provides ISA extensions that allow passing bounds for a pointer
+argument that specify memory area that may be legally accessed by
+dereferencing the pointer.  This paragraph desribes how the bounds are
+passed to the callee.
+
+Several functions used in the description below are defined as follows:
+\begin{description}
+\item[BOUND_MAP_STORE(bnd, addr, ptr)] This function executes Intel MPX \code{bndstx}
+  instruction.  \code{ptr} argument is used to initialize index field of the memory
+  operand of the \code{bndstx} instruction, \code{addr} is encoded in base and/or
+  displacement fields of the memory operand, \code{bnd} is encoded in the register
+  operand.
+\item[BOUND_MAP_LOAD(addr, ptr)] This function executes Intel MPX \code{bndldx}
+  instruction. \code{ptr} argument is used to initialize index field of the memory
+  operand of the \code{bndldx} instruction, \code{addr} is encoded in base and/or
+  displacement fields of the memory operand.
+\end{description}
+
+The following algorithm is used to decide how bounds are passed for each
+eightbyte:
+\begin{enumerate}
+\item If the class is INTEGER, the eightbyte is passed in a general
+  purpose register and the function being called uses varargs or stdarg,
+  then the class is converted to POINTER.  Artificial bounds that allow
+  accessing all memory are created for pointers contained in the eightbyte.
+\item If the class is POINTER and the eightbyte is passed in a general
+  purpose register, then the bounds associated with the pointers contained
+  in the eightbyte are passed in the next available registers from the sequence
+  \reg{bnd0}, \reg{bnd1}, \reg{bnd2} and \reg{bnd3}.  If there are no bound registers available
+  for the bounds of an argument, then the bounds are passed in a CPU defined manner
+  by executing \code{BOUND_MAP_STORE(bnd, addr, ptr)} function, where \code{bnd} is
+  the current bounds of the argument, \code{addr} is the address of stack location beyound
+  the location of the callee's return address (that will be put on stack by the corresponding
+  call instruction), \code{ptr} is the actual value of the pointer argument.
+  For each AMD64 call there may be up to two such pointer arguments,
+  the first one has its bounds associated with (\emph{<return address stack location>--8})
+  address, and the second one - with (\emph{<return address stack location>--16}).
+  For each X32 call there may be up to eight such pointer arguments and the bounds
+  are associated with (\emph{<return address stack location>--8}),
+  (\emph{<return address stack location>--12}), ...,
+  (\emph{<return address stack location>--36}).
+\item If the class is POINTER and the eightbyte is passed on the stack, or
+  the class is MEMORY and the argument contains pointer members,
+  then the bounds associated with each pointer contained in the eightbyte
+  are passed in a CPU defined manner by executing \code{BOUND_MAP_STORE(bnd, addr, ptr)} function,
+  where \code{bnd} is the current bounds of the pointer argument, \code{addr} is the address
+  of the pointer argument's stack location, \code{ptr} is the actual value of the pointer argument.
+  If the eightbyte may contain parts of partially overlapping
+  pointers, then bounds associated with the pointers are ignored and special
+  bounds that allow accessing all memory are passed for such pointers.
+\end{enumerate}
+The callee uses the same algorithm to classify the incoming parameters.
+If a parameter is passed to the callee using \code{BOUND_MAP_STORE}, then
+the callee fetches the passed bounds using \code{BOUND_MAP_LOAD(addr, ptr)},
+where \code{addr} is the same address passed to the corresponding \code{BOUND_MAP_STORE}
+in the caller, and \code{ptr} is the actual value of the pointer parameter fetched
+by the callee either from a general purpose register or from a stack location.
+
 \paragraph{Returning of Values}
 The returning of values is done according to the following algorithm:
 \begin{enumerate}
@@ -632,8 +702,8 @@ The returning of values is done according to the following algorithm:
    On return \RAX will contain the address that has been passed in by
    the caller in \RDI.
 
-\item If the class is INTEGER, the next available register of the
-   sequence \RAX, \RDX is used.
+\item If the class is INTEGER or POINTER, the next available register
+   of the sequence \RAX, \RDX is used.
 
 \item If the class is SSE, the next available vector register of the
    sequence \reg{xmm0}, \reg{xmm1} is used.
@@ -650,11 +720,29 @@ The returning of values is done according to the following algorithm:
   returned in \reg{st0} and the imaginary part in \reg{st1}.
 \end{enumerate}
 
+\paragraph{Returning of Bounds}
+The returning of bounds is done according to the following algorithm:
+\begin{enumerate}
+\item Classify the return type with the classification algorithm.
+
+\item If the type has class MEMORY, on return \reg{bnd0} must contain
+  bounds of the ``hidden'' first argument that has been passed in by
+  the caller in \RDI.
+
+\item If the class is POINTER, the next available register of the sequence
+  \reg{bnd0}, \reg{bnd1}, \reg{bnd2}, \reg{bnd3} is used to return bounds
+  of the pointers contained in the eightbyte.
+\end{enumerate}
+
 As an example of the register passing conventions, consider the
 declarations and the function call shown in
 Figure \ref{fig_passing_example}.  The corresponding register
 allocation is given in Figure \ref{fig_allocation_example}, the stack
 frame offset given shows the frame before calling the function.
+As an example of bound passing conventions, consider the declaration
+and the function call is show in Figure \ref{fig_bounds_passing_example}.
+The corresponding bound registers allocation is given in Figure \ref{fig_bounds_allocation_example},
+the stack frame offset given shows the frame before calling the function.
 
 \begin{figure}[H]
 \Hrule
@@ -711,6 +799,53 @@ func (e, f, s, g, h, ld, m, y, z, n, i, j, k);\\
 \end{center}
 \Hrule
 \end{figure}
+
+\begin{figure}[H]
+\Hrule
+\caption{Bounds Passing Example}
+\label{fig_bounds_passing_example}
+\begin{center}
+\code{
+\begin{tabular}{|l|}
+\cline{1-1}
+extern void func (int *p1, int *p2, int *p3,\\
+\phantom{extern void func (}int *p4, int *p5, int x,\\
+\phantom{extern void func (}int *p6);\\
+\\
+func(p1, p2, p3, p4, p5, x, p6);\\
+\cline{1-1}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+\begin{figure}[H]
+\Hrule
+\caption{Bounds Allocation Example}
+\label{fig_bounds_allocation_example}
+\begin{center}
+\begin{tabular}{ll|ll|ll|ll}
+\multicolumn{2}{l}{Bound Registers} &
+\multicolumn{2}{l}{Stack Frame Offset for} &
+\multicolumn{2}{l}{General Purpose} &
+\multicolumn{2}{l}{Stack Frame} \\
+ & &\code{BOUND_MAP_STORE} & &Registers & &Offset\\
+\hline
+\reg{bnd0}: &\code{p1} &\code{-16:} &\code{p5} \footnotemark &\RDI: &\code{p1} &\code{0:} &\code{p6} \\
+\reg{bnd1}: &\code{p2} &\code{-24:} &\code{p6} &\RSI: &\code{p2} \\
+\reg{bnd2}: &\code{p3} & & &\RDX: &\code{p3} \\
+\reg{bnd3}: &\code{p4} & & &\RCX: &\code{p4} \\
+& & & &\reg{r8}: &\code{p5} \\
+& & & &\reg{r9}: &\code{x}  \\
+\end{tabular}
+\end{center}
+\Hrule
+\end{figure}
+
+\footnotetext{Before the call to \code{func()} the return address of the call
+is not yet put on the stack, thus offset \code{-16} accounts for the push
+of the return address that will be made by the call instruction.}
 
 \section{Operating System Interface}
 
@@ -2107,7 +2242,14 @@ the register save area may be omitted entirely.
 The prologue should use \RAX to avoid unnecessarily saving XMM
 registers.  This is especially important for integer only programs to
 prevent the initialization of the XMM unit.
-
+\label{bounds-reg-save}
+If a function taking a variable argument list is compiled for Intel MPX,
+then the bounds passed for the argument registers saved to the
+register save area are saved for each argument register in the prolog
+by executing \code{BOUND_MAP_STORE(bnd, addr, ptr)} function (\ref{bounds_passing}),
+where \code{bnd} is the current bounds of the pointer argument, \code{addr} is
+the address of the argument register's location in register save area and
+\code{ptr} is the actual value of the argument register.
 
 \begin{figure}[H]
 \Hrule
@@ -2184,6 +2326,7 @@ it is set to the value 304 ($6*8+16*16$).
 \end{description}
 
 \subsubsection{The \codeindex{va_arg} Macro}
+\label{bounds-va-arg}
 
 The algorithm for the generic \code{va_arg(l, type)} implementation is
 defined as follows:
@@ -2204,7 +2347,11 @@ go to step \ref{stack}.
   \code{l->gp_offset} and/or \code{l->fp_offset}.  This may require
   copying to a temporary location in case the parameter is passed in
   different register classes or requires an alignment greater than 8 for
-  general purpose registers and 16 for XMM registers.
+  general purpose registers and 16 for XMM registers.  If type specifies
+  a pointer, then the bounds of the argument being fetched are loaded
+  by executing \code{BOUND_MAP_LOAD(l->reg_save_area + l->gp_offset, ptr)}
+  (\ref{bounds_passing}), where \code{ptr} is the actual value fetched from
+  \code{l->reg_save_area} with an offset of \code{l->gp_offset}.
 \item
 Set:
 $$\code{l->gp_offset} = \code{l->gp_offset} + \code{num_gp} * 8$$
@@ -2326,6 +2473,7 @@ x87 Status Word                 & 66    & \reg{fsw} \\
 Upper Vector Registers 16--31   & 67-82 & \reg{xmm16}--\reg{xmm31} \\
 Reserved                        & 83-117 & \\
 Vector Mask Registers 0--7      & 118-125 & \reg{k0}--\reg{k7} \\
+Bound Registers 0--3 & 126-129 & \reg{bnd0}--\reg{bnd3} \\
 \end{tabular}
 \end{center}
 \Hrule
