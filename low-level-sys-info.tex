@@ -25,8 +25,9 @@ object, and the term \emph{\textindex{\sixteenbyte{}}} refers to a
 \subsubsection{Fundamental Types}
 
 Figure~\ref{basic-types} shows the correspondence between ISO C's
-scalar types and the processor's.  \code{__int128}, \code{__float128},
-\code{__m64}, \code{__m128} and \code{__m256} types are optional.
+scalar types and the processor's.  \code{__int128}, \code{__float80},
+\code{__float128}, \code{__m64}, \code{__m128} and \code{__m256} types
+are optional.
 
 \begin{figure}
   \caption{Scalar Types}\label{basic-types}
@@ -68,10 +69,12 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
     \cline{2-5}
     & \texttt{unsigned long (ILP32)} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
-    & \texttt{long long} & 8 & 8 & signed \eightbyte \\
+    & \texttt{long long} & 8 &
+	8$^{\dagger\dagger\dagger\dagger}$ & signed \eightbyte \\
     & \texttt{signed long long} & & \\
     \cline{2-5}
-    & \texttt{unsigned long long} & 8 & 8 & unsigned \eightbyte \\
+    & \texttt{unsigned long long} & 8
+	& 8$^{\dagger\dagger\dagger\dagger}$ & unsigned \eightbyte \\
     \cline{2-5}
     & \texttt{__int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
     & \texttt{signed __int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
@@ -87,12 +90,15 @@ scalar types and the processor's.  \code{__int128}, \code{__float128},
     \hline
     Floating-& \texttt{float} & 4 & 4 & single (IEEE-754) \\
     \cline{2-5}
-    point & \texttt{double} & 8 & 8 & double (IEEE-754) \\
+    point & \texttt{double} & 8
+	& 8$^{\dagger\dagger\dagger\dagger}$ & double (IEEE-754) \\
     \cline{2-5}
-    & \texttt{long double} & 16 & 16 & 80-bit extended (IEEE-754) \\
+    & \texttt{__float80}$^{\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
     \cline{2-5}
     & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 16 & 128-bit extended (IEEE-754) \\
-    \hline
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger\dagger}$  & 16 & 16 & 128-bit extended (IEEE-754) \\
+    \cline{2-5}
     Decimal-& \texttt{_Decimal32} & 4 & 4 & 32bit BID (IEEE-754R) \\
     \cline{2-5}
     floating-& \texttt{_Decimal64} & 8 & 8 & 64bit BID (IEEE-754R) \\
@@ -113,6 +119,15 @@ in C++.}\\
 implementations of C permit enums larger than an int.  The underlying
 type is bumped to an unsigned int, long int or unsigned long int, in
 that order.}\\
+\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger}$
+The \texttt{long long},  \texttt{signed long long},
+\texttt{unsigned long long} and \texttt{double} types have 4-byte
+alignment in the \intelabi.}\\
+\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger\dagger}$
+The \texttt{long double} type is 128-bit, the same as the \texttt{__float128}
+type, on the Android{\texttrademark} platform.  More information on the
+Android{\texttrademark} platform is available from
+\url{http://www.android.com/}.}\\
   \end{tabular}
 }
 \end{figure}
