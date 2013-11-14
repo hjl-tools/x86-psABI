@@ -1,0 +1,7 @@
+2014-12-17  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Add __float80.  Make long double the same
+	as __float128 for Android.  Mention long long and double are 4-byte
+	aligned in the Intel386 ABI.  Mention http://www.android.com.
+
+	* macros.tex (myfontsize): Use 10pt leading.
