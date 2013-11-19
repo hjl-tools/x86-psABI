@@ -69,10 +69,12 @@ are optional.
     \cline{2-5}
     & \texttt{unsigned long (ILP32)} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
-    & \texttt{long long} & 8 & 8 & signed \eightbyte \\
+    & \texttt{long long} & 8 &
+	8$^{\dagger\dagger\dagger\dagger\dagger}$ & signed \eightbyte \\
     & \texttt{signed long long} & & \\
     \cline{2-5}
-    & \texttt{unsigned long long} & 8 & 8 & unsigned \eightbyte \\
+    & \texttt{unsigned long long} & 8
+	& 8$^{\dagger\dagger\dagger\dagger\dagger}$ & unsigned \eightbyte \\
     \cline{2-5}
     & \texttt{__int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
     & \texttt{signed __int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
@@ -88,11 +90,13 @@ are optional.
     \hline
     Floating-& \texttt{float} & 4 & 4 & single (IEEE-754) \\
     \cline{2-5}
-    point & \texttt{double} & 8 & 8 & double (IEEE-754) \\
+    point & \texttt{double} & 8
+	& 8$^{\dagger\dagger\dagger\dagger\dagger}$ & double (IEEE-754) \\
     \cline{2-5}
     & \texttt{__float80}$^{\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
     & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
-    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & 8 & 8 & double (IEEE-754) \\
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$ & 8
+	& 8$^{\dagger\dagger\dagger\dagger\dagger}$ & double (IEEE-754) \\
     \cline{2-5}
     & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 16 & 128-bit extended (IEEE-754) \\
     \hline
@@ -119,6 +123,10 @@ that order.}\\
 \multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger}$ The
 \texttt{long double} type is 64-bit, the same as the \texttt{double} type,
 on the Android{\texttrademark} platform.}\\
+\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger\dagger}$
+The \texttt{long long},  \texttt{signed long long},
+\texttt{unsigned long long} and \texttt{double} types have 4-byte
+alignment in the \intelabi.}\\
   \end{tabular}
 }
 \end{figure}

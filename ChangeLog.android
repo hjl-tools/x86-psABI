@@ -1,5 +1,12 @@
 2013-11-19  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex: Mention long long and double
+	are 4-byte aligned in the Intel386 ABI.
+
+	* macros.tex (myfontsize): Use 10pt leading.
+
+2013-11-19  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex: Fix Scalar Types figure.
 
 2013-11-14  H.J. Lu  <hongjiu.lu@intel.com>
