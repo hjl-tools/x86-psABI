@@ -33,17 +33,6 @@ link with code written in C, so
 that the ABI specifications documented here apply there too.%
 \footnote{See section \ref{section-cpp} for details on C++ ABI.}
 
-\section{Android Platform Information}
-
-Software running on Android\texttrademark-based Intel devices can assume
-that the underlying Intel\textsuperscript{\textregistered} processor
-supports all instructions up to the Intel\textsuperscript{\textregistered}
-SSE4.2 technology. If the software requires to use instructions beyond
-Intel\textsuperscript{\textregistered} SSE4.2, it can check for feature
-availability in the processor through the CPUID instruction. In addition,
-the software may also need to check for appropriate support available
-in the Android\texttrademark operating system.
-
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "abi"

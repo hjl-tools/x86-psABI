@@ -1,5 +1,11 @@
 2013-11-19  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* introduction.tex: Remove "Android Platform Information" section.
+
+	* low-level-sys-info.tex: Mention http://www.android.com.
+
+2013-11-19  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex: Mention long long and double
 	are 4-byte aligned in the Intel386 ABI.
 
