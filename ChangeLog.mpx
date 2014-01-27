@@ -1,3 +1,7 @@
+2014-01-27  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* dl.tex: Replace 4 1-byte nops with a 4 byte nop in PLT0.
+
 2013-11-13  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* object-files.tex: Add R_X86_64_PC32_BND and R_X86_64_PLT32_BND.
