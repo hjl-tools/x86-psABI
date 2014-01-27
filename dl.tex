@@ -192,7 +192,7 @@ programs and shared objects (see figure \ref{small_med_plt}).
 \begin{footnotesize}
 \begin{verbatim}
   .PLT0: pushq    GOT+8(%rip)                 # GOT[1]
-         jmp      *GOT+16(%rip)          # GOT[2]
+         jmp      *GOT+16(%rip)               # GOT[2]
          nopl     0x0(%rax)
   .PLT1: jmp      *name1@GOTPCREL(%rip)       # 16 bytes from .PLT0
          pushq    $index1
