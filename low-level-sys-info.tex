@@ -70,11 +70,11 @@ are optional.
     & \texttt{unsigned long (ILP32)} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
     & \texttt{long long} & 8 &
-	8$^{\dagger\dagger\dagger\dagger\dagger}$ & signed \eightbyte \\
+	8$^{\dagger\dagger\dagger\dagger}$ & signed \eightbyte \\
     & \texttt{signed long long} & & \\
     \cline{2-5}
     & \texttt{unsigned long long} & 8
-	& 8$^{\dagger\dagger\dagger\dagger\dagger}$ & unsigned \eightbyte \\
+	& 8$^{\dagger\dagger\dagger\dagger}$ & unsigned \eightbyte \\
     \cline{2-5}
     & \texttt{__int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
     & \texttt{signed __int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
@@ -91,15 +91,14 @@ are optional.
     Floating-& \texttt{float} & 4 & 4 & single (IEEE-754) \\
     \cline{2-5}
     point & \texttt{double} & 8
-	& 8$^{\dagger\dagger\dagger\dagger\dagger}$ & double (IEEE-754) \\
+	& 8$^{\dagger\dagger\dagger\dagger}$ & double (IEEE-754) \\
     \cline{2-5}
     & \texttt{__float80}$^{\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
-    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
-    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$ & 8
-	& 8$^{\dagger\dagger\dagger\dagger\dagger}$ & double (IEEE-754) \\
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
     \cline{2-5}
     & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 16 & 128-bit extended (IEEE-754) \\
-    \hline
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger\dagger}$  & 16 & 16 & 128-bit extended (IEEE-754) \\
+    \cline{2-5}
     Decimal-& \texttt{_Decimal32} & 4 & 4 & 32bit BID (IEEE-754R) \\
     \cline{2-5}
     floating-& \texttt{_Decimal64} & 8 & 8 & 64bit BID (IEEE-754R) \\
@@ -120,15 +119,15 @@ in C++.}\\
 implementations of C permit enums larger than an int.  The underlying
 type is bumped to an unsigned int, long int or unsigned long int, in
 that order.}\\
-\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger}$ The
-\texttt{long double} type is 64-bit, the same as the \texttt{double} type,
-on the Android{\texttrademark} platform.  More information on the
-Android{\texttrademark} platform is available from
-\url{http://www.android.com/}.}\\
-\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger\dagger}$
+\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger}$
 The \texttt{long long},  \texttt{signed long long},
 \texttt{unsigned long long} and \texttt{double} types have 4-byte
 alignment in the \intelabi.}\\
+\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger\dagger}$
+The \texttt{long double} type is 128-bit, the same as the \texttt{__float128}
+type, on the Android{\texttrademark} platform.  More information on the
+Android{\texttrademark} platform is available from
+\url{http://www.android.com/}.}\\
   \end{tabular}
 }
 \end{figure}

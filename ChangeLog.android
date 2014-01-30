@@ -1,3 +1,8 @@
+2014-01-30  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Make long double the same as __float128
+	for Android.
+
 2013-11-19  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* introduction.tex: Remove "Android Platform Information" section.
