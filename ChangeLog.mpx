@@ -1,5 +1,9 @@
 2014-01-27  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* dl.tex: Updated for BND Procedure Linkage Table.
+
+2014-01-27  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* dl.tex: Add some spaces in PLT0 example.
 
 2014-01-27  H.J. Lu  <hongjiu.lu@intel.com>
