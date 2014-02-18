@@ -1,3 +1,8 @@
+2014-02-17  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Update aggregate classification for
+	__m512.
+
 2013-11-14  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex: Add footnotes to [xy]mm15 - [xy]mm31.

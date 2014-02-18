@@ -455,7 +455,7 @@ The classification of aggregate (structures and arrays) and union
 types works as follows:
 
 \begin{enumerate}
-\item If the size of an object is larger than four \eightbytes, or
+\item If the size of an object is larger than eight \eightbytes, or
   it contains unaligned fields, it has class MEMORY
   \footnote{The post merger clean up described later ensures that,
   for the processors that do not support the \code{__m256} type, if
@@ -464,7 +464,11 @@ types works as follows:
   has class MEMORY. This in turn ensures that for processors that
   do support the \code{__m256} type, if the size of an object is
   four \eightbytes and the first eightbyte is SSE and all other
-  eightbytes are SSEUP, it can be passed in a register.}.
+  eightbytes are SSEUP, it can be passed in a register. This also
+  applies to the \code{__m512} type.  That is for processors that support
+  the \code{__m512} type, if the size of an object is eight \eightbytes
+  and the first eightbyte is SSE and all other eightbytes are SSEUP, it
+  can be passed in a registeri, otherwise, it will be passed in memory.}.
 
 \item If a C++ object has either a non-trivial copy constructor
     or a non-trivial destructor
