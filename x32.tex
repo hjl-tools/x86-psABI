@@ -51,7 +51,10 @@ extern __thread int x;
 \end{table}
 
 \item[\textindex{Initial Exec Model}]
-  Load address of \code{x} into \reg{rax}
+  Load address of \code{x} into \reg{rax}.  Instruction \code{addl}
+  must be encoded with \code{rex} prefix even if it isn't required by
+  destination register.  Otherwise linker can't safely perform IE -> LE
+  optimization.
 
 \begin{table}[H]
 \Hrule
@@ -61,8 +64,8 @@ extern __thread int x;
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
-0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
-0x09 & addq & x@gottpoff(\%rip),\%rax	& 0x08 & addl & x@gottpoff(\%rip),\%eax \\
+0x00 & movq & \%fs:0,\%rax		& 0x00 & movl & \%fs:0,\%eax \\
+0x09 & addq & x@gottpoff(\%rip),\%rax	& 0x08 & rex addl & x@gottpoff(\%rip),\%eax \\
 \end{tabular}
 }
 \end{center}
@@ -83,7 +86,7 @@ extern __thread int x;
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
-0x01 & movq & x@gottpoff(\%rip),\%rax	& 0x01 & movq & x@gottpoff(\%rip),\%rax \\
+0x00 & movq & x@gottpoff(\%rip),\%rax	& 0x00 & movq & x@gottpoff(\%rip),\%rax \\
 0x07 & movl & \%fs:(\%rax),\%edi	& 0x07 & movl & \%fs:(\%rax),\%edi \\
 \end{tabular}
 }
@@ -152,7 +155,7 @@ or
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
-0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x00 & movq & \%fs:0,\%rax		& 0x00 & movl & \%fs:0,\%eax \\
 0x09 & movl & x@dtpoff(\%rax),\%edi	& 0x08 & movl & x@dtpoff(\%rax),\%edi \\
 \end{tabular}
 }
@@ -171,7 +174,7 @@ or
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
-0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x00 & movq & \%fs:0,\%rax		& 0x00 & movl & \%fs:0,\%eax \\
 0x09 & leaq & x@tpoff(\%rax),\%rax	& 0x08 & leal & x@tpoff(\%rax),\%eax \\
 \end{tabular}
 }
@@ -189,7 +192,7 @@ or
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
-0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x00 & movq & \%fs:0,\%rax		& 0x00 & movl & \%fs:0,\%eax \\
 0x09 & addq & \$x@tpoff,\%rax		& 0x08 & addl & \$x@tpoff,\%eax \\
 \end{tabular}
 }
@@ -208,7 +211,7 @@ or
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{LP64} & \multicolumn{3}{c}{ILP32} \\
 \hline
-0x01 & movq & \%fs:0,\%rax		& 0x01 & movl & \%fs:0,\%eax \\
+0x00 & movq & \%fs:0,\%rax		& 0x00 & movl & \%fs:0,\%eax \\
 0x09 & movl & x@tpoff(\%rax),\%edi	& 0x08 & movl & x@tpoff(\%rax),\%edi \\
 \end{tabular}
 }
@@ -289,8 +292,8 @@ or
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{IE} & \multicolumn{3}{c}{LE} \\
 \hline
-0x01 & movl & \%fs:0,\%eax		& 0x01 & movl & \%fs:0,\%eax \\
-0x08 & addl & x@gottpoff(\%rip),\%eax	& 0x08 & leal & x@tpoff(\%rax),\%eax \\
+0x00 & movl & \%fs:0,\%eax		& 0x00 & movl & \%fs:0,\%eax \\
+0x08 & rex addl & x@gottpoff(\%rip),\%eax	& 0x08 & rex leal & x@tpoff(\%rax),\%eax \\
 \end{tabular}
 }
 \end{center}
@@ -307,8 +310,8 @@ or
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{IE} & \multicolumn{3}{c}{LE} \\
 \hline
-0x01 & movl & \%fs:0,\%eax		& 0x01 & movl & \%fs:0,\%eax \\
-0x08 & addl & \$x@gottpoff(\%rip),\%eax	& 0x08 & addl & \$x@tpoff,\%eax \\
+0x00 & movl & \%fs:0,\%r12d		& 0x00 & movl & \%fs:0,\%r12d \\
+0x09 & addl & x@gottpoff(\%rip),\%r12d	& 0x09 & addl & \$x@tpoff,\%r12d \\
 \end{tabular}
 }
 \end{center}
@@ -326,7 +329,7 @@ or
 \begin{tabular}{lll|lll}
 \multicolumn{3}{c}{IE} & \multicolumn{3}{c}{LE} \\
 \hline
-0x01 & movq & x@gottpoff(\%rip),\%rax	& 0x01 & movq & x@tpoff,\%rax \\
+0x00 & movq & x@gottpoff(\%rip),\%rax	& 0x00 & movq & x@tpoff,\%rax \\
 0x07 & movl & \%fs:(\%rax),\%edi	& 0x07 & movl & \%fs:(\%rax),\%edi \\
 \end{tabular}
 }
