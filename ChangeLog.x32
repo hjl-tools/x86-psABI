@@ -1,3 +1,8 @@
+2014-11-07  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* x32.tex: Require REX prefix to encode instructions with
+	R_X86_64_GOTTPOFF relocation.
+
 2013-01-10  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* .gitignore: Add .svn.
