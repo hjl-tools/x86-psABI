@@ -484,8 +484,8 @@ or \texttt{Elf32_Rel} relocation.
       \texttt{R_X86_64_TLSDESC} & 36 & \textit{word64}$\times 2$ & \\
       \texttt{R_X86_64_IRELATIVE} & 37 & \textit{wordclass} & \texttt{indirect (B + A)}\\
       \texttt{R_X86_64_RELATIVE64} $^{\dagger\dagger}$ & 38 & \textit{word64} & \texttt{B + A} \\
-      \texttt{R_X86_64_PC32_BND}  & 39 & \textit{word32} & \texttt{S + A - P} \\
-      \texttt{R_X86_64_PLT32_BND} & 40 & \textit{word32} & \texttt{L + A - P} \\
+      \texttt{Deprecated} & 39 & & \\
+      \texttt{Deprecated} & 40 & & \\
 %      \texttt{R_X86_64_GOT64} & 16 & \textit{word64} & \texttt{G + A} \\
 %      \texttt{R_X86_64_PLT64} & 17 & \textit{word64} & \texttt{L + A - P} \\
      \cline{1-4}
@@ -611,14 +611,6 @@ One use of the \texttt{R_X86_64_IRELATIVE} relocation is to avoid name
 lookup for the locally defined \texttt{STT_GNU_IFUNC} symbols at
 load-time.  Support for this relocation is optional, but is required for
 the \texttt{STT_GNU_IFUNC} symbols.
-
-\texttt{R_X86_64_PC32_BND} is similar to \texttt{R_X86_64_PC32}, except
-that it is applied to branch instructions with the \texttt{BND}
-(\code{0xf2}) prefix.
-
-\texttt{R_X86_64_PLT32_BND} is similar to \texttt{R_X86_64_PLT32}. except
-that it is applied to branch instructions with the \texttt{BND}
-(\code{0xf2}) prefix.
 
 \subsection{Large Models}
 

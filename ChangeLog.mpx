@@ -1,3 +1,12 @@
+2014-11-11  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* dl.tex: Remove references to R_X86_64_PC32_BND and
+	R_X86_64_PLT32_BND.  Specify that branches in all BND procedure
+	linkage table entries must have the BFD prefix.
+
+	* object-files.tex: Deprecate R_X86_64_PC32_BND and
+	R_X86_64_PLT32_BND.
+
 2014-01-27  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* dl.tex: Updated for BND Procedure Linkage Table.

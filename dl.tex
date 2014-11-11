@@ -206,16 +206,11 @@ programs and shared objects (see figure \ref{legacy_small_med_plt}).
 \Hrule
 \end{figure}
 
-If there are \texttt{R_X86_64_PC32_BND} or \texttt{R_X86_64_PLT32_BND}
-relocations in input, linker should switch to the BND procedure
-linkage table (see figure \ref{bnd_small_med_plt}) together with an
-additioal procedure linkage table (see figure \ref{ext_small_med_plt})
-to preserve bound registers for symbol lookup in branch instructions
-with the \texttt{BND} (\code{0xf2}) prefix.  The \texttt{BND}
-(\code{0xf2}) prefix is optional in procedure linkage table entries
-for symbol lookup in branch instructions without the \texttt{BND}
-(\code{0xf2}) prefix since bound registers will be cleared when branch
-to the procedure linkage table entry is taken.
+To preserve bound registers for symbol lookup in branch instructions
+with the \texttt{BND} (\code{0xf2}) prefix, linker should generate the
+BND procedure linkage table (see figure \ref{bnd_small_med_plt}) together
+with an additioal procedure linkage table (see figure
+\ref{ext_small_med_plt}).
 
 \begin{figure}[H]
 \Hrule
@@ -230,8 +225,8 @@ to the procedure linkage table entry is taken.
          bnd jmp  PLT0
          nopl     0(%rax,%rax,1)
   .PLT2: pushq    $index2                     # 16 bytes from .PLT1
-         jmp      .PLT0
-         nopw     0(%rax,%rax,1)
+         bnd jmp  .PLT0
+         nopl     0(%rax,%rax,1)
   .PLT3: ...
 \end{verbatim}%$
 \end{footnotesize}
@@ -246,9 +241,34 @@ to the procedure linkage table entry is taken.
 \begin{verbatim}
   .APLT1: bnd jmp  name1@GOTPCREL(%rip)
           nop
-  .APLT2: jmp      name2@GOTPCREL(%rip)       # 8 bytes from .APLT1
-          xchg     %ax,%ax
+  .APLT2: bnd jmp  name2@GOTPCREL(%rip)       # 8 bytes from .APLT1
+          nop
   .APLT3: ...                                 # 8 bytes from .APLT2
+\end{verbatim}%$
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+To support indirect branches with the \texttt{BND} (\code{0xf2}) prefix
+(see figure \ref{indirect_branch}), branches in all BND procedure linkage
+table entries must have the \texttt{BND} (\code{0xf2}) prefix.
+
+\begin{figure}[H]
+\Hrule
+\caption{Indirect branch}
+\label{indirect_branch}
+\begin{footnotesize}
+\begin{verbatim}
+  movq     fp@GOTPCREL(%rip), %rax
+  bnd jmp  *(%rax)
+  ...
+  .globl   fp
+  .section .data.rel,"aw",@progbits
+  .align   8
+  .type    fp, @object
+  .size    fp, 8
+fp:
+  .quad    memcpy
 \end{verbatim}%$
 \end{footnotesize}
 \Hrule
