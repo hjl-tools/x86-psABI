@@ -1,0 +1,14 @@
+.svn
+*.aux
+*.cb*
+*.dvi
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.out
+*.pdf
+*.ps
+*.toc
