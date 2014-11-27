@@ -521,7 +521,7 @@ bit.}.
 \RAX & temporary register; with variable arguments passes
 information about the number of vector registers used; 1$^{\rm st}$
 return register & No \\
-\RBX & callee-saved register; optionally used as base pointer & Yes \\
+\RBX & callee-saved register & Yes \\
 \RCX & used to pass 4$^{\rm th}$ integer argument to functions & No \\
 \RDX & used to pass 3$^{\rm rd}$ argument to functions; 2$^{\rm nd}$ return register & No \\
 \RSP & stack pointer & Yes \\
@@ -533,7 +533,8 @@ return register & No \\
 \reg{r10} & temporary register, used for passing a function's static
 chain pointer & No \\
 \reg{r11} & temporary register & No\\
-\reg{r12--r15} & callee-saved registers & Yes \\
+\reg{r12--r14} & callee-saved registers & Yes \\
+\reg{r15} & callee-saved register; optionally used as GOT base pointer & Yes \\
 \reg{xmm0}--\reg{xmm1} & used to pass and return floating point
 arguments & No\\
 \reg{xmm2}--\reg{xmm7} & used to pass floating point arguments & No\\

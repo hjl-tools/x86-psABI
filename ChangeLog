@@ -1,3 +1,12 @@
+2014-11-13  Michael Matz  <matz@suse.de>
+
+	* macros.tex (version): Bump to 0.99.7.
+
+2014-11-13  H.J. Lu  <hjl.tools@gmail.com>
+
+	* low-level-sys-info.tex (Register Usage): The optional GOT
+	register is %r15, not %rbx.
+
 2012-07-02  Michael Matz  <matz@suse.de>
 
 	* introduction.tex: Add missing 'to'.
