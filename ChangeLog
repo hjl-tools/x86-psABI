@@ -1,3 +1,8 @@
+2012-05-15  Michael Matz  <matz@suse.de>
+
+	* object-files.tex: Use correct google address for ifunc.txt
+	file location.
+
 2012-05-14  Michael Matz  <matz@suse.de>
 
 	* macros.tex (ifpdflocal): Remove, change references to ifpdf,
