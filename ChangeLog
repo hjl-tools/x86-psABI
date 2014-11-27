@@ -1,3 +1,7 @@
+2012-07-02  Michael Matz  <matz@suse.de>
+
+	* introduction.tex: Add missing 'to'.
+
 2012-05-15  Michael Matz  <matz@suse.de>
 
 	* object-files.tex: Use correct google address for ifunc.txt
