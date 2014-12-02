@@ -1,3 +1,25 @@
+2014-11-25  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* dl.tex (Procedure Linkage Table (small and medium models)): Use
+	multi-byte nop instead of single-byte nop.
+	(Final Large Code Model PLT): Likewise.
+
+2014-11-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Conventions): Remove name@GOTPLT.
+	* object-files.tex (Large Model Relocation Types): Mark relocation
+	number 30 as deprecated.
+
+2014-11-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Replace @GOTOFF64 with @GOTOFF in
+	medium PIC model data access.
+
+2014-11-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Correct large model PIC function call
+	example.
+
 2014-11-13  Michael Matz  <matz@suse.de>
 
 	* macros.tex (version): Bump to 0.99.7.

@@ -192,11 +192,8 @@ programs and shared objects (see figure \ref{small_med_plt}).
 \begin{footnotesize}
 \begin{verbatim}
   .PLT0: pushq    GOT+8(%rip)                 # GOT[1]
-         jmp      *GOT+16(%rip)          # GOT[2]
-         nop
-         nop
-         nop
-         nop
+         jmp      *GOT+16(%rip)               # GOT[2]
+         nopl     0x0(%rax)
   .PLT1: jmp      *name1@GOTPCREL(%rip)       # 16 bytes from .PLT0
          pushq    $index1
          jmp      .PLT0
@@ -308,14 +305,7 @@ in \code{\%r15}\footnote{See Function Prologue.}.
 \begin{verbatim}
 .PLT0:  pushq   8(%r15)          # GOT[1]
         jmpq    *16(%r15)        # GOT[2]
-        rep
-        rep
-        rep
-        nop
-        rep
-        rep
-        rep
-        nop
+        nopl    0x0(%rax,%rax,1)
 .PLT1:  movabs  $name1@GOT,%r11  # 16 bytes from .PLT0
         jmp     *(%r11,%r15)
 .PLT1a: pushq   $index1          # "call" dynamic linker

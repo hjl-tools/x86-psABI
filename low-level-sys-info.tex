@@ -1242,9 +1242,6 @@ examples and discussion.  They are:
 \begin{itemize}
 \item \code{name@GOT}: specifies the offset to the GOT entry for
       the symbol \code{name} from the base of the GOT.
-\item \code{name@GOTPLT}: specifies the offset to the GOT entry for
-      the symbol \code{name} from the base of the GOT, implying that
-      there is a corresponding PLT entry.
 \item \code{name@GOTOFF}: specifies the offset to the location of
       the symbol \code{name} from the base of the GOT.
 \item \code{name@GOTPCREL}: specifies the offset to the GOT entry
@@ -1506,16 +1503,16 @@ ptr = dst;&& movq& ptr@GOTPCREL(\%rip), \%rax\\
 \code{
 \begin{tabular}{|l|c|ll|}
 \cline{1-1}\cline{3-4}
-ldst[0] = lsrc[0]; && movabsq& lsrc@GOTOFF64, \%rax\\
+ldst[0] = lsrc[0]; && movabsq& lsrc@GOTOFF, \%rax\\
 	   && movl& (\%rax,\%r15), \%eax\\
-	   && movabsq& ldst@GOTOFF64, \%rdx\\
+	   && movabsq& ldst@GOTOFF, \%rdx\\
 	   && movl& \%eax, (\%rdx,\%r15)\\
 &&&\\
-lptr = ldst;&& movabsq& ldst@GOTOFF64, \%rax\\
+lptr = ldst;&& movabsq& ldst@GOTOFF, \%rax\\
            &&addq& \%r15, \%rax\\
            &&movq& \%rax, lptr(\%rip)\\
 &&&\\
-\hbox{}*lptr = lsrc[0];&& movabsq& lsrc@GOTOFF64, \%rax\\
+\hbox{}*lptr = lsrc[0];&& movabsq& lsrc@GOTOFF, \%rax\\
            &&movl& (\%rax,\%r15),\%eax\\
 	   &&movq& lptr(\%rip),\%rdx\\
            &&movl& \%eax, (\%rdx)\\
@@ -1736,7 +1733,7 @@ And in the case of position-independent objects
 \code{extern void foo (void);}    & \verb#      .globl foo                 # \\
 \code{static void bar (void);}    & \verb#Lbar: ...                        # \\
 \hline
-\code{foo ();}                    & \verb#movabs   $foo@GOT,%r11     ; R_x86_64_GOTPLT64 # \\
+\code{foo ();}                    & \verb#movabs   $foo@PLTOFF,%r11  ; R_x86_64_PLTOFF64 # \\
                                   & \verb#call     *(%r11,%r15)      # \\
 \code{bar ();}                    & \verb#movabs   $Lbar@GOTOFF,%r11 ; R_X86_64_GOTOFF64 # \\
                                   & \verb#leaq     (%r11,%r15),%r11  # \\
