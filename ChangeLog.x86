@@ -1,4 +1,9 @@
 2014-12-17  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* abi.tex: Replace AMD64 with Intel386.
+	* macros.tex: Likewise.
+
+2014-12-17  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* abi.tex (author): Add Zia Ansari and David L Kreitzer.  Move
 	Jan, Andreas, Michael and Mark to AMD64 psABI.
