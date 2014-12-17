@@ -1,5 +1,9 @@
 2014-12-17  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* abi.tex (Revision History): Initial release.
+
+2014-12-17  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* introduction.tex: Rewritten for Intel386.
 
 2014-12-17  H.J. Lu  <hongjiu.lu@intel.com>
