@@ -1,37 +1,60 @@
-\chapter{Introduction\label{intro}}
+\chapter{About this Document\label{intro}}
 
-The AMD64\footnote{AMD64 has been previously called x86-64.  The
-  latter name is used in a number of places out of historical reasons
-  instead of AMD64.}  architecture\footnote{The architecture
-  specification is available on the web at
-  \url{http://www.x86-64.org/documentation}.} is an extension of the
-x86 architecture.  Any processor implementing the \xARCH architecture
-specification will also provide compatibility modes for previous
-descendants of the Intel 8086 architecture, including 32-bit
-processors such as the Intel 386, Intel Pentium, and AMD K6-2
-processor.  Operating systems conforming to the \xARCH ABI may provide
-support for executing programs that are designed to execute in these
-compatibility modes.  The \xARCH ABI does not apply to such programs;
-this document applies only to programs running in the ``long'' mode
-provided by the \xARCH architecture.
+This document is a supplement to the existing \xARCH System V
+Application Binary Interface (ABI) document available at
+\url{http://www.sco.com/developers/devspecs/abi386-4.pdf},
+which describes the Linux IA-32 ABI for processors compatible with the
+\xARCH Architecture.
 
-Binaries using the \xARCH instruction set may program to either a 32-bit
-model, in which the C data types \code{int}, \code{long} and all
-pointer types are 32-bit objects (ILP32); or to a 64-bit model,
-in which the C \code{int} type is 32-bits but the C \code{long} type
-and all pointer types are 64-bit objects (LP64). This specification
-covers both LP64 and ILP32 programming models.
+Intel processors released after the Pentium processors (Pentium 4,
+Intel Core, and later), have introduced new architecture features,
+particularly new registers and corresponding instructions to operate on
+the registers, like the MMX, Intel SSE(1-4), and Intel AVX instruction
+set extensions. The C/C++ programming languages have evolved to allow
+programmers to use new data types (for example, \code{__m64},
+\code{__m128}, and \code{__m256}). Many compilers (including the Intel
+compiler and GCC) have supported these data types for some time. Other
+features in tools (for example, the decimal floating point types, 64-bit
+integers, exception handling, and so on) have also been developed since
+the original ABI was written.
 
-Except where otherwise noted, the \xARCH architecture ABI follows the
-conventions described in the \intelabi.  Rather than replicate the
-entire contents of the \intelabi, the \xARCH ABI indicates only those
-places where changes have been made to the \intelabi.
+This document describes the conventions and constraints on the
+implementation of these new features for interoperability between
+various tools.
 
-No attempt has been made to specify an ABI for languages other than C.
-However, it is assumed that many programming languages will wish to
-link with code written in C, so
-that the ABI specifications documented here apply there too.%
-\footnote{See section~\ref{section-cpp} for details on C++ ABI.}
+\section{Scope}
+
+This document describes the conventions on the new C/C++ language types
+(including alignment and parameter passing conventions), the relocation
+symbols in the object binary, and the exception handling mechanism for
+\xARCH architecture.  Some of this work has been discussed before
+\url{http://groups.google.com/group/ia32-abi} or
+\url{http://www.akkadia.org/drepper/tls.pdf}. The C++ object model that
+is expected to be followed is described in
+\url{http://www.codesourcery.com/public/cxx-abi/abi.html}.  In particular,
+this document specifies the information that compilers have to generate
+and the library routines that do the frame unwinding for exception
+handling.
+
+\section{Related Information}
+
+Links to useful documents:
+\begin{itemize}
+ \item System V Application Binary Interface, Intel386TMArchitecture
+       Processor Supplement Fourth Edition:
+       \url{http://www.sco.com/developers/devspecs/abi386-4.pdf}
+ \item System V Application Binary Interface, AMD64 Architecture Processor
+       Supplement, Draft Version 0.99.5:
+       \url{http://www.x86-64.org/documentation/abi.pdf}
+ \item Discussion of Intel processor extensions:
+       \url{http://groups.google.com/group/ia32-abi}
+ \item ELF Handling of Thread-Local Storage:
+       \url{http://www.akkadia.org/drepper/tls.pdf}
+ \item Thread-Local Storage Descriptors for IA32 and AMD64/EM64T:
+       \url{http://people.redhat.com/aoliva/writeups/TLS/RFC-TLSDESC-x86.txt}
+ \item Itanium C++ ABI, Revision 1.86:
+       \url{http://www.codesourcery.com/public/cxx-abi/abi.html}
+\end{itemize}
 
 %%% Local Variables:
 %%% mode: latex

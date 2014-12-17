@@ -1,5 +1,9 @@
 2014-12-17  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* introduction.tex: Rewritten for Intel386.
+
+2014-12-17  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* abi.tex: Replace AMD64 with Intel386.
 	* macros.tex: Likewise.
 
