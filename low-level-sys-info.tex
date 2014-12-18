@@ -1,9 +1,13 @@
 %%% vim:ai:tw=72:
 \chapter{Low Level System Information}
 
+This section describes the low-level system information for the
+\xARCH System V ABI.
+
 \section{Machine Interface}
 
-\subsection{Processor Architecture}
+The \xARCH processor architecture and data representation are covered in
+this section.
 
 \subsection{Data Representation}
 
@@ -24,8 +28,8 @@ object, and the term \emph{\textindex{\sixteenbyte{}}} refers to a
 
 \subsubsection{Fundamental Types}
 
-Figure~\ref{basic-types} shows the correspondence between ISO C's
-scalar types and the processor's.  \code{__int128}, \code{__float80},
+Figure~\ref{basic-types} shows the correspondence between ISO C
+scalar types and the processor scalar types.  \code{__float80},
 \code{__float128}, \code{__m64}, \code{__m128} and \code{__m256} types
 are optional.
 
@@ -59,46 +63,41 @@ are optional.
     \cline{2-5}
     & \texttt{unsigned int} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
-    & \texttt{long (LP64)} & 8 & 8 & signed \eightbyte \\
-    & \texttt{signed long (LP64)} & & \\
+    & \texttt{long} & 4 & 4 & signed \fourbyte \\
+    & \texttt{signed long} & & \\
     \cline{2-5}
-    & \texttt{unsigned long (LP64)} & 8 & 8 & unsigned \eightbyte \\
+    & \texttt{unsigned long} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
-    & \texttt{long (ILP32)} & 4 & 4 & signed \fourbyte \\
-    & \texttt{signed long (ILP32)} & & \\
-    \cline{2-5}
-    & \texttt{unsigned long (ILP32)} & 4 & 4 & unsigned \fourbyte \\
-    \cline{2-5}
-    & \texttt{long long} & 8 &
-	8$^{\dagger\dagger\dagger\dagger}$ & signed \eightbyte \\
+    & \texttt{long long} & 8 & 4 & signed \eightbyte \\
     & \texttt{signed long long} & & \\
     \cline{2-5}
-    & \texttt{unsigned long long} & 8
-	& 8$^{\dagger\dagger\dagger\dagger}$ & unsigned \eightbyte \\
+    & \texttt{unsigned long long} & 8 & 4 & unsigned \eightbyte \\
     \cline{2-5}
-    & \texttt{__int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
-    & \texttt{signed __int128}$^{\dagger\dagger}$ & 16 & 16 & signed \sixteenbyte \\
-    \cline{2-5}
-    & \texttt{unsigned __int128}$^{\dagger\dagger}$ & 16 & 16 & unsigned \sixteenbyte \\
     \hline
     Pointer
-    & \texttt{\textit{any-type} * (LP64)} & 8 & 8 & unsigned \eightbyte \\
-    & \texttt{\textit{any-type} (*)() (LP64)} & & \\
-    \cline{2-5}
-    & \texttt{\textit{any-type} * (ILP32)} & 4 & 4 & unsigned \fourbyte \\
-    & \texttt{\textit{any-type} (*)() (ILP32)} & & \\
+    & \texttt{\textit{any-type} *} & 4 & 4 & unsigned \fourbyte \\
+    & \texttt{\textit{any-type} (*)()} & & \\
     \hline
     Floating-& \texttt{float} & 4 & 4 & single (IEEE-754) \\
     \cline{2-5}
-    point & \texttt{double} & 8
-	& 8$^{\dagger\dagger\dagger\dagger}$ & double (IEEE-754) \\
+    point & \texttt{double} & 8 & 4 & double (IEEE-754) \\
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & & & \\
     \cline{2-5}
-    & \texttt{__float80}$^{\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
-    & \texttt{long double}$^{\dagger\dagger\dagger\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
+    & \texttt{__float80}$^{\dagger\dagger}$  & 12 & 4 & 80-bit extended (IEEE-754) \\
+    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & & & \\
     \cline{2-5}
     & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 16 & 128-bit extended (IEEE-754) \\
-    & \texttt{long double}$^{\dagger\dagger\dagger\dagger\dagger}$  & 16 & 16 & 128-bit extended (IEEE-754) \\
+    \hline
+    Complex& \texttt{_Complex float} & 8 & 4 & complex single (IEEE-754) \\
     \cline{2-5}
+    Floating-& \texttt{_Complex double} & 16 & 4 & complex double (IEEE-754) \\
+    point & \texttt{_Complex long double}$^{\dagger\dagger\dagger\dagger}$ & & & \\
+    \cline{2-5}
+    & \texttt{_Complex __float80}$^{\dagger\dagger}$  & 24 & 4 & complex 80-bit extended (IEEE-754) \\
+    & \texttt{_Complex long double}$^{\dagger\dagger\dagger\dagger}$  & & & \\
+    \cline{2-5}
+    & \texttt{_Complex __float128}$^{\dagger\dagger}$ & 32 & 16 & complex 128-bit extended (IEEE-754) \\
+    \hline
     Decimal-& \texttt{_Decimal32} & 4 & 4 & 32bit BID (IEEE-754R) \\
     \cline{2-5}
     floating-& \texttt{_Decimal64} & 8 & 8 & 64bit BID (IEEE-754R) \\
@@ -120,11 +119,7 @@ implementations of C permit enums larger than an int.  The underlying
 type is bumped to an unsigned int, long int or unsigned long int, in
 that order.}\\
 \multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger}$
-The \texttt{long long},  \texttt{signed long long},
-\texttt{unsigned long long} and \texttt{double} types have 4-byte
-alignment in the \intelabi.}\\
-\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger\dagger}$
-The \texttt{long double} type is 128-bit, the same as the \texttt{__float128}
+The \texttt{long double} type is 64-bit, the same as the \texttt{double}
 type, on the Android{\texttrademark} platform.  More information on the
 Android{\texttrademark} platform is available from
 \url{http://www.android.com/}.}\\
@@ -132,35 +127,28 @@ Android{\texttrademark} platform is available from
 }
 \end{figure}
 
-The \codeindex{__float128} type uses a 15-bit exponent, a 113-bit
+The 128-bit floating-point type uses a 15-bit exponent, a 113-bit
 mantissa (the high order significant bit is implicit) and an exponent
 bias of 16383.\footnote{Initial implementations of the \xARCH
   architecture are expected to support operations on the
-  \texttt{__float128} type only via software emulation.}
+  128-bit floating-point  type only via software emulation.}
 
-The \code{long double} type uses a 15 bit exponent, a 64-bit mantissa
+The 80-bit floating-point type uses a 15 bit exponent, a 64-bit mantissa
 with an explicit high order significant bit and an exponent bias of
 16383.\footnote{This type is the x87 double extended precision data
-  type.}  Although a \code{long double} requires 16 bytes of storage,
-only the first 10 bytes are significant.  The remaining six bytes are
-tail padding, and the contents of these bytes are undefined.
-
-The \code{__int128} type is stored in little-endian order in memory,
-i.e., the 64 low-order bits are stored at a a lower address than the
-64 high-order bits.
+  type.} 
 
 A null pointer (for all types) has the value zero.
 
-The type \codeindex{size\_t} is defined as \code{unsigned long} for LP64
-and \code{unsigned int} for ILP32.
+The type \codeindex{size\_t} is defined as \code{unsigned int}.
 
 Booleans\index{boolean}, when stored in a memory object, are stored as
 single byte objects the value of which is always 0 (\code{false}) or 1
 (\code{true}).  When stored in integer registers (except for passing
-as arguments), all 8 bytes of the register are significant;
+as arguments), all 4 bytes of the register are significant;
 any nonzero value is considered \code{true}.
 
-Like the Intel386 architecture, the \xARCH architecture in general
+The \xARCH architecture in general
 does not require all data accesses to be properly aligned.  Misaligned
 data accesses are slower than aligned accesses
 but otherwise behave identically.  The only exceptions are that

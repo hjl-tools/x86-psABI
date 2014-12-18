@@ -1,5 +1,9 @@
 2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex: Update Scalar Types.
+
+2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* Makefile (INCLUDES):Remove sw-installation.tex.
 	* abi.tex: Don't include sw-installation.tex.
 	* sw-installation.tex: Removed.
