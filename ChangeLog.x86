@@ -1,3 +1,7 @@
+2015-01-06  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Registers): Updated for x86.
+
 2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (Bit-Fields): Removed.

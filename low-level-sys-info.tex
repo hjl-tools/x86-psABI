@@ -190,30 +190,20 @@ possible.
 \subsection{Registers}
 \label{subsec-registers}
 
-The \xARCH architecture provides 16 general purpose 64-bit registers.
-In addition the architecture provides 16 SSE registers, each 128 bits
+The \xARCH architecture provides 8 general purpose 32-bit registers.
+In addition the architecture provides 8 SSE registers, each 128 bits
 wide and 8 x87 floating point registers, each 80 bits wide.  Each of
-the x87 floating point registers may be referred to in \MMX/\threednow
+the x87 floating point registers may be referred to in \MMX
 mode as a 64-bit register.  All of these registers are global to all
 procedures active for a given thread.
 
-Intel AVX (Advanced Vector Extensions) provides 16 256-bit wide AVX registers
-(\reg{ymm0} - \reg{ymm15}).  The lower 128-bits of \reg{ymm0} - \reg{ymm15}
+Intel AVX (Advanced Vector Extensions) provides 8 256-bit wide AVX registers
+(\reg{ymm0} - \reg{ymm7}).  The lower 128-bits of \reg{ymm0} - \reg{ymm7}
 are aliased to the respective 128b-bit SSE registers (\reg{xmm0} -
-\reg{xmm15}). For purposes of parameter passing and function return,
+\reg{xmm7}). For purposes of parameter passing and function return,
 \reg{xmmN} and \reg{ymmN} refer to the same register. Only one of them
 can be used at the same time.  We use vector register to refer to either
 SSE or AVX register.
-
-This subsection discusses usage of each register.  Registers \RBP, \RBX and
-\reg{r12} through \reg{r15} ``belong'' to the calling function and the
-called function is required to preserve their values.  In other words,
-a called function must preserve these registers' values for its
-caller.  Remaining registers ``belong'' to the called
-function.\footnote{Note that in contrast to the \intelabi, \RDI,
-  and \RSI belong to the called function, not the caller.}  If a
-calling function wants to preserve such a register value across a
-function call, it must save the value in its local stack frame.
 
 The CPU shall be in x87 mode upon entry to a function.  Therefore,
 every function that uses the \MMX registers is required to issue an
@@ -221,7 +211,7 @@ every function that uses the \MMX registers is required to issue an
 returning or calling another function.  \footnote{All x87 registers
 are caller-saved, so callees that make use of the \MMX registers may
 use the faster \op{femms} instruction.}  The direction flag \code{DF} in the
-\reg{rFLAGS} register must be clear (set to ``forward'' direction) on function
+\reg{EFLAGS} register must be clear (set to ``forward'' direction) on function
 entry and return.  Other user flags have no specified role in the
 standard calling sequence and are {\em not} preserved across calls.
 
@@ -832,16 +822,16 @@ control words is as defined in tables~\ref{x87-fpucw} and
 \Hrule
 \end{table}
 
-The \code{rFLAGS} register contains the system flags, such as the
+The \code{EFLAGS} register contains the system flags, such as the
 direction flag and the carry flag.  The low 16 bits (FLAGS portion)
-of \code{rFLAGS} are accessible by
+of \code{EFLAGS} are accessible by
 application software.  The state of them at process initialization
-is shown in table~\ref{rflags-status}.
+is shown in table~\ref{eflags-status}.
 
 \begin{table}[H]
 \Hrule
-  \caption{\code{rFLAGS} Bits}
-  \label{rflags-status}
+  \caption{\code{EFLAGS} Bits}
+  \label{eflags-status}
   \begin{center}
     \begin{tabular}[t]{l|l|l}
       \multicolumn{1}{c}{Field} & \multicolumn{1}{c}{Value}& \multicolumn{1}{c}{Note} \\
@@ -2243,7 +2233,7 @@ Vector Registers 0--7              & 17-24 & \reg{xmm0}--\reg{xmm7} \\
 Extended Vector Registers 8--15    & 25-32 & \reg{xmm8}--\reg{xmm15} \\
 Floating Point Registers 0--7   & 33-40 & \reg{st0}--\reg{st7} \\
 MMX Registers 0--7              & 41-48 & \reg{mm0}--\reg{mm7} \\
-Flag Register                   & 49    & \reg{rFLAGS} \\
+Flag Register                   & 49    & \reg{EFLAGS} \\
 Segment Register ES             & 50    & \reg{es} \\
 Segment Register CS             & 51    & \reg{cs} \\
 Segment Register SS             & 52    & \reg{ss} \\
