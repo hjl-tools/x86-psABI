@@ -617,6 +617,238 @@ func (e, f, s, g, h, ld, m, y, n, i, j, k);\\
 \Hrule
 \end{figure}
 
+\subsection{Variable Argument Lists}
+
+Some otherwise portable C programs depend on the argument passing
+scheme, implicitly assuming that all arguments are passed on the
+stack, and arguments appear in increasing order on the stack.
+Programs that make these assumptions never have been portable, but
+they have worked on many implementations. However, they do not work on
+the \xARCH architecture because some arguments are passed in
+registers.  Portable C programs must use the header file
+\code{<stdarg.h>} in order to handle variable argument lists.
+
+When a function taking variable-arguments is called, \RAX\index{\RAX}
+must be set to the total number of floating point parameters passed to
+the function in vector registers.%
+\footnote{This implies that the only legal values for \RAX when
+  calling a function with variable-argument lists are 0 to 8
+  (inclusive).}
+%%% XXX: Really only floating pointer parameters?
+%%% XXX: Use %al or %rax?
+
+When \texttt{__m256} is passed as variable-argument, it should always
+be passed on stack. Only named \texttt{__m256} arguments may be passed
+in register as specified in section \ref{sec-calling-conventions}.
+
+\begin{figure}[H]
+\Hrule
+\caption{Parameter Passing Example with Variable-Argument List}
+\label{fig_va_passing_example}
+\begin{center}
+\code{
+\begin{tabular}{|l|}
+\cline{1-1}
+int a, b;\\
+long double ld;\\
+double m, n;\\
+__m256 u, y;\\
+\\
+extern void func (int a, double m, __m256 u, ...);\\
+\\
+func (a, m, u, b, ld, y, n);\\
+\cline{1-1}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+\begin{figure}[H]
+\Hrule
+\caption{Register Allocation Example for Variable-Argument List}
+\label{fig_va_allocation_example}
+\begin{center}
+\begin{tabular}{ll|ll|ll}
+\multicolumn{2}{c}{General Purpose Registers} &
+\multicolumn{2}{c}{Floating Point Registers} &
+\multicolumn{2}{c}{Stack Frame Offset}\\
+\hline
+\RDI: &\code{a}&\reg{xmm0}:&\code{m}&\code{0:} &\code{ld} \\
+\RSI: &\code{b}&\reg{ymm1}:&\code{u}&\code{32:}&\code{y} \\
+\RAX: & 3      &\reg{xmm2}:&\code{n}& \\
+\end{tabular}
+\end{center}
+\Hrule
+\end{figure}
+
+
+\subsubsection{The Register Save Area\index{register save area}}
+
+The prologue of a function taking a variable argument list and known
+to call the macro \code{va_start} is expected to save the argument
+registers to the \emph{register save area}.  Each argument register
+has a fixed offset in the register save area as defined in the figure
+\ref{fig-reg-save}.
+
+Only registers that might be used to pass arguments need to be saved.
+Other registers are not accessed and can be used for other purposes.  If a
+function is known to never accept arguments passed in
+registers\footnote{This fact may be determined either by exploring
+  types used by the \code{va_arg}
+macro, or by the fact that the named
+  arguments already are exhausted the argument registers entirely.},
+the register save area may be omitted entirely.
+
+The prologue should use \RAX to avoid unnecessarily saving XMM
+registers.  This is especially important for integer only programs to
+prevent the initialization of the XMM unit.
+
+
+\begin{figure}[H]
+\Hrule
+\caption{Register Save Area}
+\label{fig-reg-save}
+\begin{center}
+\begin{tabular}{l|r}
+\multicolumn{1}{c}{Register}&\multicolumn{1}{c}{Offset}\\
+\hline
+\RDI & $0$ \\
+\RSI & $8$ \\
+\RDX & $16$ \\
+\RCX & $24$ \\
+\reg{r8} & $32$ \\
+\reg{r9} & $40$ \\
+\reg{xmm0} & $48$ \\
+\reg{xmm1} & $64$ \\
+\dots &  \\
+\reg{xmm15} & $288$ \\
+\end{tabular}
+\end{center}
+\Hrule
+\end{figure}
+
+\subsubsection{The \codeindex{va_list} Type}
+
+The \code{va_list} type is an array containing a single element of one
+structure
+containing the necessary information to implement the \code{va_arg} macro. The C
+definition of \code{va_list} type is given in figure \ref{fig-va_list}.
+
+\begin{figure}[H]
+\Hrule
+\caption{\code{va_list} Type Declaration}
+\label{fig-va_list}
+\begin{center}
+\code{
+\begin{tabular}{|l|}
+\cline{1-1}
+typedef struct \{\\
+\ \ \ unsigned int gp_offset;\\
+\ \ \ unsigned int fp_offset;\\
+\ \ \ void *overflow_arg_area;\\
+\ \ \ void *reg_save_area;\\
+  \} va_list[1];\\
+\cline{1-1}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+
+\subsubsection{The \codeindex{va_start} Macro}
+
+The \code{va_start} macro initializes the structure as follows:
+
+\begin{description}
+\item [reg_save_area]
+The element points to the start of the register save area.
+\item [overflow_arg_area] This pointer is used to fetch arguments
+  passed on the stack.  It is initialized with the address of the
+  first argument passed on the stack, if any, and then always updated
+  to point to the start of the next argument on the stack.
+\item [gp_offset] The element holds the offset in bytes from
+  \code{reg_save_area} to the place where the next available general
+  purpose argument register is saved.  In case all argument registers
+  have been exhausted, it is set to the value 48 ($6*8$).
+\item [fp_offset]
+The element holds the offset in bytes from \code{reg_save_area} to the
+place where the next available floating point
+argument register is saved.  In case all argument registers have been exhausted,
+it is set to the value 304 ($6*8+16*16$).
+\end{description}
+
+\subsubsection{The \codeindex{va_arg} Macro}
+
+The algorithm for the generic \code{va_arg(l, type)} implementation is
+defined as follows:
+
+\begin{enumerate}
+\item
+Determine whether \code{type} may be passed in the registers.  If not go to step \ref{stack}.
+\item
+Compute \code{num_gp} to hold the number of general purpose registers needed to pass \code{type}
+and \code{num_fp} to hold the number of floating point registers needed.
+\item
+Verify whether arguments fit into registers.
+In the case:
+$$\code{l->gp_offset} > 48 - \code{num_gp} * 8$$ or $$\code{l->fp_offset} > 304 - \code{num_fp} * 16$$
+go to step \ref{stack}.
+\item
+  Fetch \code{type} from \code{l->reg_save_area} with an offset of
+  \code{l->gp_offset} and/or \code{l->fp_offset}.  This may require
+  copying to a temporary location in case the parameter is passed in
+  different register classes or requires an alignment greater than 8 for
+  general purpose registers and 16 for XMM registers.
+\item
+Set:
+$$\code{l->gp_offset} = \code{l->gp_offset} + \code{num_gp} * 8$$
+$$\code{l->fp_offset} = \code{l->fp_offset} + \code{num_fp} * 16.$$
+\item
+Return the fetched \code{type}.
+\item
+\label{stack}
+Align \code{l->overflow_arg_area} upwards to a 16 byte boundary if
+alignment needed by \code{type} exceeds 8 byte boundary.
+\item
+Fetch \code{type} from \code{l->overflow_arg_area}.
+\item
+Set \code{l->overflow_arg_area} to:
+$$\code{l->overflow_arg_area} + \code{sizeof} (\code{type})$$
+\item
+Align \code{l->overflow_arg_area} upwards to an 8 byte boundary.
+\item
+Return the fetched \code{type}.
+\end{enumerate}
+
+The \code{va_arg} macro is usually implemented as a compiler builtin and expanded in
+simplified forms for each particular type.  Figure \ref{fig-va_arg} is a sample
+implementation of the \code{va_arg} macro.
+\begin{figure}[H]
+\Hrule
+\caption{Sample Implementation of \code{va_arg(l, int)}}
+\label{fig-va_arg}
+\begin{center}
+\begin{tabular}{|llll|}
+\cline{1-4}
+&movl&\code{l->gp_offset}, \reg{eax}&\\
+&cmpl&\$48, \reg{eax}&Is register available?\\
+&jae&stack&If not, use stack\\
+&leal&\$8(\RAX), \reg{edx}&Next available register\\
+&addq&\code{l->reg_save_area}, \RAX&Address of saved register\\
+&movl&\reg{edx}, \code{l->gp_offset}&Update \code{gp_offset}\\
+&jmp&fetch&\\
+stack:&movq&\code{l->overflow_arg_area}, \RAX&Address of stack slot\\
+&leaq&8(\RAX), \RDX&Next available stack slot\\
+&movq&\RDX,\code{l->overflow_arg_area}&Update\\
+fetch:&movl&(\RAX), \reg{eax}&Load argument\\
+\cline{1-4}
+\end{tabular}
+\end{center}
+\Hrule
+\end{figure}
+
 \section{Operating System Interface}
 
 \subsection{Exception Interface}
@@ -1946,238 +2178,6 @@ statement implementation changes to:
 jump-table is emitted in a different section so as to occupy cache lines
 without instruction bytes, thus avoiding exclusive cache
 subsystems to thrash.}
-
-\subsection{Variable Argument Lists}
-
-Some otherwise portable C programs depend on the argument passing
-scheme, implicitly assuming that all arguments are passed on the
-stack, and arguments appear in increasing order on the stack.
-Programs that make these assumptions never have been portable, but
-they have worked on many implementations. However, they do not work on
-the \xARCH architecture because some arguments are passed in
-registers.  Portable C programs must use the header file
-\code{<stdarg.h>} in order to handle variable argument lists.
-
-When a function taking variable-arguments is called, \RAX\index{\RAX}
-must be set to the total number of floating point parameters passed to
-the function in vector registers.%
-\footnote{This implies that the only legal values for \RAX when
-  calling a function with variable-argument lists are 0 to 8
-  (inclusive).}
-%%% XXX: Really only floating pointer parameters?
-%%% XXX: Use %al or %rax?
-
-When \texttt{__m256} is passed as variable-argument, it should always
-be passed on stack. Only named \texttt{__m256} arguments may be passed
-in register as specified in section~\ref{sec-calling-conventions}.
-
-\begin{figure}[H]
-\Hrule
-\caption{Parameter Passing Example with Variable-Argument List}
-\label{fig_va_passing_example}
-\begin{center}
-\code{
-\begin{tabular}{|l|}
-\cline{1-1}
-int a, b;\\
-long double ld;\\
-double m, n;\\
-__m256 u, y;\\
-\\
-extern void func (int a, double m, __m256 u, ...);\\
-\\
-func (a, m, u, b, ld, y, n);\\
-\cline{1-1}
-\end{tabular}
-}
-\end{center}
-\Hrule
-\end{figure}
-
-\begin{figure}[H]
-\Hrule
-\caption{Register Allocation Example for Variable-Argument List}
-\label{fig_va_allocation_example}
-\begin{center}
-\begin{tabular}{ll|ll|ll}
-\multicolumn{2}{c}{General Purpose Registers} &
-\multicolumn{2}{c}{Floating Point Registers} &
-\multicolumn{2}{c}{Stack Frame Offset}\\
-\hline
-\RDI: &\code{a}&\reg{xmm0}:&\code{m}&\code{0:} &\code{ld} \\
-\RSI: &\code{b}&\reg{ymm1}:&\code{u}&\code{32:}&\code{y} \\
-\RAX: & 3      &\reg{xmm2}:&\code{n}& \\
-\end{tabular}
-\end{center}
-\Hrule
-\end{figure}
-
-
-\subsubsection{The Register Save Area\index{register save area}}
-
-The prologue of a function taking a variable argument list and known
-to call the macro \code{va_start} is expected to save the argument
-registers to the \emph{register save area}.  Each argument register
-has a fixed offset in the register save area as defined in the figure~
-\ref{fig-reg-save}.
-
-Only registers that might be used to pass arguments need to be saved.
-Other registers are not accessed and can be used for other purposes.  If a
-function is known to never accept arguments passed in
-registers\footnote{This fact may be determined either by exploring
-  types used by the \code{va_arg}
-macro, or by the fact that the named
-  arguments already are exhausted the argument registers entirely.},
-the register save area may be omitted entirely.
-
-The prologue should use \RAX to avoid unnecessarily saving XMM
-registers.  This is especially important for integer only programs to
-prevent the initialization of the XMM unit.
-
-
-\begin{figure}[H]
-\Hrule
-\caption{Register Save Area}
-\label{fig-reg-save}
-\begin{center}
-\begin{tabular}{l|r}
-\multicolumn{1}{c}{Register}&\multicolumn{1}{c}{Offset}\\
-\hline
-\RDI & $0$ \\
-\RSI & $8$ \\
-\RDX & $16$ \\
-\RCX & $24$ \\
-\reg{r8} & $32$ \\
-\reg{r9} & $40$ \\
-\reg{xmm0} & $48$ \\
-\reg{xmm1} & $64$ \\
-\dots &  \\
-\reg{xmm15} & $288$ \\
-\end{tabular}
-\end{center}
-\Hrule
-\end{figure}
-
-\subsubsection{The \codeindex{va_list} Type}
-
-The \code{va_list} type is an array containing a single element of one
-structure
-containing the necessary information to implement the \code{va_arg} macro. The C
-definition of \code{va_list} type is given in figure~\ref{fig-va_list}.
-
-\begin{figure}[H]
-\Hrule
-\caption{\code{va_list} Type Declaration}
-\label{fig-va_list}
-\begin{center}
-\code{
-\begin{tabular}{|l|}
-\cline{1-1}
-typedef struct \{\\
-\ \ \ unsigned int gp_offset;\\
-\ \ \ unsigned int fp_offset;\\
-\ \ \ void *overflow_arg_area;\\
-\ \ \ void *reg_save_area;\\
-  \} va_list[1];\\
-\cline{1-1}
-\end{tabular}
-}
-\end{center}
-\Hrule
-\end{figure}
-
-
-\subsubsection{The \codeindex{va_start} Macro}
-
-The \code{va_start} macro initializes the structure as follows:
-
-\begin{description}
-\item [reg_save_area]
-The element points to the start of the register save area.
-\item [overflow_arg_area] This pointer is used to fetch arguments
-  passed on the stack.  It is initialized with the address of the
-  first argument passed on the stack, if any, and then always updated
-  to point to the start of the next argument on the stack.
-\item [gp_offset] The element holds the offset in bytes from
-  \code{reg_save_area} to the place where the next available general
-  purpose argument register is saved.  In case all argument registers
-  have been exhausted, it is set to the value 48 ($6*8$).
-\item [fp_offset]
-The element holds the offset in bytes from \code{reg_save_area} to the
-place where the next available floating point
-argument register is saved.  In case all argument registers have been exhausted,
-it is set to the value 304 ($6*8+16*16$).
-\end{description}
-
-\subsubsection{The \codeindex{va_arg} Macro}
-
-The algorithm for the generic \code{va_arg(l, type)} implementation is
-defined as follows:
-
-\begin{enumerate}
-\item
-Determine whether \code{type} may be passed in the registers.  If not go to step~\ref{stack}.
-\item
-Compute \code{num_gp} to hold the number of general purpose registers needed to pass \code{type}
-and \code{num_fp} to hold the number of floating point registers needed.
-\item
-Verify whether arguments fit into registers.
-In the case:
-$$\code{l->gp_offset} > 48 - \code{num_gp} * 8$$ or $$\code{l->fp_offset} > 304 - \code{num_fp} * 16$$
-go to step~\ref{stack}.
-\item
-  Fetch \code{type} from \code{l->reg_save_area} with an offset of
-  \code{l->gp_offset} and/or \code{l->fp_offset}.  This may require
-  copying to a temporary location in case the parameter is passed in
-  different register classes or requires an alignment greater than 8 for
-  general purpose registers and 16 for XMM registers.
-\item
-Set:
-$$\code{l->gp_offset} = \code{l->gp_offset} + \code{num_gp} * 8$$
-$$\code{l->fp_offset} = \code{l->fp_offset} + \code{num_fp} * 16.$$
-\item
-Return the fetched \code{type}.
-\item
-\label{stack}
-Align \code{l->overflow_arg_area} upwards to a 16 byte boundary if
-alignment needed by \code{type} exceeds 8 byte boundary.
-\item
-Fetch \code{type} from \code{l->overflow_arg_area}.
-\item
-Set \code{l->overflow_arg_area} to:
-$$\code{l->overflow_arg_area} + \code{sizeof} (\code{type})$$
-\item
-Align \code{l->overflow_arg_area} upwards to an 8 byte boundary.
-\item
-Return the fetched \code{type}.
-\end{enumerate}
-
-The \code{va_arg} macro is usually implemented as a compiler builtin and expanded in
-simplified forms for each particular type.  Figure~\ref{fig-va_arg} is a sample
-implementation of the \code{va_arg} macro.
-\begin{figure}[H]
-\Hrule
-\caption{Sample Implementation of \code{va_arg(l, int)}}
-\label{fig-va_arg}
-\begin{center}
-\begin{tabular}{|llll|}
-\cline{1-4}
-&movl&\code{l->gp_offset}, \reg{eax}&\\
-&cmpl&\$48, \reg{eax}&Is register available?\\
-&jae&stack&If not, use stack\\
-&leal&\$8(\RAX), \reg{edx}&Next available register\\
-&addq&\code{l->reg_save_area}, \RAX&Address of saved register\\
-&movl&\reg{edx}, \code{l->gp_offset}&Update \code{gp_offset}\\
-&jmp&fetch&\\
-stack:&movq&\code{l->overflow_arg_area}, \RAX&Address of stack slot\\
-&leaq&8(\RAX), \RDX&Next available stack slot\\
-&movq&\RDX,\code{l->overflow_arg_area}&Update\\
-fetch:&movl&(\RAX), \reg{eax}&Load argument\\
-\cline{1-4}
-\end{tabular}
-\end{center}
-\Hrule
-\end{figure}
 
 \section{DWARF Definition}
 
