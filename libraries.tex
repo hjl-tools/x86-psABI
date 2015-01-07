@@ -121,8 +121,8 @@ The runtime framework then starts a two-phase process:
 \begin{itemize}
 \item In the \emph{search} phase, the framework repeatedly calls the
 personality routine, with the \codeindex{\_UA\_SEARCH\_PHASE} flag as
-described below, first for the current \RIP and register state, and then
-unwinding a frame to a new \RIP at each step, until the personality
+described below, first for the current \EIP and register state, and then
+unwinding a frame to a new \EIP at each step, until the personality
 routine reports either success (a handler found in the queried frame)
 or failure (no handler) in all frames. It does not actually restore the
 unwound state, and the personality routine must access the state through
@@ -135,8 +135,8 @@ found, it will call \codeindex{terminate()} rather than commence phase 2.
 If the search phase reports success, the framework restarts in the
 \emph{cleanup} phase. Again, it repeatedly calls the personality
 routine, with the \codeindex{\_UA\_CLEANUP\_PHASE} flag as described
-below, first for the current \RIP and register state, and then unwinding
-a frame to a new \RIP at each step, until it gets to the frame with
+below, first for the current \EIP and register state, and then unwinding
+a frame to a new \EIP at each step, until it gets to the frame with
 an identified handler. At that point, it restores the register state,
 and control is transferred to the user landing pad code.
 \end{sloppypar}
