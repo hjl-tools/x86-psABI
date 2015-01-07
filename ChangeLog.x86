@@ -1,5 +1,10 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* object-files.tex (Symbol Table): Remove reference to
+	function_addresses.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* libraries.tex (_Unwind_GetGR): Updated for x86.
 	(_Unwind_SetGR): Likewise.
 	(Transferring Control to a Landing Pad): Likewise.
