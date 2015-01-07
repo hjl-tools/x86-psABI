@@ -1,5 +1,21 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (data_representation): New label.
+	(Aggregates and Unions): Remove alignment requirement for
+	array.
+	(Parameter Passing): Renamed to ...
+	(Parameter Passing and Returning Values): This. Updated for x86.
+	(Returning of Values): Renamed to ...
+	(Returning Values): This.  Make it a section.
+	(Returning Values in Memory): New section.
+	(Return Value Locations for Fundamental Data Types): New figure.
+	(Stack Layout at the Call): Likewise.
+	(Register Allocation Example): Renamed to ...
+	(Register Allocation for Parameter Passing Example): This.
+	Updated for x86.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex: Remove red zone.
 
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
