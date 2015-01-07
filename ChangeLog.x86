@@ -1,5 +1,10 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* object-files.tex (Relocation Types): Replace word64/wordclass
+	with word32.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* libraries.tex (C Library): Removed.
 
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
