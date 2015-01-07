@@ -1,5 +1,25 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* libraries.tex (_Unwind_GetGR): Updated for x86.
+	(_Unwind_SetGR): Likewise.
+	(Transferring Control to a Landing Pad): Likewise.
+	* low-level-sys-info.tex (The Stack Frame): Likewise.
+	(Register Usage): Likewise.
+	(Parameter Passing Example): Likewise.
+	(Variable Argument Lists): Likewise.
+	(Stack State): Likewise.
+	(DWARF Register Number Mapping): Likewise.
+	(fig_va_passing_example): Removed.
+	(fig_va_allocation_example): Likewise.
+	(The Register Save Area): Likewise.
+	(The va_list Type): Likewise.
+	(The va_start Macro): Likewise.
+	(The va_arg Macro): Likewise.
+	* macros.tex (RXX): Renamed to ...
+	(EXX): This.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* object-files.tex (Relocation Types): Updated for x86.
 	(Large Models): Removed.
 

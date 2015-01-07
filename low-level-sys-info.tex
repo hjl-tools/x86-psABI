@@ -238,18 +238,16 @@ stack.  This stack grows downwards from high addresses.  Figure~
       \multicolumn{1}{c}{Contents} &
       \multicolumn{1}{l}{Frame} \\
       \noalign{\smallskip}  \cline{1-3}
-      \code{8n+16(\RBP)} & memory argument \eightbyte $n$ \\
+      \code{4n+8(\EBP)} & memory argument \fourbyte $n$ \\
       & \dots & Previous \\
-      \code{16(\RBP)} & memory argument \eightbyte $0$ \\
+      \code{8(\EBP)} & memory argument \fourbyte $0$ \\
       \cline{1-3}
-      \code{8(\RBP)} & return address \\ \cline{2-2}
-      \code{0(\RBP)} & previous \RBP value \\
+      \code{4(\EBP)} & return address \\ \cline{2-2}
+      \code{0(\EBP)} & previous \EBP value \\
       \cline{2-2}
-      \code{-8(\RBP)} & unspecified & Current \\
+      \code{-4(\EBP)} & unspecified & Current \\
       & \dots & \\
-      \code{0(\RSP)} & variable size \\
-      \cline{2-2}
-      \code{-128(\RSP)} & red zone\\
+      \code{0(\ESP)} & variable size \\
     \end{tabular}
   \end{center}
 \Hrule
@@ -257,16 +255,16 @@ stack.  This stack grows downwards from high addresses.  Figure~
 
 The end of the input argument area shall be aligned on a 16 (32, if
 \texttt{__m256} is passed on stack) byte boundary.  In other
-words, the value $(\RSP + 8)$ is always a multiple of $16$ ($32$) when
+words, the value $(\ESP + 4)$ is always a multiple of $16$ ($32$) when
 control is transferred to the function entry point.  The
-stack pointer, \RSP, always points to the end of the latest allocated
-stack frame.  \footnote{The conventional use of \RBP{} as a frame
-  pointer for the stack frame may be avoided by using \RSP (the stack
+stack pointer, \ESP, always points to the end of the latest allocated
+stack frame.  \footnote{The conventional use of \EBP{} as a frame
+  pointer for the stack frame may be avoided by using \ESP (the stack
   pointer) to index into the stack frame.  This technique saves two
   instructions in the prologue and epilogue and makes one additional
-  general-purpose register (\RBP) available.}
+  general-purpose register (\EBP) available.}
 
-The 128-byte area beyond the location pointed to by \RSP is considered
+The 128-byte area beyond the location pointed to by \ESP is considered
 to be reserved and shall not be modified by signal or interrupt
 handlers.\footnote{Locations within 128 bytes can be addressed using
   one-byte displacements.}  Therefore, functions may use this area for
@@ -302,31 +300,31 @@ bit.}.
       \multicolumn{1}{c}{Usage}&
       \multicolumn{1}{l}{function calls}\\
       \hline
-\RAX & temporary register; with variable arguments passes
-information about the number of vector registers used; 1$^{\rm st}$
-return register & No \\
-\RBX & callee-saved register & Yes \\
-\RCX & used to pass 4$^{\rm th}$ integer argument to functions & No \\
-\RDX & used to pass 3$^{\rm rd}$ argument to functions; 2$^{\rm nd}$ return register & No \\
-\RSP & stack pointer & Yes \\
-\RBP & callee-saved register; optionally used as frame pointer & Yes \\
-\RSI & used to pass 2$^{\rm nd}$  argument to functions & No \\
-\RDI & used to pass 1$^{\rm st}$  argument to functions & No \\
-\reg{r8} & used to pass 5$^{\rm th}$  argument to functions & No \\
-\reg{r9} & used to pass 6$^{\rm th}$  argument to functions & No \\
-\reg{r10} & temporary register, used for passing a function's static
-chain pointer & No \\
-\reg{r11} & temporary register & No\\
-\reg{r12--r14} & callee-saved registers & Yes \\
-\reg{r15} & callee-saved register; optionally used as GOT base pointer & Yes \\
-\reg{xmm0}--\reg{xmm1} & used to pass and return floating point
-arguments & No\\
-\reg{xmm2}--\reg{xmm7} & used to pass floating point arguments & No\\
-\reg{xmm8}--\reg{xmm15} & temporary registers & No\\
-\reg{mm0}--\reg{mm7}& temporary registers & No\\
-\reg{st0},\reg{st1} & temporary registers; used to return \code{long double} arguments & No \\
-\reg{st2}--\reg{st7} & temporary registers & No \\
-\reg{fs}& Reserved for system (as thread specific data register) & No\\
+\EAX & scratch register; also used to return integer and
+pointer values from functions; also stores the address of a
+returned struct or union & No \\
+\EBX & callee-saved register; used to hold the GOT pointer when
+making function calls via the PLT & Yes \\
+\ECX & scratch register & No \\
+\EDX & scratch register; also used to return the upper 32bits
+of some 64bit return types & No \\
+\ESP & stack pointer & Yes \\
+\EBP & callee-saved register; optionally used as frame pointer & Yes \\
+\ESI & callee-saved register & yes \\
+\EDI & callee-saved register & yes \\
+\reg{xmm0}, \reg{ymm0} & scratch registers; also used to pass and return
+\code{__m128}, \code{__m256} parameters & No\\
+\reg{xmm1}--\reg{xmm2}, \reg{ymm1}--\reg{ymm2} &  scratch registers;
+also used to pass \code{__m128}, \code{__m256} parameters & No\\
+\reg{xmm3}--\reg{xmm7}, \reg{ymm3}--\reg{ymm7} & scratch registers & No\\
+\reg{mm0} & scratch register; also used to pass and return
+\code{__m64} parameter & No\\
+\reg{mm1}--\reg{mm2} & used to pass \code{__m64} parameters & No\\
+\reg{mm3}--\reg{mm7}& scratch registers & No\\
+\reg{st0},\reg{st1} & scratch registers; also used to return
+\code{long double} parameters & No \\
+\reg{st2}--\reg{st7} & scratch registers & No \\
+\reg{gs}& Reserved for system (as thread specific data register) & No\\
 \code{mxcsr}& SSE2 control and status word & partial\\
 \code{x87 SW}& x87 status word & No\\
 \code{x87 CW}& x87 control word & Yes\\
@@ -352,7 +350,7 @@ on the stack in reversed (right-to-left\footnote{Right-to-left order
 For calls that may call functions that use varargs or stdargs
 (prototype-less calls or calls to functions containing ellipsis
 (\dots) in the declaration) \reg{al}%
-\footnote{Note that the rest of \RAX is undefined, only the contents
+\footnote{Note that the rest of \EAX is undefined, only the contents
   of \reg{al} is defined.}
  is used as hidden argument to specify the number of vector registers
  used. The contents of \reg{al} do not need to
@@ -384,18 +382,16 @@ typedef struct \{ \\
 \ \ double d;\\
 \} structparm;\\
 structparm s;\\
-int e, f, g, h, i, j, k;\\
-long double ld;\\
-double m, n;\\
-__m256 y;\\
+int i;\\
+__m128 v, x, y;\\
+__m256 w, z;\\
 \\
-extern void func (int e, int f,\\
-\phantom{extern void func (}structparm s, int g, int h,\\
-\phantom{extern void func (}long double ld, double m,\\
-\phantom{extern void func (}__m256 y,\\
-\phantom{extern void func (}double n, int i, int j, int k);\\
+extern structparm func (int i, __m128 v,\\
+\phantom{extern structparm func (}structparm s, __m256 w,\\
+\phantom{extern structparm func (}__m128 x, __m128 y,\\
+\phantom{extern structparm func (}__m256 z);\\
 \\
-func (e, f, s, g, h, ld, m, y, n, i, j, k);\\
+func (i, v, s, w, x, y, z);\\
 \cline{1-1}
 \end{tabular}
 }
@@ -413,12 +409,10 @@ func (e, f, s, g, h, ld, m, y, n, i, j, k);\\
 \multicolumn{2}{c}{Floating Point Registers} &
 \multicolumn{2}{c}{Stack Frame Offset}\\
 \hline
-\RDI:    &\code{e}      &\reg{xmm0}:&\code{s.d}&\code{0:} &\code{ld} \\
-\RSI:    &\code{f}      &\reg{xmm1}:&\code{m}  &\code{16:}&\code{j} \\
-\RDX:    &\code{s.a,s.b}&\reg{ymm2}:&\code{y}  &\code{24:}&\code{k} \\
-\RCX:    &\code{g}      &\reg{xmm3}:&\code{n}  &          & \\
-\reg{r8}:&\code{h}      &           &          &          & \\
-\reg{r9}:&\code{i}      &           &          &          & \\
+\EDI:    &\code{e}      &\reg{xmm0}:&\code{s.d}&\code{0:} &\code{ld} \\
+\ESI:    &\code{f}      &\reg{xmm1}:&\code{m}  &\code{16:}&\code{j} \\
+\EDX:    &\code{s.a,s.b}&\reg{ymm2}:&\code{y}  &\code{24:}&\code{k} \\
+\ECX:    &\code{g}      &\reg{xmm3}:&\code{n}  &          & \\
 \end{tabular}
 
 \end{center}
@@ -436,226 +430,13 @@ the \xARCH architecture because some arguments are passed in
 registers.  Portable C programs must use the header file
 \code{<stdarg.h>} in order to handle variable argument lists.
 
-When a function taking variable-arguments is called, \RAX\index{\RAX}
-must be set to the total number of floating point parameters passed to
-the function in vector registers.%
-\footnote{This implies that the only legal values for \RAX when
-  calling a function with variable-argument lists are 0 to 8
-  (inclusive).}
-%%% XXX: Really only floating pointer parameters?
-%%% XXX: Use %al or %rax?
-
-When \texttt{__m256} is passed as variable-argument, it should always
-be passed on stack. Only named \texttt{__m256} arguments may be passed
-in register as specified in section \ref{sec-calling-conventions}.
-
-\begin{figure}[H]
-\Hrule
-\caption{Parameter Passing Example with Variable-Argument List}
-\label{fig_va_passing_example}
-\begin{center}
-\code{
-\begin{tabular}{|l|}
-\cline{1-1}
-int a, b;\\
-long double ld;\\
-double m, n;\\
-__m256 u, y;\\
-\\
-extern void func (int a, double m, __m256 u, ...);\\
-\\
-func (a, m, u, b, ld, y, n);\\
-\cline{1-1}
-\end{tabular}
-}
-\end{center}
-\Hrule
-\end{figure}
-
-\begin{figure}[H]
-\Hrule
-\caption{Register Allocation Example for Variable-Argument List}
-\label{fig_va_allocation_example}
-\begin{center}
-\begin{tabular}{ll|ll|ll}
-\multicolumn{2}{c}{General Purpose Registers} &
-\multicolumn{2}{c}{Floating Point Registers} &
-\multicolumn{2}{c}{Stack Frame Offset}\\
-\hline
-\RDI: &\code{a}&\reg{xmm0}:&\code{m}&\code{0:} &\code{ld} \\
-\RSI: &\code{b}&\reg{ymm1}:&\code{u}&\code{32:}&\code{y} \\
-\RAX: & 3      &\reg{xmm2}:&\code{n}& \\
-\end{tabular}
-\end{center}
-\Hrule
-\end{figure}
-
-
-\subsubsection{The Register Save Area\index{register save area}}
-
-The prologue of a function taking a variable argument list and known
-to call the macro \code{va_start} is expected to save the argument
-registers to the \emph{register save area}.  Each argument register
-has a fixed offset in the register save area as defined in the figure
-\ref{fig-reg-save}.
-
-Only registers that might be used to pass arguments need to be saved.
-Other registers are not accessed and can be used for other purposes.  If a
-function is known to never accept arguments passed in
-registers\footnote{This fact may be determined either by exploring
-  types used by the \code{va_arg}
-macro, or by the fact that the named
-  arguments already are exhausted the argument registers entirely.},
-the register save area may be omitted entirely.
-
-The prologue should use \RAX to avoid unnecessarily saving XMM
-registers.  This is especially important for integer only programs to
-prevent the initialization of the XMM unit.
-
-
-\begin{figure}[H]
-\Hrule
-\caption{Register Save Area}
-\label{fig-reg-save}
-\begin{center}
-\begin{tabular}{l|r}
-\multicolumn{1}{c}{Register}&\multicolumn{1}{c}{Offset}\\
-\hline
-\RDI & $0$ \\
-\RSI & $8$ \\
-\RDX & $16$ \\
-\RCX & $24$ \\
-\reg{r8} & $32$ \\
-\reg{r9} & $40$ \\
-\reg{xmm0} & $48$ \\
-\reg{xmm1} & $64$ \\
-\dots &  \\
-\reg{xmm15} & $288$ \\
-\end{tabular}
-\end{center}
-\Hrule
-\end{figure}
-
-\subsubsection{The \codeindex{va_list} Type}
-
-The \code{va_list} type is an array containing a single element of one
-structure
-containing the necessary information to implement the \code{va_arg} macro. The C
-definition of \code{va_list} type is given in figure \ref{fig-va_list}.
-
-\begin{figure}[H]
-\Hrule
-\caption{\code{va_list} Type Declaration}
-\label{fig-va_list}
-\begin{center}
-\code{
-\begin{tabular}{|l|}
-\cline{1-1}
-typedef struct \{\\
-\ \ \ unsigned int gp_offset;\\
-\ \ \ unsigned int fp_offset;\\
-\ \ \ void *overflow_arg_area;\\
-\ \ \ void *reg_save_area;\\
-  \} va_list[1];\\
-\cline{1-1}
-\end{tabular}
-}
-\end{center}
-\Hrule
-\end{figure}
-
-
-\subsubsection{The \codeindex{va_start} Macro}
-
-The \code{va_start} macro initializes the structure as follows:
-
-\begin{description}
-\item [reg_save_area]
-The element points to the start of the register save area.
-\item [overflow_arg_area] This pointer is used to fetch arguments
-  passed on the stack.  It is initialized with the address of the
-  first argument passed on the stack, if any, and then always updated
-  to point to the start of the next argument on the stack.
-\item [gp_offset] The element holds the offset in bytes from
-  \code{reg_save_area} to the place where the next available general
-  purpose argument register is saved.  In case all argument registers
-  have been exhausted, it is set to the value 48 ($6*8$).
-\item [fp_offset]
-The element holds the offset in bytes from \code{reg_save_area} to the
-place where the next available floating point
-argument register is saved.  In case all argument registers have been exhausted,
-it is set to the value 304 ($6*8+16*16$).
-\end{description}
-
-\subsubsection{The \codeindex{va_arg} Macro}
-
-The algorithm for the generic \code{va_arg(l, type)} implementation is
-defined as follows:
-
-\begin{enumerate}
-\item
-Determine whether \code{type} may be passed in the registers.  If not go to step \ref{stack}.
-\item
-Compute \code{num_gp} to hold the number of general purpose registers needed to pass \code{type}
-and \code{num_fp} to hold the number of floating point registers needed.
-\item
-Verify whether arguments fit into registers.
-In the case:
-$$\code{l->gp_offset} > 48 - \code{num_gp} * 8$$ or $$\code{l->fp_offset} > 304 - \code{num_fp} * 16$$
-go to step \ref{stack}.
-\item
-  Fetch \code{type} from \code{l->reg_save_area} with an offset of
-  \code{l->gp_offset} and/or \code{l->fp_offset}.  This may require
-  copying to a temporary location in case the parameter is passed in
-  different register classes or requires an alignment greater than 8 for
-  general purpose registers and 16 for XMM registers.
-\item
-Set:
-$$\code{l->gp_offset} = \code{l->gp_offset} + \code{num_gp} * 8$$
-$$\code{l->fp_offset} = \code{l->fp_offset} + \code{num_fp} * 16.$$
-\item
-Return the fetched \code{type}.
-\item
-\label{stack}
-Align \code{l->overflow_arg_area} upwards to a 16 byte boundary if
-alignment needed by \code{type} exceeds 8 byte boundary.
-\item
-Fetch \code{type} from \code{l->overflow_arg_area}.
-\item
-Set \code{l->overflow_arg_area} to:
-$$\code{l->overflow_arg_area} + \code{sizeof} (\code{type})$$
-\item
-Align \code{l->overflow_arg_area} upwards to an 8 byte boundary.
-\item
-Return the fetched \code{type}.
-\end{enumerate}
-
-The \code{va_arg} macro is usually implemented as a compiler builtin and expanded in
-simplified forms for each particular type.  Figure \ref{fig-va_arg} is a sample
-implementation of the \code{va_arg} macro.
-\begin{figure}[H]
-\Hrule
-\caption{Sample Implementation of \code{va_arg(l, int)}}
-\label{fig-va_arg}
-\begin{center}
-\begin{tabular}{|llll|}
-\cline{1-4}
-&movl&\code{l->gp_offset}, \reg{eax}&\\
-&cmpl&\$48, \reg{eax}&Is register available?\\
-&jae&stack&If not, use stack\\
-&leal&\$8(\RAX), \reg{edx}&Next available register\\
-&addq&\code{l->reg_save_area}, \RAX&Address of saved register\\
-&movl&\reg{edx}, \code{l->gp_offset}&Update \code{gp_offset}\\
-&jmp&fetch&\\
-stack:&movq&\code{l->overflow_arg_area}, \RAX&Address of stack slot\\
-&leaq&8(\RAX), \RDX&Next available stack slot\\
-&movq&\RDX,\code{l->overflow_arg_area}&Update\\
-fetch:&movl&(\RAX), \reg{eax}&Load argument\\
-\cline{1-4}
-\end{tabular}
-\end{center}
-\Hrule
-\end{figure}
+When a function taking variable-arguments is called, all parameters are
+passed on the stack, including \texttt{__m64}, \texttt{__m128} and
+\texttt{__m256}.  This rule applies to both named and unnamed parameters.
+Because parameters are passed differently depending on whether or not the
+called function takes a variable argument list, it is necessary for such
+functions to be properly prototyped.  Failure to do so results in
+undefined behavior.
 
 \section{Process Initialization}
 
@@ -787,9 +568,9 @@ is shown in figure~\ref{initial-stack}.
   Auxiliary vector entries ... & & 2 fourbytes each \\ \hline
   0 & & fourbyte \\ \hline
   Environment pointers ... & & 1 fourbyte each \\ \hline
-  0 & \code{4+4*argc+\RSP} & fourbyte \\ \hline
-  Argument pointers & \code{4+\RSP} & argc fourbytes \\ \hline
-  Argument count & \RSP & fourbyte \\ \hline
+  0 & \code{4+4*argc+\ESP} & fourbyte \\ \hline
+  Argument pointers & \code{4+\ESP} & argc fourbytes \\ \hline
+  Argument count & \ESP & fourbyte \\ \hline
   Undefined & Low Addresses & \\ \hline
     \end{tabular}
   \end{center}
@@ -803,13 +584,13 @@ need not be compactly allocated.
 Only the registers listed below have specified values at process
 entry:
 \begin{description}
- \item[\RBP] The content of this register is unspecified at process
+ \item[\EBP] The content of this register is unspecified at process
                 initialization time, but the user code should mark the
                 deepest stack frame by setting the frame pointer to zero.
- \item[\RSP] The stack pointer holds the address of the byte with
+ \item[\ESP] The stack pointer holds the address of the byte with
                 lowest address which is part of the stack. It is
                 guaranteed to be 16-byte aligned at process entry.
- \item[\RDX] a function pointer that the application should register
+ \item[\EDX] a function pointer that the application should register
                 with \code{atexit}(BA\_OS).
 \end{description}
 
@@ -985,7 +766,7 @@ requires processor-specific address class codes to be defined.
 
 Table~\ref{tbl-reg-num-map}\footnote{The table defines Return Address
   to have a register number, even though the address is stored in
-  0(\RSP) and not in a physical register.}  outlines the register
+  0(\ESP) and not in a physical register.}  outlines the register
 number mapping for the \xARCH processor family.%
 \footnote{This document does not define mappings for privileged registers.}%
 
@@ -996,14 +777,14 @@ number mapping for the \xARCH processor family.%
 \begin{tabular}{l|r|l}
 \multicolumn{1}{c}{Register Name}&\multicolumn{1}{c}{Number}&\multicolumn{1}{c}{Abbreviation}\\
 \hline
-General Purpose Register EAX & 0 &\RAX\\
-General Purpose Register ECX & 1 &\RCX\\
-General Purpose Register EDX & 2 &\RDX\\
-General Purpose Register EBX & 3 &\RBX\\
-Stack Pointer Register   ESP & 4 &\RSP\\
-Frame Pointer Register   EBP & 5 &\RBP\\
-General Purpose Register ESI & 6 &\RSI\\
-General Purpose Register EDI & 7 &\RDI\\
+General Purpose Register EAX & 0 &\EAX\\
+General Purpose Register ECX & 1 &\ECX\\
+General Purpose Register EDX & 2 &\EDX\\
+General Purpose Register EBX & 3 &\EBX\\
+Stack Pointer Register   ESP & 4 &\ESP\\
+Frame Pointer Register   EBP & 5 &\EBP\\
+General Purpose Register ESI & 6 &\ESI\\
+General Purpose Register EDI & 7 &\EDI\\
 Return Address RA            & 8 &\\
 Flag Register                   & 9     & \reg{EFLAGS} \\
 Reserved                        & 10    &\\

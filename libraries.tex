@@ -503,7 +503,7 @@ its index as for \code{\_Unwind\_GetGR}.
 The behavior is guaranteed only if the function is called during phase 2
 of unwinding, and applied to an unwind context representing a handler frame,
 for which the personality routine will return \code{\_URC\_INSTALL\_CONTEXT}.
-In that case, only registers \RDI, \RSI, \RDX, \RCX should be used.
+In that case, only registers \EAX and \EDX should be used.
 These scratch registers are reserved for passing arguments between the
 personality routine and the landing pads.
 
@@ -586,13 +586,13 @@ stack frame.
 
 \code{
 \begin{tabular}{l}
-    uint64 \_Unwind\_GetCFA\\
+    uint32 \_Unwind\_GetCFA\\
     \ \ (struct \_Unwind\_Context *context);\\
 \end{tabular}
 }
 
-This function returns the 64-bit Canonical Frame Address which
-is defined as the value of \RSP at the call site in the
+This function returns the 32-bit Canonical Frame Address which
+is defined as the value of \ESP at the call site in the
 previous frame.  This value is guaranteed to be correct any
 time the context has been passed to a personality routine or a
 stop function.
@@ -746,7 +746,7 @@ Prior to executing code in the landing pad, the unwind library restores
 registers not altered by the personality routine, using the context
 record, to their state in that frame before the call that threw the exception,
 as follows. All registers specified as callee-saved by the base ABI are
-restored, as well as scratch registers \RDI, \RSI, \RDX, \RCX (see below).
+restored, as well as scratch registers \EAX and \EDX (see below).
 Except for those exceptions, scratch (or caller-saved) registers are not
 preserved, and their contents are undefined on transfer.
 
@@ -772,8 +772,8 @@ be the \code{exceptionObject} pointer, which must be preserved to be passed to
 \end{sloppypar}
 
 The landing pad may receive other arguments, for instance a switch value
-indicating the type of the exception. Four scratch registers are reserved
-for this use (\RDI, \RSI, \RDX, \RCX).
+indicating the type of the exception. Two scratch registers are reserved
+for this use (\EAX and \EDX).
 
 \subsubsection{Rules for Correct Inter-Language Operation}
 
