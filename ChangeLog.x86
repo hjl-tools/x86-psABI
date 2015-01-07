@@ -1,5 +1,9 @@
 2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Bit-Fields): Removed.
+
+2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex: Update Scalar Types.
 
 2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
