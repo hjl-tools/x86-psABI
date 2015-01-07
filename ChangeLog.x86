@@ -1,5 +1,11 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* Makefile (INCLUDES): Remove kernel.tex.
+	* abi.tex: Don't include kernel.
+	* kernel.tex: Removed.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* Makefile (INCLUDES): Remove dl.tex.
 	* abi.tex: Don't include dl.
 	* dl.tex: Removed.
