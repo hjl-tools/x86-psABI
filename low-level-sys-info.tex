@@ -1338,37 +1338,32 @@ number mapping for the \xARCH processor family.%
 \begin{tabular}{l|r|l}
 \multicolumn{1}{c}{Register Name}&\multicolumn{1}{c}{Number}&\multicolumn{1}{c}{Abbreviation}\\
 \hline
-General Purpose Register RAX & 0 &\RAX\\
-General Purpose Register RDX & 1 &\RDX\\
-General Purpose Register RCX & 2 &\RCX\\
-General Purpose Register RBX & 3 &\RBX\\
-General Purpose Register RSI & 4 &\RSI\\
-General Purpose Register RDI & 5 &\RDI\\
-Frame Pointer Register   RBP & 6 &\RBP\\
-Stack Pointer Register   RSP & 7 &\RSP\\
-Extended Integer Registers 8-15 & 8-15 &\reg{r8}--\reg{r15}\\
-Return Address RA
-& 16&\\
-Vector Registers 0--7              & 17-24 & \reg{xmm0}--\reg{xmm7} \\
-Extended Vector Registers 8--15    & 25-32 & \reg{xmm8}--\reg{xmm15} \\
-Floating Point Registers 0--7   & 33-40 & \reg{st0}--\reg{st7} \\
-MMX Registers 0--7              & 41-48 & \reg{mm0}--\reg{mm7} \\
-Flag Register                   & 49    & \reg{EFLAGS} \\
-Segment Register ES             & 50    & \reg{es} \\
-Segment Register CS             & 51    & \reg{cs} \\
-Segment Register SS             & 52    & \reg{ss} \\
-Segment Register DS             & 53    & \reg{ds} \\
-Segment Register FS             & 54    & \reg{fs} \\
-Segment Register GS             & 55    & \reg{gs} \\
-Reserved                        & 56-57 & \\
-FS Base address                 & 58    & \reg{fs.base} \\
-GS Base address                 & 59    & \reg{gs.base} \\
-Reserved                        & 60-61 & \\
-Task Register                   & 62    & \reg{tr} \\
-LDT Register                    & 63    & \reg{ldtr} \\
-128-bit Media Control and Status & 64   & \reg{mxcsr} \\
-x87 Control Word                & 65    & \reg{fcw} \\
-x87 Status Word                 & 66    & \reg{fsw} \\
+General Purpose Register EAX & 0 &\RAX\\
+General Purpose Register ECX & 1 &\RCX\\
+General Purpose Register EDX & 2 &\RDX\\
+General Purpose Register EBX & 3 &\RBX\\
+Stack Pointer Register   ESP & 4 &\RSP\\
+Frame Pointer Register   EBP & 5 &\RBP\\
+General Purpose Register ESI & 6 &\RSI\\
+General Purpose Register EDI & 7 &\RDI\\
+Return Address RA            & 8 &\\
+Flag Register                   & 9     & \reg{EFLAGS} \\
+Reserved                        & 10    &\\
+Floating Point Registers 0--7   & 11-18 & \reg{st0}--\reg{st7} \\
+Reserved                        & 19-20 &\\
+Vector Registers 0--7           & 21-28 & \reg{xmm0}--\reg{xmm7} \\
+MMX Registers 0--7              & 29-36 & \reg{mm0}--\reg{mm7} \\
+Media Control and Status        & 39   & \reg{mxcsr} \\
+Segment Register ES             & 40    & \reg{es} \\
+Segment Register CS             & 41    & \reg{cs} \\
+Segment Register SS             & 42    & \reg{ss} \\
+Segment Register DS             & 43    & \reg{ds} \\
+Segment Register FS             & 44    & \reg{fs} \\
+Segment Register GS             & 45    & \reg{gs} \\
+Reserved                        & 46-47 & \\
+Task Register                   & 48    & \reg{tr} \\
+LDT Register                    & 49    & \reg{ldtr} \\
+Reserved                        & 50-92 & \\
 \end{tabular}
 \end{center}
 \Hrule
