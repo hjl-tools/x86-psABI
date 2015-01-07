@@ -1,5 +1,10 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* object-files.tex (Relocation Types): Updated for x86.
+	(Large Models): Removed.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* object-files.tex (ELF Header): Removed.
 	(Section Flags): Likewise.
 	(large_sections): Likewise.
