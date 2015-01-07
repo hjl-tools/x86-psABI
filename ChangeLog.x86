@@ -1,5 +1,9 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Register Usage): Break long line.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* object-files.tex (Symbol Table): Remove reference to
 	function_addresses.
 
