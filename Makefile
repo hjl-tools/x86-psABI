@@ -1,4 +1,4 @@
-INCLUDES  := execution.tex low-level-sys-info.tex \
+INCLUDES  := low-level-sys-info.tex \
 	     introduction.tex libraries.tex \
 	     macros.tex conventions.tex abi-index.tex object-files.tex
 
