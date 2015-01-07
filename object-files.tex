@@ -1,104 +1,7 @@
 
 \chapter{Object Files}
 
-\section{ELF Header}
-
-\subsection{Machine Information}
-
-\subsubsection{Programming Model}
-
-As described in Section \ref{intro}, binaries using the \xARCH instruction
-set may program to either a 32-bit model (ILP32) or to a 64-bit model (LP64).
-This specification describes both binaries that use the ILP32 and the LP64
-model.
-
-\subsubsection{File Class}
-
-For \xARCH ILP32 objects, the file class value in \texttt{e_ident[EI_CLASS]}
-must be \texttt{ELFCLASS32}. For \xARCH LP64 objects, the file class value
-must be \texttt{ELFCLASS64}.
-
-\subsubsection{Data Encoding}
-
-For the data encoding in \texttt{e_ident[EI_DATA]}, \xARCH objects use
-\texttt{ELFDATA2LSB}.
-
-\subsubsection{Processor identification}
-
-Processor identification resides in the ELF headers
-\texttt{e_machine} member and must have the value
-\texttt{EM_X86_64}.\footnote{The value of this identifier is 62.}
-
-\subsection{Number of Program Headers}
-
-The \texttt{e_phnum} member contains the number of entries in the program
-header table. The product of
-\texttt{e_phentsize} and \texttt{e_phnum} gives the table's size in bytes.
-If a file has no program header table, \texttt{e_phnum} holds the value zero.
-
-If the number of program headers is greater than or equal to
-\code{PN_XNUM} (0xffff), this member has the value \code{PN_XNUM} (0xffff).
-The actual number of program header table entries is contained in
-the \texttt{sh_info} field of the section header at index 0. Otherwise,
-the \texttt{sh_info} member of the initial entry contains the value zero.
-
 \section{Sections}
-
-\subsection{Section Flags}
-
-In order to allow linking object files of different code models, it is
-necessary to provide for a way to differentiate those sections which may hold
-more than 2GB from those which may not. This is accomplished by defining a
-processor-specific section attribute flag for \code{sh\_flag}
-(see table~\ref{sh_flags}).
-
-\begin{table}[H]
-\Hrule
-  \caption{\xARCH Specific Section Header Flag, \code{sh\_flags}}
-  \label{sh_flags}
-  \begin{center}
-    \begin{tabular}[t]{l|l}
-      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
-      \hline
-      \texttt{SHF_X86_64_LARGE} & \texttt{0x10000000}
-    \end{tabular}
-  \end{center}
-\Hrule
-\end{table}
-
-\begin{description}
- \item[\code{SHF\_X86_64\_LARGE}] If an object file section does
-   {\em not} have
-   this flag set, then it may not hold more than 2GB and
-   can be freely referred to in objects using smaller code models.
-   Otherwise, only objects using larger code models can refer to them.
-   For example, a medium code model object can refer to data in a
-   section that sets this flag besides being able to refer to data in a
-   section that does not set it; likewise, a small code model object can
-   refer only to code in a section that does not set this flag.
-\end{description}
-
-\subsection{Section types}
-
-\begin{table}[H]
-\Hrule
-  \caption{Section Header Types}
-  \begin{center}
-    \begin{tabular}[t]{l|l}
-      \multicolumn{1}{c}{sh_type name} & \multicolumn{1}{c}{Value} \\
-      \hline
-      \texttt{SHT_X86_64_UNWIND} & \texttt{0x70000001}
-    \end{tabular}
-  \end{center}
-\Hrule
-\end{table}
-
-\begin{description}
- \item[SHT_X86_64_UNWIND]
-        This section contains unwind function table entries for
-        stack unwinding.  The contents are described in
-        Section~\ref{sec_eh_frame} of this document.
-\end{description}
 
 \subsection{Special Sections}
 
@@ -110,73 +13,23 @@ processor-specific section attribute flag for \code{sh\_flag}
       \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Type}
        & \multicolumn{1}{c}{Attributes} \\
       \hline
-      \texttt{.got} & \texttt{SHT_PROGBITS} & \texttt{SHF_ALLOC+SHF_WRITE} \\
-      \texttt{.plt}&\texttt{SHT_PROGBITS} & \texttt{SHF_ALLOC+SHF_EXECINSTR} \\
-      \texttt{.eh_frame} & \texttt{SHT_X86_64_UNWIND} & \texttt{SHF_ALLOC}
+      \texttt{.eh_frame} & \texttt{SHT_PROGBITS} & \texttt{SHF_ALLOC}
     \end{tabular}
   \end{center}
 \Hrule
 \end{table}
 
 \begin{description}
- \item[.got] This section holds the global offset table.
- \item[.plt] This section holds the procedure linkage table.
  \item[.eh_frame] This section holds the unwind function table.
                       The contents are described in Section~\ref{sec_eh_frame}
                       of this document.
-\end{description}
-
-The additional sections defined in table~\ref{large_sections} are used
-by a system supporting the large code model.
-
-\begin{table}[H]
-\Hrule
-  \caption{Additional Special Sections for the Large Code Model}
-  \label{large_sections}
-  \begin{center}
-    \begin{tabular}[t]{l|l|l}
-      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Type}
-       & \multicolumn{1}{c}{Attributes} \\
-      \hline
-      \texttt{.lbss} & \texttt{SHT_NOBITS} &
-         \texttt{SHF_ALLOC+SHF_WRITE+SHF_X86_64_LARGE} \\
-      \texttt{.ldata} & \texttt{SHT_PROGBITS} &
-         \texttt{SHF_ALLOC+SHF_WRITE+SHF_X86_64_LARGE} \\
-      \texttt{.ldata1} & \texttt{SHT_PROGBITS} &
-         \texttt{SHF_ALLOC+SHF_WRITE+SHF_X86_64_LARGE} \\
-      \texttt{.lgot} & \texttt{SHT_PROGBITS} &
-         \texttt{SHF_ALLOC+SHF_WRITE+SHF_X86_64_LARGE} \\
-      \texttt{.lplt} & \texttt{SHT_PROGBITS} &
-         \texttt{SHF_ALLOC+SHF_EXECINSTR+SHF_X86_64_LARGE} \\
-      \texttt{.lrodata} & \texttt{SHT_PROGBITS} &
-         \texttt{SHF_ALLOC+SHF_X86_64_LARGE} \\
-      \texttt{.lrodata1} & \texttt{SHT_PROGBITS} &
-         \texttt{SHF_ALLOC+SHF_X86_64_LARGE} \\
-      \texttt{.ltext} & \texttt{SHT_PROGBITS} &
-         \texttt{SHF_ALLOC+SHF_EXECINSTR+SHF_X86_64_LARGE} \\
-    \end{tabular}
-  \end{center}
-\Hrule
-\end{table}
-
-In order to enable static linking of objects using different code
-models, the following section ordering is suggested:
-
-\begin{description}
-  \item[\code{.plt .init .fini .text .got .rodata .rodata1 .data .data1
-  .bss}] These sections can have a combined size of up to 2GB.
-  \item[\code{.lplt .ltext .lgot .lrodata .lrodata1 .ldata .ldata1
-  .lbss}] These sections plus the above can have a combined size of up
-   to 16EB.
 \end{description}
 
 \subsection{EH\_FRAME sections}
 \label{sec_eh_frame}
 
 The call frame information needed for unwinding the stack is output into
-one or more ELF sections of type \code{SHT_X86_64_UNWIND}. In the simplest
-case there
-will be one such section per object file and it will be named
+one section named
 \code{.eh_frame}.  An \code{.eh_frame} section consists of one or more
 subsections. Each subsection contains a CIE (Common Information Entry)
 followed by varying number of FDEs (Frame Descriptor Entry). A FDE
