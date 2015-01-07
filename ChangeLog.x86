@@ -1,5 +1,10 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Function Calling Sequence): Remove
+	parameter classification.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* libraries.tex (The Unwind Process): Replace \RIP with \EIP.
 	* macros.tex (RIP): Renamed to ...
 	(EIP): This.  Changed to eip.
