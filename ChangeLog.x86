@@ -1,5 +1,11 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* Makefile (INCLUDES): Remove development.tex.
+	* abi.tex: Don't include development.
+	* development.tex: Removed.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* object-files.tex (Relocation Types): Replace word64/wordclass
 	with word32.
 
