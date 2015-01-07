@@ -933,13 +933,13 @@ is shown in figure~\ref{initial-stack}.
   Information block, including argument strings, environment strings,
     auxiliary information ... & & varies \\ \hline
   Unspecified & & \\ \hline
-  Null auxiliary vector entry & & 1 eightbyte \\ \hline
-  Auxiliary vector entries ... & & 2 eightbytes each \\ \hline
-  0 & & eightbyte \\ \hline
-  Environment pointers ... & & 1 eightbyte each \\ \hline
-  0 & \code{8+8*argc+\RSP} & eightbyte \\ \hline
-  Argument pointers & \code{8+\RSP} & argc eightbytes \\ \hline
-  Argument count & \RSP & eightbyte \\ \hline
+  Null auxiliary vector entry & & 1 fourbyte \\ \hline
+  Auxiliary vector entries ... & & 2 fourbytes each \\ \hline
+  0 & & fourbyte \\ \hline
+  Environment pointers ... & & 1 fourbyte each \\ \hline
+  0 & \code{4+4*argc+\RSP} & fourbyte \\ \hline
+  Argument pointers & \code{4+\RSP} & argc fourbytes \\ \hline
+  Argument count & \RSP & fourbyte \\ \hline
   Undefined & Low Addresses & \\ \hline
     \end{tabular}
   \end{center}

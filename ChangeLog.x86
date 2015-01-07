@@ -1,5 +1,9 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Initial Process Stack): Updated for x86.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Function Calling Sequence): Remove
 	parameter classification.
 
