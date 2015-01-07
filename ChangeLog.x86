@@ -1,5 +1,9 @@
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* libraries.tex (C Library): Removed.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (data_representation): New label.
 	(Aggregates and Unions): Remove alignment requirement for
 	array.

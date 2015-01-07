@@ -1,25 +1,5 @@
 \chapter{Libraries}
 
-A further review of the \intelabi is needed.
-
-\section{C Library}
-
-\subsection{Global Data Symbols}
-
-The symbols \code{_fp_hw}, \code{__flt_rounds} and \code{__huge_val}
-are not provided by the \xARCH ABI.
-
-\subsection{Floating Point Environment Functions}
-
-ISO C 99 defines the floating point environment functions from
-\code{<fenv.h>}.  Since \xARCH has two floating point units with
-separate control words, the programming environment has to keep the
-control values in sync.  On the other hand this means that routines
-accessing the control words only need to access one unit, and the SSE
-unit is the unit that should be accessed in these cases.  The
-function \codeindex{fegetround} therefore only needs to report the
-rounding value of the SSE unit and can ignore the x87 unit.
-
 \section{Unwind Library Interface\label{unwindlib}}
 
 This section defines the \textindex{Unwind Library interface}%
