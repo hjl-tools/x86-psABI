@@ -202,8 +202,8 @@ by the unwind interface, defined as follows:
     struct \_Unwind\_Exception \{\\
     \ \ \ uint64 & exception\_class;\\
     \ \ \ \_Unwind\_Exception\_Cleanup\_Fn & exception\_cleanup;\\
-    \ \ \ uint64 & private\_1;\\
-    \ \ \ uint64 & private\_2;\\
+    \ \ \ uint32 & private\_1;\\
+    \ \ \ uint32 & private\_2;\\
     \};\\
 \end{tabular}
 }
@@ -455,7 +455,7 @@ the location of the current unwind descriptors and unwind frame.
 
 \code{
 \begin{tabular}{l}
-    uint64 \_Unwind\_GetGR\\
+    uint32 \_Unwind\_GetGR\\
     \ \ (struct \_Unwind\_Context *context, int index);\\
 \end{tabular}
 }
@@ -473,7 +473,7 @@ During the two phases of unwinding, no registers have a guaranteed value.
     void \_Unwind\_SetGR\\
     \ \ (struct \_Unwind\_Context *context,\\
     \ \ \ int index,\\
-    \ \ \ uint64 new\_value);\\
+    \ \ \ uint32 new\_value);\\
 \end{tabular}
 }
 
@@ -491,7 +491,7 @@ personality routine and the landing pads.
 
 \code{
 \begin{tabular}{l}
-    uint64 \_Unwind\_GetIP\\
+    uint32 \_Unwind\_GetIP\\
     \ \ (struct \_Unwind\_Context *context);\\
 \end{tabular}
 }
@@ -509,7 +509,7 @@ procedure fragment for a function call that is known to not return
 \begin{tabular}{l}
     void \_Unwind\_SetIP\\
     \ \ (struct \_Unwind\_Context *context,\\
-    \ \ \ uint64 new\_value);\\
+    \ \ \ uint32 new\_value);\\
 \end{tabular}
 }
 
@@ -526,7 +526,7 @@ landing pad.
 
 \code{
 \begin{tabular}{l}
-    uint64 \_Unwind\_GetLanguageSpecificData\\
+    uint32 \_Unwind\_GetLanguageSpecificData\\
             (struct \_Unwind\_Context *context);\\
 \end{tabular}
 }
@@ -547,7 +547,7 @@ We could also pass it as an argument to the personality routine.
 
 \code{
 \begin{tabular}{l}
-    uint64 \_Unwind\_GetRegionStart\\
+    uint32 \_Unwind\_GetRegionStart\\
     \ \ (struct \_Unwind\_Context *context);\\
 \end{tabular}
 }

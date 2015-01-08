@@ -1,5 +1,9 @@
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* libraries.tex: Replace uint64 with uint32 when appropriate.
+
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* libraries.tex: Replace AMD\0 with GNUC for example of the high
 	4 bytes in the exception_class field.
 
