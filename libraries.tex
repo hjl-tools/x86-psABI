@@ -216,7 +216,7 @@ The \code{exception\_class} field is a language- and implementation-specific
 identifier of the kind of exception. It allows a personality routine
 to distinguish between native and foreign exceptions, for example.
 By convention, the high 4 bytes indicate the vendor (for instance
-AMD$\backslash$0), and the low 4 bytes indicate the language.  For the C++
+GNUC), and the low 4 bytes indicate the language.  For the C++
 ABI described in this document, the low four bytes are C++$\backslash$0.
 
 The \code{exception\_cleanup} routine is called whenever an exception object
@@ -658,7 +658,7 @@ The personality routine parameters are as follows:
    described below.
 \item[\code{exceptionClass}] An 8-byte identifier specifying the type of the
    thrown exception. By convention, the high 4 bytes indicate the vendor
-   (for instance AMD$\backslash$0), and the low 4 bytes indicate
+   (for instance GNUC), and the low 4 bytes indicate
    the language.  For the C++ ABI described in this document, the low
    four bytes are C++$\backslash$0.  This is not a null-terminated string.
    Some implementations may use no null bytes.
