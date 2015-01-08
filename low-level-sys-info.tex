@@ -271,7 +271,8 @@ at the time of the call.
 
 Padding may be needed to increase the size of each parameter to enforce
 alignment according to the values in Table~\ref{basic-types}.  There is
-an exception for \texttt{_Decimal64}, which is treated as having an
+an exception for \texttt{__m64} and \texttt{_Decimal64}, which are treated
+as having an
 alignment of four for the purposes of parameter passing.  Additional
 padding may be necessary to ensure that the bottom of the parameter block
 (closest to the stack pointer) is at an address which is \code{0 mod 16},

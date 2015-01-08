@@ -1,5 +1,10 @@
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Passing Parameters): Add __m64 to
+	alignment exception.
+
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* object-files.tex (Relocation Types): Correct R_386_GOT32
 	calculation.
 
