@@ -460,7 +460,7 @@ the location of the current unwind descriptors and unwind frame.
 \end{tabular}
 }
 
-This function returns the 64-bit value of the given general register.
+This function returns the 32-bit value of the given general register.
 The register is identified by its index as given in
 table~\ref{tbl-reg-num-map}.
 
@@ -477,7 +477,7 @@ During the two phases of unwinding, no registers have a guaranteed value.
 \end{tabular}
 }
 
-This function sets the 64-bit value of the given register, identified by
+This function sets the 32-bit value of the given register, identified by
 its index as for \code{\_Unwind\_GetGR}.
 
 The behavior is guaranteed only if the function is called during phase 2
@@ -496,7 +496,7 @@ personality routine and the landing pads.
 \end{tabular}
 }
 
-This function returns the 64-bit value of the instruction pointer (IP).
+This function returns the 32-bit value of the instruction pointer (IP).
 
 During unwinding, the value is guaranteed to be the address of the
 instruction immediately following the call site in the function

@@ -1,5 +1,9 @@
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* libraries.tex: Replace 64-bit with 32-bit when appropriate.
+
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex: Replace {figure} with {table} when
 	appropriate.
 
