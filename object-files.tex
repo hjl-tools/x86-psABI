@@ -285,7 +285,7 @@ The following notations are used for specifying relocations in table~
       \texttt{R_386_NONE}  & 0 & none & none \\
       \texttt{R_386_32}    & 1 & \textit{word32} & \texttt{S + A} \\
       \texttt{R_386_PC32}  & 2 & \textit{word32} & \texttt{S + A - P} \\
-      \texttt{R_386_GOT32} & 3 & \textit{word32} & \texttt{G + A} \\
+      \texttt{R_386_GOT32} & 3 & \textit{word32} & \texttt{G + A - GOT} \\
       \texttt{R_386_PLT32} & 4 & \textit{word32} & \texttt{L + A - P} \\
       \texttt{R_386_COPY}  & 5 & none            & none \\
       \texttt{R_386_GLOB_DAT} & 6 & \textit{word32} & \texttt{S} \\

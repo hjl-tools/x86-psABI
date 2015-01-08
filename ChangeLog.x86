@@ -1,5 +1,10 @@
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* object-files.tex (Relocation Types): Correct R_386_GOT32
+	calculation.
+
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* libraries.tex: Replace 64-bit with 32-bit when appropriate.
 
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
