@@ -1,3 +1,7 @@
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* libraries.tex (Unwinding Through Assembler Code): Removed.
+
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* Makefile (INCLUDES): Remove execution.tex.
