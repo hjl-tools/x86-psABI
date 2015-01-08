@@ -1,5 +1,9 @@
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Register Usage): Fix st0 and st1.
+
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex
 	(Return Value Locations for Fundamental Data Types): Fix a typo.
 
