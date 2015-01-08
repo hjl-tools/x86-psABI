@@ -1,5 +1,10 @@
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex: Replace {figure} with {table} when
+	appropriate.
+
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* abi.tex (Revision History): Add date to draft version 0.1.
 
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>

@@ -29,12 +29,12 @@ object, and the term \emph{\textindex{\sixteenbyte{}}} refers to a
 
 \subsubsection{Fundamental Types}
 
-Figure~\ref{basic-types} shows the correspondence between ISO C
+Table~\ref{basic-types} shows the correspondence between ISO C
 scalar types and the processor scalar types.  \code{__float80},
 \code{__float128}, \code{__m64}, \code{__m128} and \code{__m256} types
 are optional.
 
-\begin{figure}
+\begin{table}
   \caption{Scalar Types}\label{basic-types}
 { % Use small here - the table is still too large
   % Has anybody an idea how to shrink the table so that it fits the page?
@@ -126,7 +126,7 @@ Android{\texttrademark} platform is available from
 \url{http://www.android.com/}.}\\
   \end{tabular}
 }
-\end{figure}
+\end{table}
 
 The 128-bit floating-point type uses a 15-bit exponent, a 113-bit
 mantissa (the high order significant bit is implicit) and an exponent
@@ -216,10 +216,10 @@ the x87 control word is callee-saved.
 \label{sec-stack-frame}
 
 In addition to registers, each function has a frame on the run-time
-stack.  This stack grows downwards from high addresses.  Figure~
+stack.  This stack grows downwards from high addresses.  Table~
 \ref{fig-stack-frame} shows the stack organization.
 
-\begin{figure}
+\begin{table}
 \Hrule
   \caption{Stack Frame with Base Pointer}
   \label{fig-stack-frame}
@@ -243,7 +243,7 @@ stack.  This stack grows downwards from high addresses.  Figure~
     \end{tabular}
   \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
 The end of the input argument area shall be aligned on a 16 (32, if
 \texttt{__m256} is passed on stack) byte boundary.  In other
@@ -270,7 +270,7 @@ highest address, that is, it is stored farthest away from the stack pointer
 at the time of the call.
 
 Padding may be needed to increase the size of each parameter to enforce
-alignment according to the values in Figure~\ref{basic-types}.  There is
+alignment according to the values in Table~\ref{basic-types}.  There is
 an exception for \texttt{_Decimal64}, which is treated as having an
 alignment of four for the purposes of parameter passing.  Additional
 padding may be necessary to ensure that the bottom of the parameter block
@@ -293,7 +293,7 @@ If parameters of type \texttt{__m256} are required to be passed on the
 stack, the stack pointer must be aligned on a \code{0 mod 32} byte boundary
 at the time of the call.
 
-\begin{figure}
+\begin{table}
 \Hrule
   \caption{Register Usage}
   \label{fig-reg-usage}
@@ -341,15 +341,15 @@ also used to pass \code{__m128}, \code{__m256} parameters & No\\
 
   \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
 \subsubsection{Returning Values}
 
-Figure~\ref{fig_returning_locations} lists the location used to return a
+Table~\ref{fig_returning_locations} lists the location used to return a
 value for each fundamental data type.  Aggregate types (\texttt{structs}
 and \texttt{unions}) are always returned in memory.
 
-\begin{figure}
+\begin{table}
   \caption{Return Value Locations for Fundamental Data Types}
   \label{fig_returning_locations}
 { % Use small here - the table is still too large
@@ -431,7 +431,7 @@ and \texttt{unions}) are always returned in memory.
 \cline{1-3}
   \end{tabular}
 }
-\end{figure}
+\end{table}
 
 Functions that return scalar floating-point values in registers return
 them on the top of the x87 register stack, that is, \reg{st0}. It is the
@@ -456,12 +456,12 @@ return value via \EAX after the function returns.
 
 As an example of the register passing conventions, consider the
 declarations and the function call shown in
-Figure~\ref{fig_passing_example}.  The corresponding register
-allocation is given in Figure~\ref{fig_allocation_example}, the stack
-frame layout given in Figure~\ref{fig_stack_frame_layout} shows the
-frame before calling the function.
+Table~\ref{fig_passing_example}.  The corresponding register
+allocation is given in Table~\ref{fig_allocation_example}, the stack
+frame layout given in Table~\ref{fig_stack_frame_layout} shows the frame
+before calling the function.
 
-\begin{figure}[H]
+\begin{table}[H]
 \Hrule
 \caption{Parameter Passing Example}
 \label{fig_passing_example}
@@ -489,9 +489,9 @@ func (i, v, s, w, x, y, z);\\
 }
 \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
-\begin{figure}[H]
+\begin{table}[H]
 \Hrule
 \caption{Register Allocation for Parameter Passing Example}
 \label{fig_allocation_example}
@@ -511,9 +511,9 @@ Return value pointer & (\ESP) \\
 \end{tabular}
 \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
-\begin{figure}[H]
+\begin{table}[H]
 \Hrule
 \caption{Stack Layout at the Call}
 \label{fig_stack_frame_layout}
@@ -539,7 +539,7 @@ Return value pointer & 4 bytes  & $\longleftarrow$ \ESP (32-byte aligned)\\
 \end{tabular}
 \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
 When a value of type \code{_Bool} is returned or passed in a register or
 on the stack, bit 0 contains the truth value and bits 1 to 7 shall be
@@ -676,9 +676,9 @@ over-ridden and returns, \code{\_exit()} (which must be immune to user
 interposition).
 
 The initial state of the process stack, i.e. when \code{\_start} is called
-is shown in figure~\ref{initial-stack}.
+is shown in table~\ref{initial-stack}.
 
-\begin{figure}[H]
+\begin{table}[H]
 \Hrule
 \caption{Initial Process Stack}
 \label{initial-stack}
@@ -703,7 +703,7 @@ is shown in figure~\ref{initial-stack}.
     \end{tabular}
   \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
 Argument strings, environment strings, and the auxiliary information
 appear in no specific order within the information block and they
@@ -737,10 +737,10 @@ and the state is private to the thread thereafter.
 \subsection{Auxiliary Vector}
 
 The \textindex{auxiliary vector} is an array of the following structures
-(ref. figure~\ref{fig_auxv_t}),
+(ref. table~\ref{fig_auxv_t}),
 interpreted according to the \code{a\_type} member.
 
-\begin{figure}[H]
+\begin{table}[H]
 \Hrule
 \caption{\code{auxv\_t} Type Definition}
 \label{fig_auxv_t}
@@ -758,11 +758,11 @@ interpreted according to the \code{a\_type} member.
 \end{verbatim}
 \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
-The \xARCH ABI uses the auxiliary vector types defined in figure~\ref{aux-vec}.
+The \xARCH ABI uses the auxiliary vector types defined in table~\ref{aux-vec}.
 
-\begin{figure}[H]
+\begin{table}[H]
 \Hrule
 \caption{Auxiliary Vector Types}
 \label{aux-vec}
@@ -799,7 +799,7 @@ The \xARCH ABI uses the auxiliary vector types defined in figure~\ref{aux-vec}.
     \end{tabular}
   \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
 \begin{description}
 \item[AT_NULL] The auxiliary vector has no fixed length; instead its
@@ -898,7 +898,7 @@ Table~\ref{tbl-reg-num-map}\footnote{The table defines Return Address
 number mapping for the \xARCH processor family.%
 \footnote{This document does not define mappings for privileged registers.}%
 
-\begin{figure}
+\begin{table}
 \Hrule
 \caption{DWARF Register Number Mapping} \label{tbl-reg-num-map}
 \begin{center}
@@ -934,7 +934,7 @@ Reserved                        & 50-92 & \\
 \end{tabular}
 \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
 \section{Stack Unwind Algorithm}
 
@@ -983,7 +983,7 @@ extensions:
   are encoded.  It is a mask of the values specified by the table~
   \ref{tbl-pointer-encoding}.
 
-\begin{figure}
+\begin{table}
 \Hrule
 \caption{Pointer Encoding Specification Byte} \label{tbl-pointer-encoding}
 \begin{center}
@@ -1002,7 +1002,7 @@ extensions:
 \end{tabular}
 \end{center}
 \Hrule
-\end{figure}
+\end{table}
 
 The default DWARF3 pointer encoding (direct 4-byte absolute pointers)
 is represented by value 0.
