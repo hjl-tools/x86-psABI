@@ -149,11 +149,14 @@ single byte objects the value of which is always 0 (\code{false}) or 1
 as arguments), all 4 bytes of the register are significant;
 any nonzero value is considered \code{true}.
 
+\begin{sloppypar}
 The \xARCH architecture in general
 does not require all data accesses to be properly aligned.  Misaligned
 data accesses are slower than aligned accesses
 but otherwise behave identically.  The only exceptions are that
+\code{__float128}, \code{_Complex __float128},  \code{_Decimal128},
 \code{__m128} and \code{__m256} must always be aligned properly.
+\end{sloppypar}
 
 \subsubsection{Aggregates and Unions}
 

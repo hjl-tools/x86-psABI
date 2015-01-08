@@ -1,5 +1,10 @@
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Data Representation): Update alignment
+	requirement for __float128, _Complex __float128 and _Decimal128.
+
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Passing Parameters): Add __m64 to
 	alignment exception.
 
