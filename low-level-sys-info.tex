@@ -325,11 +325,11 @@ of some 64bit return types & No \\
 \EDI & callee-saved register & yes \\
 \reg{xmm0}, \reg{ymm0} & scratch registers; also used to pass and return
 \code{__m128}, \code{__m256} parameters & No\\
-\reg{xmm1}--\reg{xmm2},\\
-\reg{ymm1}--\reg{ymm2} &  scratch registers;
-also used to pass \code{__m128}, \code{__m256} parameters & No\\
-\reg{xmm3}--\reg{xmm7},\\
-\reg{ymm3}--\reg{ymm7} & scratch registers & No\\
+\reg{xmm1}--\reg{xmm2},& scratch registers; also used to pass
+\code{__m128}, & No \\
+\reg{ymm1}--\reg{ymm2} & \code{__m256} parameters & \\
+\reg{xmm3}--\reg{xmm7},& scratch registers & No \\
+\reg{ymm3}--\reg{ymm7} & & \\
 \reg{mm0} & scratch register; also used to pass and return
 \code{__m64} parameter & No\\
 \reg{mm1}--\reg{mm2} & used to pass \code{__m64} parameters & No\\
