@@ -46,7 +46,7 @@ The mangling scheme is straightforward as follows:
    following the traditional UNIX model for Fortran compilers
 \end{itemize}
 
-For examples see figure \ref{fortran-external-names}:
+For examples see figure~\ref{fortran-external-names}:
 
 \begin{figure}[H]
 \Hrule
@@ -79,7 +79,7 @@ For historical reasons, GNU Fortran 77 maps Fortran programs to the C
 ABI, so the data representation can be explained best by providing the
 mapping of Fortran types to C types used by G77 on AMD64\footnote{G77
   provides a header \code{g2c.h} with the equivalent C type
-  definitions for all supported Fortran scalar types.} as in figure
+  definitions for all supported Fortran scalar types.} as in figure~
 \ref{fortran-c-types}.  The ``\code{TYPE*N}'' notation specifies that
 variables or aggregate members of type \code{TYPE} shall occupy
 \code{N} bytes of storage.
@@ -248,13 +248,13 @@ as if the alternate \code{ENTRY} is a separate \code{SUBROUTINE} or
 the result of each of the alternate \code{ENTRY} points must be returned
 as if the alternate \code{ENTRY} is a separate \code{FUNCTION} with the
 result type of the alternate \code{ENTRY}.  The external naming of alternate
-\code{ENTRY} points follows \ref{sub_fortran_names}.
+\code{ENTRY} points follows section~\ref{sub_fortran_names}.
 
 \subsection{COMMON blocks}
 In absence of any \code{EQUIVALENCE} declaration involving variables
 in \code{COMMON} blocks the layout of a 
 \code{COMMON} block is exactly the same as the layout of the equivalent C
-structure (with types of variables substituted according to section
+structure (with types of variables substituted according to section~
 \ref{sub_fortran_types}), including the alignment requirements.
 
 This ABI defines the layout under presence of \code{EQUIVALENCE} statements only
@@ -421,7 +421,7 @@ replaced with \code{N}, for example {\bf C*N}.
 \end{table}
 
 Refer to the Fortran 77 language standard for signature and definition
-of the F77 intrinsics listed in table \ref{intrinsics-f77}.  These intrinsics
+of the F77 intrinsics listed in table~\ref{intrinsics-f77}.  These intrinsics
 can have a prefix as per the standard hence the table is not exhaustive.
 
 \begin{table}[H]
@@ -444,7 +444,7 @@ can have a prefix as per the standard hence the table is not exhaustive.
 \end{table}
 
 Refer to the Fortran 90 language standard for signature and definition
-of the F90 intrinsics listed in table \ref{intrinsics-f90}.
+of the F90 intrinsics listed in table~\ref{intrinsics-f90}.
 
 \begin{table}[H]
 \Hrule

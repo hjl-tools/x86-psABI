@@ -23,7 +23,7 @@ The section is informative only.
 \subsection{Calling Conventions}
 
 The Linux \xARCH kernel uses internally the same calling conventions as user-level
-applications (see section \ref{sec-calling-conventions} for details).
+applications (see section~\ref{sec-calling-conventions} for details).
 User-level applications that like to call system calls should use the
 functions from the C library.  The interface between the C library and
 the Linux kernel is the same as for the user-level applications with
@@ -46,7 +46,7 @@ the following differences:
 
 \subsection{Stack Layout}
 
-The Linux kernel does not honor the \textindex{red zone} (see
+The Linux kernel does not honor the \textindex{red zone} (see section~
 \ref{sec-stack-frame} and therefore this area is not allowed to be
 used by kernel code.  Kernel code should be compiled by GCC with the
 option \code{-mno-red-zone}.

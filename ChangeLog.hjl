@@ -1,3 +1,16 @@
+2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex: Add ~ before \ref to avoid line break.
+	* development.tex: Likewise.
+	* dl.tex: Likewise.
+	* introduction.tex: Likewise.
+	* kernel.tex: Likewise.
+	* low-level-sys-info.tex: Likewise.
+	* object-files.tex: Likewise.
+	* fortran.tex: Add ~ before \ref to avoid line break.  Add
+	reference type before \ref.
+	* libraries.tex: Likewise.
+
 2014-11-12  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* .gitignore: New file.
