@@ -1,3 +1,8 @@
+2015-01-09  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Fundamental Types): Change misaligned
+	data accesses may be slower.
+
 2015-01-08  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (Register Usage): Add float and double
