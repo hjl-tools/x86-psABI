@@ -1,3 +1,7 @@
+2015-01-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Passing Parameters): Fix typos.
+
 2015-01-09  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (Fundamental Types): Change misaligned

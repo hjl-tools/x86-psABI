@@ -284,9 +284,9 @@ to guarantee proper alignment to the callee.
 The exceptions to parameters passed on stack are as follows:
 \begin{itemize}
   \item The first three parameters of type \texttt{__m64} are passed in
-	\reg{mm0}, \reg{mm1}, and \reg{mm1}.
+	\reg{mm0}, \reg{mm1}, and \reg{mm2}.
   \item The first three parameters of type \texttt{__m128} are passed in
-	\reg{xmm0}, \reg{xmm1}, and \reg{xmm1}.\footnote{The SSE and AVX
+	\reg{xmm0}, \reg{xmm1}, and \reg{xmm2}.\footnote{The SSE and AVX
 	registers share resources. Therefore, if the first \texttt{__m128}
 	parameter gets assigned to \reg{xmm0} , the first \texttt{__m256}
 	parameter after that is assigned to \reg{ymm1} and not
