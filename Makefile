@@ -19,7 +19,8 @@ abi.dvi: $(ALL_FILES)
 	latex abi
 	latex abi
 
-pdf abi.pdf: $(ALL_FILES)
+# Depend on abi.dvi to get index.
+pdf abi.pdf: abi.dvi
 	pdflatex abi
 
 ps abi.ps: abi.dvi
@@ -27,5 +28,5 @@ ps abi.ps: abi.dvi
 
 
 clean:
-	rm -f *.log *.aux *.dvi *.ilg *.ind *~ *.idx *.lof *.lot *.out *.pdf *.ps *.toc *.cb \#*\# *.rej
+	rm -f *.log *.aux *.dvi *.ilg *.ind *~ *.idx *.lof *.lot *.out *.pdf *.ps *.toc *.cb* \#*\# *.rej
 

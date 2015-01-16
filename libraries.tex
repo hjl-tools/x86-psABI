@@ -48,12 +48,14 @@ The unwind library interface consists of at least the following routines:\\
 \codeindex{\_Unwind\_ForcedUnwind},\\
 \codeindex{\_Unwind\_GetCFA}
 
+\begin{sloppypar}
 In addition, two data types are defined (\codeindex{\_Unwind\_Context}
 and \codeindex{\_Unwind\_Exception}) to interface a calling runtime
 (such as the C++ runtime) and the above routine. All routines and
 interfaces behave as if defined \texttt{extern "C"}. In particular,
 the names are not mangled. All names defined as part of this interface
 have a \texttt{"\_Unwind\_"} prefix.
+\end{sloppypar}
 
 Lastly, a language and vendor specific personality routine will be
 stored by the compiler in the unwind descriptor for the stack frames
@@ -91,6 +93,7 @@ not given a choice about whether unwinding will proceed is indicated by the
 \codeindex{\_UA\_FORCE\_UNWIND} flag.
 \end{itemize}
 
+\begin{sloppypar}
 To accommodate these differences, two different routines are proposed.
 \codeindex{\_Unwind\_RaiseException} performs exception-style unwinding,
 under control of the personality routines. \codeindex{\_Unwind\_ForcedUnwind},
@@ -99,6 +102,7 @@ opportunity to intercept calls to the personality routine. This is done using
 a proxy personality routine, that intercepts calls to the personality routine,
 letting the external agent override the defaults of the stack frame's
 personality routine.
+\end{sloppypar}
 
 As a consequence, it is not necessary for each personality routine to know
 about any of the possible external agents that may cause an unwind. For
@@ -127,6 +131,7 @@ the API.
 \item If the search phase reports a failure, e.g. because no handler was
 found, it will call \codeindex{terminate()} rather than commence phase 2.
 
+\begin{sloppypar}
 If the search phase reports success, the framework restarts in the
 \emph{cleanup} phase. Again, it repeatedly calls the personality
 routine, with the \codeindex{\_UA\_CLEANUP\_PHASE} flag as described
@@ -134,6 +139,7 @@ below, first for the current \RIP and register state, and then unwinding
 a frame to a new \RIP at each step, until it gets to the frame with
 an identified handler. At that point, it restores the register state,
 and control is transferred to the user landing pad code.
+\end{sloppypar}
 \end {itemize}
 
 Each of these two phases uses both the unwind library and the personality
@@ -302,10 +308,13 @@ In such a case, an \code{\_Unwind\_Reason\_Code} value is returned.
 
 Possibilities are:
 \begin{description}
-\item[\code{\_URC\_END\_OF\_STACK}] The unwinder encountered the end of the
+\item[\code{\_URC\_END\_OF\_STACK}]
+\begin{sloppypar}
+    The unwinder encountered the end of the
    stack during phase 1, without finding a handler. The unwind runtime
    will not have modified the stack. The C++ runtime will normally call
    \code{uncaught\_exception()} in this case.
+\end{sloppypar}
 \item[\code{\_URC\_FATAL\_PHASE1\_ERROR}] The unwinder encountered an unexpected
    error during phase 1, e.g. stack corruption. The unwind runtime will
    not have modified the stack. The C++ runtime will normally call
@@ -345,12 +354,14 @@ can make no assumptions about the state of its stack or registers.
 \end{tabular}
 }
 
+\begin{sloppypar}
 Raise an exception for forced unwinding, passing along the given
 exception object, which should have its \code{exception\_class} and
 \code{exception\_cleanup} fields set. The exception object has been allocated
 by the language-specific runtime, and has a language-specific format,
 except that it must contain an \code{\_Unwind\_Exception} struct (see Exception
 Header above).
+\end{sloppypar}
 
 Forced unwinding is a single-phase process (phase 2 of the normal
 exception-handling process). The \code{stop} and
@@ -442,12 +453,14 @@ end of a landing pad in a "landing-pad" model.
 \end{tabular}
 }
 
+\begin{sloppypar}
 Deletes the given exception object. If a given runtime resumes normal
 execution after catching a foreign exception, it will not know how to
 delete that exception. Such an exception will be deleted by calling
 \code{\_Unwind\_DeleteException}. This is a convenience function that calls
 the function pointed to by the \code{exception\_cleanup} field of the exception
 header.
+\end{sloppypar}
 
 \subsection{Context Management}
 
@@ -537,6 +550,7 @@ landing pad.
 \end{tabular}
 }
 
+\begin{sloppypar}
 This routine returns the address of the language-specific data area for
 the current stack frame.
 
@@ -546,6 +560,7 @@ Information Tables, but since this work has been done for finding the
 personality routine in the first place, it makes sense to cache the
 result in the context.
 We could also pass it as an argument to the personality routine.
+\end{sloppypar}
 
 \subsubsection{\code{\_Unwind\_GetRegionStart}}
 
@@ -695,12 +710,15 @@ more of the following constants: \\
    \code{\_URC\_HANDLER\_FOUND}, or otherwise return \code{\_URC\_CONTINUE\_UNWIND}.
    \code{\_UA\_SEARCH\_PHASE} cannot be set at the same time as \code{\_UA\_CLEANUP\_PHASE}.
 
-\item[\code{\_UA\_CLEANUP\_PHASE}] Indicates that the personality routine should
+\item[\code{\_UA\_CLEANUP\_PHASE}]
+\begin{sloppypar}
+   Indicates that the personality routine should
    perform cleanup for the current frame. The personality routine can perform
    this cleanup itself, by calling nested procedures, and return
    \code{\_URC\_CONTINUE\_UNWIND}. Alternatively, it can setup the registers
    (including the IP) for transferring control to a "landing pad", and
    return \code{\_URC\_INSTALL\_CONTEXT}.
+\end{sloppypar}
 
 \item[\code{\_UA\_HANDLER\_FRAME}]
    During phase 2, indicates to the personality routine that the current
@@ -744,11 +762,13 @@ resources before transferring control to the last (handler) landing pad.
 It does not need to free the resources before entering non-handler
 landing-pads, since \code{\_Unwind\_Resume} will ultimately be called.
 
+\begin{sloppypar}
 The landing pad may receive arguments from the runtime, typically passed
 in registers set using \code{\_Unwind\_SetGR} by the personality routine.
 For a landing pad that can call to \code{\_Unwind\_Resume}, one argument must
 be the \code{exceptionObject} pointer, which must be preserved to be passed to
 \code{\_Unwind\_Resume}.
+\end{sloppypar}
 
 The landing pad may receive other arguments, for instance a switch value
 indicating the type of the exception. Four scratch registers are reserved
@@ -773,12 +793,15 @@ This is true even if it understands the exception object format
 A runtime is not allowed to catch an exception if the
 \code{\_UA\_FORCE\_UNWIND} flag was passed to the personality routine.
 
-\paragraph{Example: Foreign Exceptions in C++.} In C++, foreign exceptions can be
+\paragraph{Example: Foreign Exceptions in C++.}
+\begin{sloppypar}
+In C++, foreign exceptions can be
 caught by a \code{catch(\dots)} statement. They can also be caught as if they
 were of a \code{\_\_foreign\_exception} class, defined in \code{<exception>}. The
 \code{\_\_foreign\_exception} may have subclasses, such as
 \code{\_\_java\_exception} and \code{\_\_ada\_exception}, if the runtime is capable
 of identifying some of the foreign languages.
+\end{sloppypar}
 
 The behavior is undefined in the following cases:
 \begin{itemize}
@@ -836,35 +859,35 @@ are added:
 \item[\codeindex{.cfi\_endproc}] is used at the end of a function
   where it closes its unwind entry previously opened by
   \code{.cfi\_startproc} and emits it to \code{.eh\_frame}.
-  
-\item[\codeindex{.cfi\_def\_cfa}\code{ REGISTER, OFFSET}] defines a
+
+\item[\codeindex{.cfi\_def\_cfa}\code{REGISTER, OFFSET}] defines a
   rule for computing CFA as: take address from REGISTER and add OFFSET
   to it.
   
-\item[\codeindex{.cfi\_def\_cfa\_register}\code{ REGISTER}] modifies a
+\item[\codeindex{.cfi\_def\_cfa\_register}\code{REGISTER}] modifies a
   rule for computing CFA. From now on REGISTER will be used instead of
   the old one. The offset remains the same.
   
-\item[\codeindex{.cfi\_def\_cfa\_offset}\code{  OFFSET}] modifies a rule for
+\item[\codeindex{.cfi\_def\_cfa\_offset}\code{OFFSET}] modifies a rule for
   computing CFA. The register remains the same, but OFFSET is new.
   Note that this is the absolute offset that will be added to a defined
   register to compute the CFA address.
   
-\item[\codeindex{.cfi\_adjust\_cfa\_offset}\code{  OFFSET}] is similar to
+\item[\codeindex{.cfi\_adjust\_cfa\_offset}\code{OFFSET}] is similar to
   \code{.cfi\_def\_cfa\_offset} but OFFSET is a relative value that is
   added or subtracted from the previous offset.
   
-\item[\codeindex{.cfi\_offset}\code{  REGISTER, OFFSET}] saves the previous
+\item[\codeindex{.cfi\_offset}\code{REGISTER, OFFSET}] saves the previous
   value of REGISTER at offset OFFSET from CFA.
   
-\item[\codeindex{.cfi\_rel\_offset}\code{  REGISTER, OFFSET}] saves the
+\item[\codeindex{.cfi\_rel\_offset}\code{REGISTER, OFFSET}] saves the
   previous value of REGISTER at offset OFFSET from the current CFA
   register.  This is transformed to \code{.cfi\_offset} using the
   known displacement of the CFA register from the CFA.  This is often
   easier to use, because the number will match the code it is
   annotating.
   
-\item[\codeindex{.cfi\_escape}\code{ EXPRESSION[, ...]}]  allows the user to
+\item[\codeindex{.cfi\_escape}\code{EXPRESSION[, ...]}]  allows the user to
   add arbitrary bytes to the unwind info.  One might use this to add
   OS-specific CFI opcodes, or generic CFI opcodes that the assembler
   does not support.
