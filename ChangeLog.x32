@@ -1,0 +1,48 @@
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex (author): Add H.J. and Milind.  List the authors in
+	alphabetical order by surname.
+
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex (title): Mention LP64 and ILP32 programming models.
+
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex: Include x32.tex.
+	* x32.tex: New file.
+
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* dl.tex: Document ILP32 program interpreter.
+
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex: Add ILP32 support.  Don't allow ELFCLASS32
+	for LP64.
+	Allow Elf32_Rel relocations within x32 executable files or
+	shared objects.
+	Add wordclass and use it on R_X86_64_GLOB_DAT,
+	R_X86_64_JUMP_SLOT, R_X86_64_RELATIVE, R_X86_64_IRELATIVE.
+	Add R_X86_64_RELATIVE64 for x32.
+	Mark R_X86_64_64, R_X86_64_PC64, R_X86_64_GOTOFF64 and
+	R_X86_64_SIZE64 used only for LP64.
+
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Use \myfontsize instead of \small on
+	Scalar Types table.  Update long, long long and pointer types
+	for ILP32 and LP64.
+	(Architectural Constraints): Add a lebel.
+	Mention small model for ILP32.
+	* macros.tex (myfontsize): New.
+
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* development.tex: Document _LP64 and __LP64__.  Add _ILP32 and
+	__ILP32__ for x32.
+
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* introduction.tex: Add a label.
+	Introduce ILP32 and LP64.

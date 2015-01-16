@@ -5,22 +5,28 @@
 
 \subsection{Machine Information}
 
-For file identification in \texttt{e_ident}, the \xARCH architecture
-requires the following values.
+\subsubsection{Programming Model}
 
-\begin{table}[H]
-\Hrule
-  \caption{\xARCH Identification}
-  \begin{center}
-    \begin{tabular}[t]{l|l}
-      \multicolumn{1}{c}{Position} & \multicolumn{1}{c}{Value} \\
-      \hline
-      \texttt{e_ident[EI_CLASS]} & \texttt{ELFCLASS64} \\
-      \texttt{e_ident[EI_DATA]} & \texttt{ELFDATA2LSB}
-    \end{tabular}
-  \end{center}
-\Hrule
-\end{table}
+As described in Section \ref{intro}, binaries using the \xARCH instruction
+set may program to either a 32-bit model, in which the C data
+types \code{int}, \code{long} and all pointer types are 32-bit objects
+(ILP32); or to a 64-bit model, in which the C code{int} type is 32-bits
+but the C \code{long} type and all pointer types are 64-bit objects (LP64).
+This specification describes both binaries that use the ILP32 and the LP64
+model.
+
+\subsubsection{File Class}
+
+For \xARCH ILP32 objects, the file class value in e_ident[EI_CLASS] must
+be ELFCLASS32. For \xARCH LP64 objects, the file class value must be
+ELFCLASS64.
+
+\subsubsection{Data Encoding}
+
+For the data encoding in e_ident[EI_DATA], \xARCH objects use
+ELFDATA2LSB.
+
+\subsubsection{Processor identification}
 
 Processor identification resides in the ELF headers
 \texttt{e_machine} member and must have the value
@@ -397,6 +403,8 @@ Figure \ref{reloc_fields} shows the allowed relocatable fields.
                   with arbitrary byte alignment.  These values use
                   the same byte order as other word values in the
                   \xARCH architecture. \\
+\textit{wordclass} & This specifies \textit{word64} for LP64 and
+		     specifies \textit{word32} for ILP32. \\
 \end{tabular*}
 
 The following notations are used for specifying relocations in table
@@ -421,13 +429,19 @@ The following notations are used for specifying relocations in table
   relocation entry.
 \end{description}
 
-The \xARCH ABI architectures uses only \texttt{Elf64_Rela} relocation
+The \xARCH LP64 ABI architecture uses only \texttt{Elf64_Rela} relocation
 entries with explicit addends.  The \code{r_addend} member serves as
 the relocation addend.
+
+The \xARCH ILP32 ABI architecture uses only \texttt{Elf32_Rela} relocation
+entries in relocatable files.  Relocations contained within executable
+files or shared objects may use either \texttt{Elf32_Rela} relocation
+or \texttt{Elf32_Rel} relocation.
 
 \begin{table}[H]
 \Hrule
   \caption{Relocation Types}
+  \small
   \label{tab-relocations}
   \begin{center}
     \begin{tabular}[t]{l|r|l|l}
@@ -442,9 +456,9 @@ the relocation addend.
       \texttt{R_X86_64_GOT32} & 3 & \textit{word32} & \texttt{G + A} \\
       \texttt{R_X86_64_PLT32} & 4 & \textit{word32} & \texttt{L + A - P} \\
       \texttt{R_X86_64_COPY}  & 5 & none            & none \\
-      \texttt{R_X86_64_GLOB_DAT} & 6 & \textit{word64} & \texttt{S} \\
-      \texttt{R_X86_64_JUMP_SLOT} & 7 & \textit{word64} & \texttt{S} \\
-      \texttt{R_X86_64_RELATIVE} & 8 & \textit{word64} & \texttt{B + A} \\
+      \texttt{R_X86_64_GLOB_DAT} & 6 & \textit{wordclass} & \texttt{S} \\
+      \texttt{R_X86_64_JUMP_SLOT} & 7 & \textit{wordclass} & \texttt{S} \\
+      \texttt{R_X86_64_RELATIVE} & 8 & \textit{wordclass} & \texttt{B + A} \\
       \texttt{R_X86_64_GOTPCREL} & 9 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_32}    & 10 & \textit{word32} & \texttt{S + A} \\
       \texttt{R_X86_64_32S}   & 11 & \textit{word32} & \texttt{S + A} \\
@@ -460,17 +474,22 @@ the relocation addend.
       \texttt{R_X86_64_DTPOFF32}   & 21 & \textit{word32} &  \\
       \texttt{R_X86_64_GOTTPOFF}   & 22 & \textit{word32} &  \\
       \texttt{R_X86_64_TPOFF32}   & 23 & \textit{word32} &  \\
-      \texttt{R_X86_64_PC64}  & 24 & \textit{word64} & \texttt{S + A - P} \\
-      \texttt{R_X86_64_GOTOFF64} & 25 & \textit{word64} & \texttt{S + A - GOT} \\
+      \texttt{R_X86_64_PC64} $^\dagger$ & 24 & \textit{word64} & \texttt{S + A - P} \\
+      \texttt{R_X86_64_GOTOFF64} $^\dagger$ & 25 & \textit{word64} & \texttt{S + A - GOT} \\
       \texttt{R_X86_64_GOTPC32} & 26 & \textit{word32} & \texttt{GOT + A - P} \\
       \texttt{R_X86_64_SIZE32} & 32 & \textit{word32} & \texttt{Z + A} \\
-      \texttt{R_X86_64_SIZE64} & 33 & \textit{word64} & \texttt{Z + A} \\
+      \texttt{R_X86_64_SIZE64} $^\dagger$ & 33 & \textit{word64} & \texttt{Z + A} \\
       \texttt{R_X86_64_GOTPC32_TLSDESC} & 34 & \textit{word32} &  \\
       \texttt{R_X86_64_TLSDESC_CALL} & 35 & none &  \\
       \texttt{R_X86_64_TLSDESC} & 36 & \textit{word64}$\times 2$ & \\
-      \texttt{R_X86_64_IRELATIVE} & 37 & \textit{word64} & \texttt{indirect (B + A)}\\
+      \texttt{R_X86_64_IRELATIVE} & 37 & \textit{wordclass} & \texttt{indirect (B + A)}\\
+      \texttt{R_X86_64_RELATIVE64} $^{\dagger\dagger}$ & 38 & \textit{word64} & \texttt{B + A} \\
 %      \texttt{R_X86_64_GOT64} & 16 & \textit{word64} & \texttt{G + A} \\
 %      \texttt{R_X86_64_PLT64} & 17 & \textit{word64} & \texttt{L + A - P} \\
+     \cline{1-4}
+    \multicolumn{3}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
+    \multicolumn{3}{l}{\small $^{\dagger\dagger}$ This relocation only
+    appears in ILP32 executable files or shared objects.}\\
     \end{tabular}
   \end{center}
 \Hrule

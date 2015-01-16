@@ -1,3 +1,7 @@
+2015-01-16  H.J. Lu  <hongjiu.lu@intel.com>
+
+	Integrate x32 ABI.  See ChangeLog.x32.
+
 2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* libraries.tex: Add \begin{sloppypar} and \end{sloppypar},

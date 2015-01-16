@@ -345,17 +345,24 @@ use.
 
 \subsection{Program Interpreter}
 
-There is one valid \textindex{program interpreter} for
-programs conforming to the \xARCH ABI:
+The valid \textindex{program interpreter} for programs conforming to the
+\xARCH ABI is listed in Table \ref{interp}, which also contains the
+\textindex{program interpreter} used by Linux.
 
-\bigskip
-\path{/lib/ld64.so.1}
-
-However, Linux puts this in
-
-\bigskip
-\path{/lib64/ld-linux-x86-64.so.2}
-
+\begin{figure}
+  \caption{\xARCH Program Interpreter}
+  \label{interp}
+  \begin{center}
+    \begin{tabular}[t]{l|l|l}
+      \multicolumn{1}{c}{Data Model} & \multicolumn{1}{c}{Path} &
+      \multicolumn{1}{c}{Linux Path} \\
+      \hline
+      LP64 & \path{/lib/ld64.so.1} & \path{/lib64/ld-linux-x86-64.so.2} \\
+      \hline
+      ILP32 & \path{/lib/ldx32.so.1} & \path{/libx32/ld-linux-x32.so.2} \\
+    \end{tabular}
+  \end{center}
+\end{figure}
 
 \subsection{Initialization and Termination Functions}
 

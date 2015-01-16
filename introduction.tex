@@ -1,4 +1,4 @@
-\chapter{Introduction}
+\chapter{Introduction\label{intro}}
 
 The AMD64\footnote{AMD64 has been previously called x86-64.  The
   latter name is used in a number of places out of historical reasons
@@ -14,6 +14,13 @@ support for executing programs that are designed to execute in these
 compatibility modes.  The \xARCH ABI does not apply to such programs;
 this document applies only to programs running in the ``long'' mode
 provided by the \xARCH architecture.
+
+Binaries using the \xARCH instruction set may program to either a 32-bit
+model, in which the C data types \code{int}, \code{long} and all
+pointer types are 32-bit objects (ILP32); or to a 64-bit model,
+in which the C \code{int} type is 32-bits but the C \code{long} type
+and all pointer types are 64-bit objects (LP64). This specification
+covers both LP64 and ILP32 programming models.
 
 Except where otherwise noted, the \xARCH architecture ABI follows the
 conventions described in the \intelabi.  Rather than replicate the
