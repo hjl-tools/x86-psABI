@@ -1,3 +1,9 @@
+2015-01-16  Michael Matz  <matz@suse.de>
+
+	* abi.tex (Authors): Move current editors in front.
+	* object-files.tex (Programming model): Remove redundant text.
+	(File Class, Data Encoding): Use a bit more \texttt.
+
 2015-01-16  H.J. Lu  <hongjiu.lu@intel.com>
 
 	Integrate x32 ABI.  See ChangeLog.x32.
