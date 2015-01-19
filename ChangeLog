@@ -1,3 +1,8 @@
+2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Specify size_t as unsigned int for
+	ILP32.
+
 2015-01-16  Michael Matz  <matz@suse.de>
 
 	* abi.tex (Authors): Move current editors in front.

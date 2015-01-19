@@ -1,3 +1,8 @@
+2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Specify size_t as unsigned int for
+	ILP32.
+
 2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* abi.tex (author): Add H.J. and Milind.  List the authors in
