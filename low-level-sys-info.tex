@@ -1062,6 +1062,14 @@ The \xARCH ABI uses the auxiliary vector types defined in figure \ref{aux-vec}.
 \texttt{AT_EUID}& 12& \texttt{a_val}\\
 \texttt{AT_GID}& 13& \texttt{a_val}\\
 \texttt{AT_EGID}& 14& \texttt{a_val}\\
+\texttt{AT_PLATFORM}& 15& \texttt{a_ptr}\\
+\texttt{AT_HWCAP}& 16& \texttt{a_val}\\
+\texttt{AT_CLKTCK}& 17& \texttt{a_val}\\
+\texttt{AT_SECURE}& 23& \texttt{a_val}\\
+\texttt{AT_BASE_PLATFORM}& 24& \texttt{a_ptr}\\
+\texttt{AT_RANDOM}& 25& \texttt{a_ptr}\\
+\texttt{AT_HWCAP2}& 26& \texttt{a_val}\\
+\texttt{AT_EXECFN}& 31& \texttt{a_ptr}\\
 \hline
     \end{tabular}
   \end{center}
@@ -1111,6 +1119,25 @@ The \xARCH ABI uses the auxiliary vector types defined in figure \ref{aux-vec}.
   real group id of the process.
 \item[AT_EGID] The \code{a_val} member of this entry holds the
   effective group id of the process.
+\item[AT_PLATFORM] The \code{a_ptr} member of this entry points to
+  a string containing the platform name.
+\item[AT_HWCAP] The \code{a_val} member of this entry contains an bitmask
+  of CPU features. It mask to the value returned by CPUID 1.EDX.
+\item[AT_CLKTCK] The \code{a_val} member of this entry contains the
+  frequency at which times() increments.
+\item[AT_SECURE] The \code{a_val} member of this entry contains one
+  if the program is in secure mode (for example started with suid).
+  Otherwise zero.
+\item[AT_BASE_PLATFORM] The \code{a_ptr} member of this entry points to
+  a string identifying the base architecture platform (which may be different
+  from the platform).
+\item[AT_RANDOM] The \code{a_ptr} member of this entry points to 16 securely
+  generated random bytes.
+\item[AT_HWCAP2] The \code{a_val} member of this entry contains the extended
+  hardware feature mask. Currently it is 0, but may contain additional feature
+  bits in the future.
+\item[AT_EXECFN] The \code{a_ptr} member of this entry is a pointer to the
+  file name of the executed program.
 \end{description}
 
 
