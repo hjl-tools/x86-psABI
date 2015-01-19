@@ -136,7 +136,8 @@ i.e., the 64 low-order bits are stored at a a lower address than the
 
 A null pointer (for all types) has the value zero.
 
-The type \codeindex{size\_t} is defined as \code{unsigned long}.
+The type \codeindex{size\_t} is defined as \code{unsigned long} for LP64
+and \code{unsigned int} for ILP32.
 
 Booleans\index{boolean}, when stored in a memory object, are stored as
 single byte objects the value of which is always 0 (\code{false}) or 1
