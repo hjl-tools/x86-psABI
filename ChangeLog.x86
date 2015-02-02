@@ -1,3 +1,7 @@
+2015-02-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Returning Values): Reformat.
+
 2015-01-19  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* abi.tex (Revision History): Update date for draft version 0.1.

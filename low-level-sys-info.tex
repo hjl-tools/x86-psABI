@@ -396,21 +396,22 @@ and \texttt{unions}) are always returned in memory.
     & \texttt{\textit{any-type} *} & \EAX \\
     & \texttt{\textit{any-type} (*)()} & \\
     \hline
-    Floating-& \texttt{float} & \reg{st0} \\
+    & \texttt{float} & \reg{st0} \\
     \cline{2-3}
-    point & \texttt{double} & \reg{st0} \\
+    Floating- & \texttt{double} & \reg{st0} \\
     \cline{2-3}
-    & \texttt{long double} & \reg{st0} \\
+    point & \texttt{long double} & \reg{st0} \\
     \cline{2-3}
     & \texttt{__float80} & \reg{st0} \\
     \cline{2-3}
     & \texttt{__float128} & memory \\
     \hline
-    Complex& \texttt{_Complex float} & \EDX:\EAX \\
-    & & The real part is returned in \EAX. \\
-    & & The imaginary part is returned in \EDX\\
+    & \texttt{_Complex float} & \EDX:\EAX \\
+    & & The real part is returned in \EAX. The imaginary part is
+        returned \\
+    Complex & & in \EDX.\\
     \cline{2-3}
-    Floating-& \texttt{_Complex double} & memory \\
+    floating- & \texttt{_Complex double} & memory \\
     \cline{2-3}
     point & \texttt{_Complex long double} & memory \\
     \cline{2-3}
@@ -418,17 +419,18 @@ and \texttt{unions}) are always returned in memory.
     \cline{2-3}
     & \texttt{_Complex __float128} & memory \\
     \hline
-    Decimal-& \texttt{_Decimal32} & \EAX \\
+    & \texttt{_Decimal32} & \EAX \\
     \cline{2-3}
-    floating-& \texttt{_Decimal64} & \EDX:\EAX \\
-    & & The most significant 32 bits are returned in \EDX.\\
-    & & The least significant 32 bits are returned in \EAX\\
+    Decimal-& \texttt{_Decimal64} & \EDX:\EAX \\
+    floating- & & The most significant 32 bits are returned in \EDX.
+                  The least\\
+    point & & significant 32 bits are returned in \EAX.\\
     \cline{2-3}
-    point & \texttt{_Decimal128} & memory \\
+    & \texttt{_Decimal128} & memory \\
     \hline
-    Packed & \texttt{__m64} & \reg{mm0} \\
+    & \texttt{__m64} & \reg{mm0} \\
     \cline{2-3}
-    & \texttt{__m128} & \reg{xmm0} \\
+    Packed & \texttt{__m128} & \reg{xmm0} \\
     \cline{2-3}
     & \texttt{__m256} & \reg{ymm0} \\
 \noalign{\smallskip}
