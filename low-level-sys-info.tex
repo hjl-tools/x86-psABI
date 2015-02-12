@@ -31,8 +31,8 @@ object, and the term \emph{\textindex{\sixteenbyte{}}} refers to a
 
 Table~\ref{basic-types} shows the correspondence between ISO C
 scalar types and the processor scalar types.  \code{__float80},
-\code{__float128}, \code{__m64}, \code{__m128} and \code{__m256} types
-are optional.
+\code{__float128}, \code{__m64}, \code{__m128}, \code{__m256} and
+\code{__m512} types are optional.
 
 \begin{table}
   \caption{Scalar Types}\label{basic-types}
@@ -110,6 +110,8 @@ are optional.
     & \texttt{__m128}$^{\dagger\dagger}$ & 16 & 16 & SSE and SSE-2 \\
     \cline{2-5}
     & \texttt{__m256}$^{\dagger\dagger}$ & 32 & 32 & AVX \\
+    \cline{2-5}
+    & \texttt{__m512}$^{\dagger\dagger}$ & 64 & 64 & AVX-512 \\
 \noalign{\smallskip}
 \cline{1-5}
 \multicolumn{3}{l}{\small $^\dagger$ This type is called \texttt{bool}
@@ -155,7 +157,8 @@ does not require all data accesses to be properly aligned.  Misaligned
 data accesses may be slower than aligned accesses
 but otherwise behave identically.  The only exceptions are that
 \code{__float128}, \code{_Complex __float128},  \code{_Decimal128},
-\code{__m128} and \code{__m256} must always be aligned properly.
+\code{__m128}, \code{__m256} and \code{__m512} must always be aligned
+properly.
 \end{sloppypar}
 
 \subsubsection{Aggregates and Unions}
@@ -195,10 +198,19 @@ procedures active for a given thread.
 Intel AVX (Advanced Vector Extensions) provides 8 256-bit wide AVX registers
 (\reg{ymm0} - \reg{ymm7}).  The lower 128-bits of \reg{ymm0} - \reg{ymm7}
 are aliased to the respective 128b-bit SSE registers (\reg{xmm0} -
-\reg{xmm7}). For purposes of parameter passing and function return,
-\reg{xmmN} and \reg{ymmN} refer to the same register. Only one of them
-can be used at the same time.  We use vector register to refer to either
-SSE or AVX register.
+\reg{xmm7}).  Intel AVX-512 provides 8 512-bit wide SIMD registers
+(\reg{zmm0} - \reg{zmm7}).  The lower 128-bits of \reg{zmm0} - \reg{zmm7}
+are aliased to the respective 128b-bit SSE registers
+(\reg{xmm0} - \reg{xmm7}.
+The lower 256-bits of \reg{zmm0} - \reg{zmm7}
+are aliased to the respective 256-bit AVX registers
+(\reg{ymm0} - \reg{ymm7}.
+For purposes of parameter passing
+and function return, \reg{xmmN}, \reg{ymmN} and \reg{zmmN} refer to the
+same register. Only one of them can be used at the same time.  We use
+vector register to refer to either SSE, AVX or AVX-512 register.  In
+addition, Intel AVX-512 also provides 8 vector mask registers (\reg{k0}
+- \reg{k7}), each 64-bit wide.
 
 The CPU shall be in x87 mode upon entry to a function.  Therefore,
 every function that uses the \MMX registers is required to issue an
@@ -248,9 +260,10 @@ stack.  This stack grows downwards from high addresses.  Table~
 \Hrule
 \end{table}
 
-The end of the input argument area shall be aligned on a 16 (32, if
-\texttt{__m256} is passed on stack) byte boundary.  In other
-words, the value $(\ESP + 4)$ is always a multiple of $16$ ($32$) when
+The end of the input argument area shall be aligned on a 16 (32 or 64, if
+\texttt{__m256} or \texttt{__m512} is passed on stack) byte boundary.
+In other words, the value $(\ESP + 4)$ is always a multiple of $16$
+($32$ or $64$) when
 control is transferred to the function entry point.  The
 stack pointer, \ESP, always points to the end of the latest allocated
 stack frame.  \footnote{The conventional use of \EBP{} as a frame
@@ -286,11 +299,12 @@ The exceptions to parameters passed on stack are as follows:
   \item The first three parameters of type \texttt{__m64} are passed in
 	\reg{mm0}, \reg{mm1}, and \reg{mm2}.
   \item The first three parameters of type \texttt{__m128} are passed in
-	\reg{xmm0}, \reg{xmm1}, and \reg{xmm2}.\footnote{The SSE and AVX
-	registers share resources. Therefore, if the first \texttt{__m128}
-	parameter gets assigned to \reg{xmm0} , the first \texttt{__m256}
-	parameter after that is assigned to \reg{ymm1} and not
-	\reg{ymm0}.}
+	\reg{xmm0}, \reg{xmm1}, and \reg{xmm2}.\footnote{The SSE, AVX
+	and AVX-512 registers share resources. Therefore, if the first
+	\texttt{__m128} parameter gets assigned to \reg{xmm0} , the
+	first \texttt{__m256}/\texttt{__m512} parameter after that is
+	assigned to \reg{ymm1}/\reg{zmm1} and not
+	\reg{ymm0}/\reg{zmm0}.}
 \end{itemize}
 
 If parameters of type \texttt{__m256} are required to be passed on the
