@@ -50,7 +50,7 @@ In order to allow linking object files of different code models, it is
 necessary to provide for a way to differentiate those sections which may hold
 more than 2GB from those which may not. This is accomplished by defining a
 processor-specific section attribute flag for \code{sh\_flag}
-(see table \ref{sh_flags}).
+(see table~\ref{sh_flags}).
 
 \begin{table}[H]
 \Hrule
@@ -97,7 +97,7 @@ processor-specific section attribute flag for \code{sh\_flag}
  \item[SHT_X86_64_UNWIND]
         This section contains unwind function table entries for
         stack unwinding.  The contents are described in
-        Section \ref{sec_eh_frame} of this document.
+        Section~\ref{sec_eh_frame} of this document.
 \end{description}
 
 \subsection{Special Sections}
@@ -122,11 +122,11 @@ processor-specific section attribute flag for \code{sh\_flag}
  \item[.got] This section holds the global offset table.
  \item[.plt] This section holds the procedure linkage table.
  \item[.eh_frame] This section holds the unwind function table.
-                      The contents are described in Section \ref{sec_eh_frame}
+                      The contents are described in Section~\ref{sec_eh_frame}
                       of this document.
 \end{description}
 
-The additional sections defined in table \ref{large_sections} are used
+The additional sections defined in table~\ref{large_sections} are used
 by a system supporting the large code model.
 
 \begin{table}[H]
@@ -214,7 +214,7 @@ enhanced LSB Chapter 7 for \code{Eh_Frame_Hdr}.
      'P', 'L', or 'R' in any order.  The presence of character(s) in the
      string dictates the content of field 8, the Augmentation Section.  Each
      character has one or two associated operands in the AS (see
-     table \ref{format-cieaug} for which ones).  Operand order
+     table~\ref{format-cieaug} for which ones).  Operand order
      depends on position in the string ('z' must be first). \\
   Code Align Factor & uleb128 & To be multiplied with the
     "Advance Location" instructions in the Call Frame Instructions \\
@@ -226,7 +226,7 @@ enhanced LSB Chapter 7 for \code{Eh_Frame_Hdr}.
 			         uleb128. It is a byte in gcc 3.3.x \\
   Optional CIE Augmentation Section & varying & Present if Augmentation
                      String in Augmentation Section field 4 is not 0. 
-		     See table \ref{format-cieaug} for the content. \\
+		     See table~\ref{format-cieaug} for the content. \\
   Optional Call Frame Instructions & varying & \\
 \hline
     \end{tabular}
@@ -304,7 +304,7 @@ enhanced LSB Chapter 7 for \code{Eh_Frame_Hdr}.
                        value is always absolute) \\
   Optional FDE Augmentation Section & var & Present if CIE Augmentation
                      String is non-empty.
-		     See table \ref{format-fdeaug} for the content. \\
+		     See table~\ref{format-fdeaug} for the content. \\
   Optional Call Frame Instructions & var & \\
 \hline
     \end{tabular}
@@ -344,7 +344,7 @@ the section until the end, counting entries as they are encountered.
 
 \section{Symbol Table}
 
-The discussion of "Function Addresses" in Section \ref{function_addresses}
+The discussion of "Function Addresses" in Section~\ref{function_addresses}
 defines some special values for symbol table fields.
 
 The \texttt{STT_GNU_IFUNC}
@@ -368,7 +368,7 @@ appropriate version.
 
 \subsection{Relocation Types}
 
-Figure \ref{reloc_fields} shows the allowed relocatable fields.
+Figure~\ref{reloc_fields} shows the allowed relocatable fields.
 
 \begin{figure}[H]
 \label{reloc_fields}
@@ -404,7 +404,7 @@ Figure \ref{reloc_fields} shows the allowed relocatable fields.
 		     specifies \textit{word32} for ILP32. \\
 \end{tabular*}
 
-The following notations are used for specifying relocations in table
+The following notations are used for specifying relocations in table~
 \ref{tab-relocations}:
 \begin{description}
 \item[A] Represents the addend used to compute the value of the
@@ -611,7 +611,7 @@ the \texttt{STT_GNU_IFUNC} symbols.
 
 In order to extend both the PLT and the GOT beyond 2GB, it
 is necessary to add appropriate relocation types to handle
-full 64-bit addressing.  See figure \ref{large_relocation_types}.
+full 64-bit addressing.  See figure~\ref{large_relocation_types}.
 
 \begin{table}[H]
 \Hrule

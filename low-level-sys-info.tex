@@ -313,7 +313,7 @@ the x87 control word is callee-saved.
 \label{sec-stack-frame}
 
 In addition to registers, each function has a frame on the run-time
-stack.  This stack grows downwards from high addresses.  Figure
+stack.  This stack grows downwards from high addresses.  Figure~
 \ref{fig-stack-frame} shows the stack organization.
 
 \begin{figure}
@@ -658,8 +658,8 @@ The returning of values is done according to the following algorithm:
 
 As an example of the register passing conventions, consider the
 declarations and the function call shown in
-Figure \ref{fig_passing_example}.  The corresponding register
-allocation is given in Figure \ref{fig_allocation_example}, the stack
+Figure~\ref{fig_passing_example}.  The corresponding register
+allocation is given in Figure~\ref{fig_allocation_example}, the stack
 frame offset given shows the frame before calling the function.
 
 \begin{figure}[H]
@@ -735,7 +735,7 @@ for more information about their differences.
 \subsubsection{Hardware Exception Types}
 The operating system defines the correspondence between hardware
 exceptions and the signals specified by \codeindex{signal}(BA\_OS)
-as shown in table \ref{tab-hw-exceptions}. Contrary to the i386
+as shown in table~\ref{tab-hw-exceptions}. Contrary to the i386
 architecture, the \xARCH does not define any instructions that
 generate a bounds check fault in long mode.
 
@@ -845,7 +845,7 @@ should not expect 0x0 to be a valid address.
 \end{figure}
 
 Although applications may control their memory assignments, the typical
-arrangement appears in figure \ref{fig-cfg}.
+arrangement appears in figure~\ref{fig-cfg}.
 
 \begin{figure}[H]
 \Hrule
@@ -877,7 +877,7 @@ arrangement appears in figure \ref{fig-cfg}.
 The \xARCH architecture defines floating point instructions.  At
 process startup the two floating point units, SSE2 and x87, both have
 all floating-point exception status flags cleared.  The status of the
-control words is as defined in tables \ref{x87-fpucw} and
+control words is as defined in tables~\ref{x87-fpucw} and
 \ref{mxcsr-status}.
 
 \begin{table}[H]
@@ -927,7 +927,7 @@ The \code{rFLAGS} register contains the system flags, such as the
 direction flag and the carry flag.  The low 16 bits (FLAGS portion)
 of \code{rFLAGS} are accessible by
 application software.  The state of them at process initialization
-is shown in table \ref{rflags-status}.
+is shown in table~\ref{rflags-status}.
 
 \begin{table}[H]
 \Hrule
@@ -978,7 +978,7 @@ over-ridden and returns, \code{\_exit()} (which must be immune to user
 interposition).
 
 The initial state of the process stack, i.e. when \code{\_start} is called
-is shown in figure \ref{initial-stack}. 
+is shown in figure~\ref{initial-stack}.
 
 \begin{figure}[H]
 \Hrule
@@ -1039,7 +1039,7 @@ and the state is private to the thread thereafter.
 \subsection{Auxiliary Vector}
 
 The \textindex{auxiliary vector} is an array of the following structures
-(ref. figure \ref{fig_auxv_t}),
+(ref. figure~\ref{fig_auxv_t}),
 interpreted according to the \code{a\_type} member.
 
 \begin{figure}[H]
@@ -1062,7 +1062,7 @@ interpreted according to the \code{a\_type} member.
 \Hrule
 \end{figure}
 
-The \xARCH ABI uses the auxiliary vector types defined in figure \ref{aux-vec}.
+The \xARCH ABI uses the auxiliary vector types defined in figure~\ref{aux-vec}.
 
 \begin{figure}[H]
 \Hrule
@@ -1376,7 +1376,7 @@ large model:
 For the medium model the GOT pointer is directly loaded, for the large
 model
 the absolute value of \code{\%rip} is added to the relative offset to the base
-of the GOT in order to obtain its absolute address (see figure
+of the GOT in order to obtain its absolute address (see figure~
 \ref{large_pic_prolog}).
 
 \subsection{Data Objects}
@@ -1606,7 +1606,7 @@ addressing space, it is necessary to calculate the address
 explicitly\footnote{ If, at code generation-time, it is
 determined that a referred to global data object address is
 resolved within 2GB, the \code{\%rip-relative} addressing
-mode can be used instead. See example in figure
+mode can be used instead. See example in figure~
 \ref{large_rip_rel_addr_abs}.}, not unlike the medium code
 model.
 
@@ -1664,7 +1664,7 @@ data assumes that the GOT address is stored in a dedicated register.
 In these examples we assume it is in \code{\%r15}\footnote{If,
 at code generation-time, it is determined that a referred to global data
 object address is resolved within 2GB, the \code{\%rip-relative}
-addressing mode can be used instead. See example in figure
+addressing mode can be used instead. See example in figure~
 \ref{large_rip_rel_addr_pic}.} (see Function Prologue):
 
 \begin{figure}[H]
@@ -1906,7 +1906,7 @@ branch target. Therefore, a branch target address is
 calculated explicitly \footnote{If, at code generation-time,
 it is determined that the target addresses are within 2GB,
 alternatively, branch target addresses may be calculated
-implicitly (see figure \ref{large_cal_tgt_addr})}. For absolute objects:
+implicitly (see figure~\ref{large_cal_tgt_addr})}. For absolute objects:
 
 \begin{figure}[H]
 \Hrule
@@ -2071,7 +2071,7 @@ the function in vector registers.%
 When \texttt{__m256} or \texttt{__m512} is passed as variable-argument,
 it should always be passed on stack. Only named \texttt{__m256} and
 \texttt{__m512} arguments may be passed in register as specified in
-section \ref{sec-calling-conventions}.
+section~\ref{sec-calling-conventions}.
 
 \begin{figure}[H]
 \Hrule
@@ -2122,7 +2122,7 @@ func (a, m, u, v, b, ld, y, z, n);\\
 The prologue of a function taking a variable argument list and known
 to call the macro \code{va_start} is expected to save the argument
 registers to the \emph{register save area}.  Each argument register
-has a fixed offset in the register save area as defined in the figure
+has a fixed offset in the register save area as defined in the figure~
 \ref{fig-reg-save}.
 
 Only registers that might be used to pass arguments need to be saved.
@@ -2167,7 +2167,7 @@ prevent the initialization of the XMM unit.
 The \code{va_list} type is an array containing a single element of one
 structure
 containing the necessary information to implement the \code{va_arg} macro. The C
-definition of \code{va_list} type is given in figure \ref{fig-va_list}.
+definition of \code{va_list} type is given in figure~\ref{fig-va_list}.
 
 \begin{figure}[H]
 \Hrule
@@ -2220,7 +2220,7 @@ defined as follows:
 
 \begin{enumerate}
 \item
-Determine whether \code{type} may be passed in the registers.  If not go to step \ref{stack}.
+Determine whether \code{type} may be passed in the registers.  If not go to step~\ref{stack}.
 \item
 Compute \code{num_gp} to hold the number of general purpose registers needed to pass \code{type}
 and \code{num_fp} to hold the number of floating point registers needed.
@@ -2228,7 +2228,7 @@ and \code{num_fp} to hold the number of floating point registers needed.
 Verify whether arguments fit into registers.
 In the case:
 $$\code{l->gp_offset} > 48 - \code{num_gp} * 8$$ or $$\code{l->fp_offset} > 304 - \code{num_fp} * 16$$
-go to step \ref{stack}.
+go to step~\ref{stack}.
 \item
   Fetch \code{type} from \code{l->reg_save_area} with an offset of
   \code{l->gp_offset} and/or \code{l->fp_offset}.  This may require
@@ -2257,7 +2257,7 @@ Return the fetched \code{type}.
 \end{enumerate}
 
 The \code{va_arg} macro is usually implemented as a compiler builtin and expanded in
-simplified forms for each particular type.  Figure \ref{fig-va_arg} is a sample
+simplified forms for each particular type.  Figure~\ref{fig-va_arg} is a sample
 implementation of the \code{va_arg} macro.
 \begin{figure}[H]
 \Hrule
@@ -2309,7 +2309,7 @@ requires processor-specific address class codes to be defined.
 
 \subsection{DWARF Register Number Mapping}
 
-Table \ref{tbl-reg-num-map}\footnote{The table defines Return Address
+Table~\ref{tbl-reg-num-map}\footnote{The table defines Return Address
   to have a register number, even though the address is stored in
   0(\RSP) and not in a physical register.}  outlines the register
 number mapping for the \xARCH processor family.%
@@ -2405,7 +2405,7 @@ extensions:
 \item[L] Indicates the encoding (and thus presence) of an LSDA pointer in the FDE augmentation.
   
   The data filed consist of single byte specifying the way pointers
-  are encoded.  It is a mask of the values specified by the table
+  are encoded.  It is a mask of the values specified by the table~
   \ref{tbl-pointer-encoding}.
 
 \begin{figure}
@@ -2453,7 +2453,7 @@ When the augmentation is present, the first command must always be
 
 In order to simplify manipulation of the unwind tables, the runtime
 library provide higher level API to stack unwinding mechanism, for
-details see section \ref{unwindlib}.
+details see section~\ref{unwindlib}.
 
 %%% Local Variables:
 %%% mode: latex

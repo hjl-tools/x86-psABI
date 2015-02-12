@@ -28,7 +28,7 @@ the system expunges them is unspecified.
 
 One aspect of segment loading differs between executable files and
 shared objects. Executable file segments typically contain absolute
-code (see section \ref{sec_coding_examples} ``Coding Examples'').
+code (see section~\ref{sec_coding_examples} ``Coding Examples'').
 For the process to
 execute correctly, the segments must reside at the virtual addresses
 used to build the executable file. Thus the system uses the {\tt p_vaddr}
@@ -70,7 +70,7 @@ The following \xARCH program header types are defined:
 \begin{description}
  \item[PT_GNU_EH_FRAME, PT_SUNW_EH_FRAME and PT_SUNW_UNWIND]
       The segment contains the stack unwind tables.
-      See Section \ref{sec_eh_frame} of this document.
+      See Section~\ref{sec_eh_frame} of this document.
       \footnote{
 	The value for these program headers have been placed in the
 	{\tt PT_LOOS} and {\tt PT_HIOS} (os specific range) in order to adapt
@@ -183,7 +183,7 @@ redirect the entries without compromising the position-independence
 and shareability of the program's text.  Executable files and shared
 object files have separate procedure linkage tables.  Unlike
 \intelabi, this ABI uses the same procedure linkage table for both
-programs and shared objects (see figure \ref{small_med_plt}).
+programs and shared objects (see figure~\ref{small_med_plt}).
 
 \begin{figure}[H]
 \Hrule
@@ -294,7 +294,7 @@ within 2GB of the top of the GOT, it is also allowed to use the same
 PLT layout for a large code model object as that of the small and
 medium code models.}
 
-The PLT is extended as shown in figure \ref{final_large_plt}
+The PLT is extended as shown in figure~\ref{final_large_plt}
 with the assumption that the GOT address is
 in \code{\%r15}\footnote{See Function Prologue.}.
 
