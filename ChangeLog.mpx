@@ -1,34 +1,26 @@
-2014-11-11  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* dl.tex: Remove references to R_X86_64_PC32_BND and
-	R_X86_64_PLT32_BND.  Specify that branches in all BND procedure
-	linkage table entries must have the BFD prefix.
-
-	* object-files.tex: Deprecate R_X86_64_PC32_BND and
-	R_X86_64_PLT32_BND.
-
-2014-01-27  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* dl.tex: Updated for BND Procedure Linkage Table.
-
-2014-01-27  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* dl.tex: Add some spaces in PLT0 example.
-
-2014-01-27  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* dl.tex: Replace 4 1-byte nops with a 4 byte nop in PLT0.
-
-2013-11-13  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* object-files.tex: Add R_X86_64_PC32_BND and R_X86_64_PLT32_BND.
-
-2013-11-13  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
+2015-02-12  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
 	    David Kreitzer  <david.l.kreitzer@intel.com>
 	    H.J. Lu  <hongjiu.lu@intel.com>
 	    Milind Girkar  <milind.girkar@intel.com>
 
-	* low-level-sys-info.tex (Fundamental Types, Bit Fields,
-	Registers and the Stack Frame, The Stack Frame, Classification,
-	Parameter Passing Example, Variable Argument Lists): Add __m512
-	type and AVX512 info.
+	* abi.tex (Authors): Mention Vyacheslav Zakharin.
+	* dl.tex (Procedure Linkage Table (small and medium models)):
+	Renamed to ...
+	(Legacy Procedure Linkage Table (small and medium models)): This.
+	(BND Procedure Linkage Table (small and medium models)): New.
+	(Additional Procedure Linkage Table (small and medium models)):
+	Likewise.
+	* low-level-sys-info.tex (Registers): Add info for Intel MPX
+	bound registers.
+	(Parameter Passing): Add POINTER class.
+	(Classification): Updated for POINTER class.
+	(Passing): Likewise.
+	(Bounds passing): New paragraph.
+	(Returning of Value): Updated for POINTER class.
+	(Returning of Bounds): New paragraph.
+	(Bounds Passing Example): New figure.
+	(Bounds Allocation Example): New figure.
+	(The Register Save Area): Updated for Intel MPX bound registers.
+	(The va_arg Macro): Likewise.
+	* object-files.tex (Relocation Types): Mark relocation numbers
+	39 and 40 as deprecated.
