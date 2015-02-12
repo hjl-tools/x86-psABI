@@ -376,14 +376,7 @@ in \code{\%r15}\footnote{See Function Prologue.}.
 \begin{verbatim}
 .PLT0:  pushq   8(%r15)          # GOT[1]
         jmpq    *16(%r15)        # GOT[2]
-        rep
-        rep
-        rep
-        nop
-        rep
-        rep
-        rep
-        nop
+        nopl    0x0(%rax,%rax,1)
 .PLT1:  movabs  $name1@GOT,%r11  # 16 bytes from .PLT0
         jmp     *(%r11,%r15)
 .PLT1a: pushq   $index1          # "call" dynamic linker

@@ -139,7 +139,8 @@ i.e., the 64 low-order bits are stored at a a lower address than the
 
 A null pointer (for all types) has the value zero.
 
-The type \codeindex{size\_t} is defined as \code{unsigned long}.
+The type \codeindex{size\_t} is defined as \code{unsigned long} for LP64
+and \code{unsigned int} for ILP32.
 
 Booleans\index{boolean}, when stored in a memory object, are stored as
 single byte objects the value of which is always 0 (\code{false}) or 1
@@ -254,7 +255,7 @@ compilation units may use different conventions.  Nevertheless, it is
 recommended that all functions use the standard calling sequence when
 possible.
 
-\subsection{Registers and the Stack Frame}
+\subsection{Registers}
 \label{subsec-registers}
 
 The \xARCH architecture provides 16 general purpose 64-bit registers.
@@ -572,7 +573,7 @@ bit.}.
 \RAX & temporary register; with variable arguments passes
 information about the number of vector registers used; 1$^{\rm st}$
 return register & No \\
-\RBX & callee-saved register; optionally used as base pointer & Yes \\
+\RBX & callee-saved register & Yes \\
 \RCX & used to pass 4$^{\rm th}$ integer argument to functions & No \\
 \RDX & used to pass 3$^{\rm rd}$ argument to functions; 2$^{\rm nd}$ return register & No \\
 \RSP & stack pointer & Yes \\
@@ -584,12 +585,13 @@ return register & No \\
 \reg{r10} & temporary register, used for passing a function's static
 chain pointer & No \\
 \reg{r11} & temporary register & No\\
-\reg{r12--r15} & callee-saved registers & Yes \\
+\reg{r12--r14} & callee-saved registers & Yes \\
+\reg{r15} & callee-saved register; optionally used as GOT base pointer & Yes \\
 \reg{xmm0}--\reg{xmm1} & used to pass and return floating point
 arguments & No\\
 \reg{xmm2}--\reg{xmm7} & used to pass floating point arguments & No\\
 \reg{xmm8}--\reg{xmm15} & temporary registers & No\\
-\reg{mmx0}--\reg{mmx7}& temporary registers & No\\
+\reg{mm0}--\reg{mm7}& temporary registers & No\\
 \reg{k0}--\reg{k7} & temporary registers & No\\
 \reg{st0},\reg{st1} & temporary registers; used to return \code{long double} arguments & No \\
 \reg{st2}--\reg{st7} & temporary registers & No \\
@@ -1222,6 +1224,14 @@ The \xARCH ABI uses the auxiliary vector types defined in figure \ref{aux-vec}.
 \texttt{AT_EUID}& 12& \texttt{a_val}\\
 \texttt{AT_GID}& 13& \texttt{a_val}\\
 \texttt{AT_EGID}& 14& \texttt{a_val}\\
+\texttt{AT_PLATFORM}& 15& \texttt{a_ptr}\\
+\texttt{AT_HWCAP}& 16& \texttt{a_val}\\
+\texttt{AT_CLKTCK}& 17& \texttt{a_val}\\
+\texttt{AT_SECURE}& 23& \texttt{a_val}\\
+\texttt{AT_BASE_PLATFORM}& 24& \texttt{a_ptr}\\
+\texttt{AT_RANDOM}& 25& \texttt{a_ptr}\\
+\texttt{AT_HWCAP2}& 26& \texttt{a_val}\\
+\texttt{AT_EXECFN}& 31& \texttt{a_ptr}\\
 \hline
     \end{tabular}
   \end{center}
@@ -1271,6 +1281,25 @@ The \xARCH ABI uses the auxiliary vector types defined in figure \ref{aux-vec}.
   real group id of the process.
 \item[AT_EGID] The \code{a_val} member of this entry holds the
   effective group id of the process.
+\item[AT_PLATFORM] The \code{a_ptr} member of this entry points to
+  a string containing the platform name.
+\item[AT_HWCAP] The \code{a_val} member of this entry contains an bitmask
+  of CPU features. It mask to the value returned by CPUID 1.EDX.
+\item[AT_CLKTCK] The \code{a_val} member of this entry contains the
+  frequency at which times() increments.
+\item[AT_SECURE] The \code{a_val} member of this entry contains one
+  if the program is in secure mode (for example started with suid).
+  Otherwise zero.
+\item[AT_BASE_PLATFORM] The \code{a_ptr} member of this entry points to
+  a string identifying the base architecture platform (which may be different
+  from the platform).
+\item[AT_RANDOM] The \code{a_ptr} member of this entry points to 16 securely
+  generated random bytes.
+\item[AT_HWCAP2] The \code{a_val} member of this entry contains the extended
+  hardware feature mask. Currently it is 0, but may contain additional feature
+  bits in the future.
+\item[AT_EXECFN] The \code{a_ptr} member of this entry is a pointer to the
+  file name of the executed program.
 \end{description}
 
 
@@ -1424,9 +1453,6 @@ examples and discussion.  They are:
 \begin{itemize}
 \item \code{name@GOT}: specifies the offset to the GOT entry for
       the symbol \code{name} from the base of the GOT.
-\item \code{name@GOTPLT}: specifies the offset to the GOT entry for
-      the symbol \code{name} from the base of the GOT, implying that
-      there is a corresponding PLT entry.
 \item \code{name@GOTOFF}: specifies the offset to the location of
       the symbol \code{name} from the base of the GOT.
 \item \code{name@GOTPCREL}: specifies the offset to the GOT entry
@@ -1688,16 +1714,16 @@ ptr = dst;&& movq& ptr@GOTPCREL(\%rip), \%rax\\
 \code{
 \begin{tabular}{|l|c|ll|}
 \cline{1-1}\cline{3-4}
-ldst[0] = lsrc[0]; && movabsq& lsrc@GOTOFF64, \%rax\\
+ldst[0] = lsrc[0]; && movabsq& lsrc@GOTOFF, \%rax\\
 	   && movl& (\%rax,\%r15), \%eax\\
-	   && movabsq& ldst@GOTOFF64, \%rdx\\
+	   && movabsq& ldst@GOTOFF, \%rdx\\
 	   && movl& \%eax, (\%rdx,\%r15)\\
 &&&\\
-lptr = ldst;&& movabsq& ldst@GOTOFF64, \%rax\\
+lptr = ldst;&& movabsq& ldst@GOTOFF, \%rax\\
            &&addq& \%r15, \%rax\\
            &&movq& \%rax, lptr(\%rip)\\
 &&&\\
-\hbox{}*lptr = lsrc[0];&& movabsq& lsrc@GOTOFF64, \%rax\\
+\hbox{}*lptr = lsrc[0];&& movabsq& lsrc@GOTOFF, \%rax\\
            &&movl& (\%rax,\%r15),\%eax\\
 	   &&movq& lptr(\%rip),\%rdx\\
            &&movl& \%eax, (\%rdx)\\
@@ -1918,7 +1944,7 @@ And in the case of position-independent objects
 \code{extern void foo (void);}    & \verb#      .globl foo                 # \\
 \code{static void bar (void);}    & \verb#Lbar: ...                        # \\
 \hline
-\code{foo ();}                    & \verb#movabs   $foo@GOT,%r11     ; R_x86_64_GOTPLT64 # \\
+\code{foo ();}                    & \verb#movabs   $foo@PLTOFF,%r11  ; R_x86_64_PLTOFF64 # \\
                                   & \verb#call     *(%r11,%r15)      # \\
 \code{bar ();}                    & \verb#movabs   $Lbar@GOTOFF,%r11 ; R_X86_64_GOTOFF64 # \\
                                   & \verb#leaq     (%r11,%r15),%r11  # \\

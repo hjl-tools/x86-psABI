@@ -1,237 +1,53 @@
-2014-11-07  H.J. Lu  <hongjiu.lu@intel.com>
+2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* x32.tex: Require REX prefix to encode instructions with
-	R_X86_64_GOTTPOFF relocation.
+	* low-level-sys-info.tex: Specify size_t as unsigned int for
+	ILP32.
 
-2013-01-10  H.J. Lu  <hongjiu.lu@intel.com>
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* .gitignore: Add .svn.
+	* abi.tex (author): Add H.J. and Milind.  List the authors in
+	alphabetical order by surname.
 
-2012-05-17  H.J. Lu  <hongjiu.lu@intel.com>
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* x32.tex: Mention x32.
+	* abi.tex (title): Mention LP64 and ILP32 programming models.
 
-2012-05-17  H.J. Lu  <hongjiu.lu@intel.com>
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* abi.tex: Replace X32 with ILP32.
-	* development.tex: Likewise.
-	* dl.tex: Likewise.
-	* introduction.tex: Likewise.
-	* low-level-sys-info.tex: Likewise.
-	* object-files.tex: Likewise.
-	* x32.tex: Likewise.
+	* abi.tex: Include x32.tex.
+	* x32.tex: New file.
 
-2012-05-15  H.J. Lu  <hongjiu.lu@intel.com>
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* abi.tex (author): List the authors in alphabetical order by
-	surname.
+	* dl.tex: Document ILP32 program interpreter.
 
-2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* dl.tex: Revert format change.
-	* object-files.tex: Likewise.
+	* object-files.tex: Add ILP32 support.  Don't allow ELFCLASS32
+	for LP64.
+	Allow Elf32_Rel relocations within x32 executable files or
+	shared objects.
+	Add wordclass and use it on R_X86_64_GLOB_DAT,
+	R_X86_64_JUMP_SLOT, R_X86_64_RELATIVE, R_X86_64_IRELATIVE.
+	Add R_X86_64_RELATIVE64 for x32.
+	Mark R_X86_64_64, R_X86_64_PC64, R_X86_64_GOTOFF64 and
+	R_X86_64_SIZE64 used only for LP64.
 
-2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Expand indirect branch.
-
-2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* .gitignore: Add *.ps.
-
-2012-05-14  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Replace 32bits with 32 bits and 64bit with 64-bit.
-	* macros.tex: Update version to 1.0.
-
-2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* development.tex: Add _ILP32 and __ILP32__ for x32.
-
-	* macros.tex: Update version to 0.9.
-
-2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Replace \code\small with \small\code.
-
-2012-04-12  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* introduction.tex: Remove "the".
-
-2012-04-08  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* macros.tex: Update version to 0.8.
-
-2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Add TLS LD value load optimization.
-
-2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Add TLS LD address load optimizations.
-
-2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Fix some typos.
-
-2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Add TLS GD and IE optimizations.
-
-2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Add TLS LD and LE specification.
-
-2012-04-04  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Add TLS GD and IE specification.
-
-2012-02-10  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* macros.tex: Update version to 0.7.
-
-	* development.tex: Also document _LP64 and __LP64__.
-
-2011-08-13  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* macros.tex: Update version to 0.6.
-
-	* object-files.tex: Add R_X86_64_RELATIVE64 for x32.
-
-2011-08-01  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* macros.tex: Update version to 0.5.
-
-	* object-files.tex: Allow R_X86_64_64 for x32.
-
-2011-06-23  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* x32.tex: Remove footnote on pointer passing.
-
-2011-06-23  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* macros.tex: Update version to 0.4.
-
-	* x32.tex: Zero-extend pointer to 64bit when returned or passed
-	in a register.
-
-2011-02-21  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* macros.tex: Update version to 0.3.
-
-	* object-files.tex: Allow Elf32_Rel relocations within x32
-	executable files or shared objects.
-
-2011-02-17  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* object-files.tex: Mark R_X86_64_GLOB_DAT and R_X86_64_JUMP_SLOT
-	with wordclass.
-
-2011-02-16  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* .gitignore: New.
-
-2011-02-16  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* dl.tex: Change x32 ld.so paths to /lib/ldx32.so.1 and
-	/libx32/ld-linux-x32.so.2.
-
-	* macros.tex: Update version to 0.2.
-
-	* object-files.tex: Mark R_X86_64_64, R_X86_64_PC64,
-	R_X86_64_GOTOFF64 and R_X86_64_SIZE64 used only for LP64.
-
-2011-01-19  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* abi.tex: Replace ILP32/ilp32 with ILP32/X32.
-	* dl.tex: Likewise.
-	* introduction.tex: Likewise.
-	* low-level-sys-info.tex: Likewise.
-	* object-files.tex: Likewise.
-
-	* ilp32.tex: Renamed to ...
-	* x32.tex: This.
-
-	* macros.tex (version): Set to 0.1.
-
-2010-12-29  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* object-files.tex: Remove EF_X86_64_ABI32.  Don't allow
-	ELFCLASS32 for LP64.
-
-2010-12-29  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* object-files.tex: Add wordclass.  Update R_X86_64_RELATIVE.
-	Remove R_X86_64_IRELATIVE32.  Restore R_X86_64_IRELATIVE.
-
-2010-12-28  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* object-files.tex: Restore R_X86_64_TLSDESC.  Remove
-	R_X86_64_DTPMOD32 and R_X86_64_TLSDESC32.
-
-2010-12-28  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* ilp32.tex: Mention small PIC model.
-
-2010-12-28  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* low-level-sys-info.tex: Mention small model for ILP32.
-
-2010-12-27  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* abi.tex: Update title.
-
-2010-12-27  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* ilp32.tex: Minor update.
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex: Use \myfontsize instead of \small on
-	Scalar Types table.
-
+	Scalar Types table.  Update long, long long and pointer types
+	for ILP32 and LP64.
+	(Architectural Constraints): Add a lebel.
+	Mention small model for ILP32.
 	* macros.tex (myfontsize): New.
 
-2010-12-27  H.J. Lu  <hongjiu.lu@intel.com>
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* ilp32.tex: Add coding examples for indirect branches.
+	* development.tex: Document _LP64 and __LP64__.  Add _ILP32 and
+	__ILP32__ for x32.
 
-2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* dl.tex: List ILP32 program interpreter.
-
-	* low-level-sys-info.tex: Add ILP32/LP64 to long and long long.
-
-2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* object-files.tex: Rename R_X86_64_TLSDESC to R_X86_64_TLSDESC64.
-	Add R_X86_64_IRELATIVE32, R_X86_64_DTPMOD32 and R_X86_64_TLSDESC32.
-
-2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* abi.tex: Mention ILP32 in title.  Include ilp32.tex.
-
-	* ilp32.tex: New.
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* introduction.tex: Add a label.
-
-	* low-level-sys-info.tex: Add a lebel.
-
-	* object-files.tex: Support ILP32.  Add EF_X86_64_ABI32.
-
-2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* introduction.tex: Minor updates.
-
-2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* abi.tex (author): Add H.J. and Milind.
-
-2010-12-25  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* introduction.tex: Add ILP32 and LP64.
-
-	* low-level-sys-info.tex: Modify long and pointer types for
-	ILP32 and LP64.
-
-	* macros.tex (version): Set to 0.01.
-
-	* Makefile (abi.pdf): Depend on abi.dvi for index.
+	Introduce ILP32 and LP64.

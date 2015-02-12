@@ -1,3 +1,85 @@
+2015-01-17  Andi Kleen  <ak@linux.intel.com>
+
+	* low-level-sys-info.tex (Auxiliary Vector Types): Document
+	AT_PLATFORM, AT_HWCAP, AT_CLKTCK, AT_SECURE, AT_BASE_PLATFORM,
+	AT_RANDOM, AT_HWCAP2 and AT_EXECFN.
+
+2014-12-18  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Specify size_t as unsigned int for
+	ILP32.
+
+2015-01-16  Michael Matz  <matz@suse.de>
+
+	* abi.tex (Authors): Move current editors in front.
+	* object-files.tex (Programming model): Remove redundant text.
+	(File Class, Data Encoding): Use a bit more \texttt.
+
+2015-01-16  H.J. Lu  <hongjiu.lu@intel.com>
+
+	Integrate x32 ABI.  See ChangeLog.x32.
+
+2015-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* libraries.tex: Add \begin{sloppypar} and \end{sloppypar},
+	and remove extra spaces.
+
+2015-01-06  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Registers and the Stack Frame): Renamed
+	to ...
+	(Registers): This.
+
+2015-01-06  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Register Usage): Rename mmx0/mmx7 to
+	mm0/mm7.
+
+2014-12-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* Makefile (abi.pdf): Depend on abi.dvi to get index.
+	(clean): Remove *.cb*.
+
+2014-11-25  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* dl.tex (Procedure Linkage Table (small and medium models)): Use
+	multi-byte nop instead of single-byte nop.
+	(Final Large Code Model PLT): Likewise.
+
+2014-11-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Conventions): Remove name@GOTPLT.
+	* object-files.tex (Large Model Relocation Types): Mark relocation
+	number 30 as deprecated.
+
+2014-11-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Replace @GOTOFF64 with @GOTOFF in
+	medium PIC model data access.
+
+2014-11-13  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex: Correct large model PIC function call
+	example.
+
+2014-11-13  Michael Matz  <matz@suse.de>
+
+	* macros.tex (version): Bump to 0.99.7.
+
+2014-11-13  H.J. Lu  <hjl.tools@gmail.com>
+
+	* low-level-sys-info.tex (Register Usage): The optional GOT
+	register is %r15, not %rbx.
+
+2012-07-02  Michael Matz  <matz@suse.de>
+
+	* introduction.tex: Add missing 'to'.
+
+2012-05-15  Michael Matz  <matz@suse.de>
+
+	* object-files.tex: Use correct google address for ifunc.txt
+	file location.
+
 2012-05-14  Michael Matz  <matz@suse.de>
 
 	* macros.tex (ifpdflocal): Remove, change references to ifpdf,
