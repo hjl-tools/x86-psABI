@@ -1,3 +1,9 @@
+2015-02-19  Michael Matz  <matz@suse.de>
+
+	* low-level-sys-info.tex (DWARF): Remove reference to
+	specific version of DWARF standard (except for one
+	clarification).
+
 2015-02-12  Michael Matz  <matz@suse.de>
 
 	* macros.tex (toplevel): Change color style of hyperlinks

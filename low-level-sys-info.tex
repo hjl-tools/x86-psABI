@@ -2309,16 +2309,14 @@ use the following definitions.
 DWARF is a specification developed for symbolic, source-level debugging.
 The debugging information format does not favor the design of any
 compiler or debugger.  For more information on DWARF,
-see \emph{DWARF Debugging Information Format},
-revision: Version 3, January, 2006, Free Standards Group,
-DWARF Standard Committee.  It's available at:
-\url{http://www.dwarfstd.org/}.
+see \emph{DWARF Debugging Format Standard},
+available at: \url{http://www.dwarfstd.org/}.
 
 \subsection{DWARF Release Number}
 
 The DWARF definition requires some machine-specific definitions.
 The register number mapping needs to be specified for the \xARCH
-registers. In addition, the DWARF Version 3 specification
+registers. In addition, starting with version 3 the DWARF specification
 requires processor-specific address class codes to be defined.
 
 \subsection{DWARF Register Number Mapping}
@@ -2443,7 +2441,7 @@ extensions:
 \Hrule
 \end{figure}
 
-The default DWARF3 pointer encoding (direct 4-byte absolute pointers)
+The default DWARF pointer encoding (direct 4-byte absolute pointers)
 is represented by value 0.
 
 \item[R]  
