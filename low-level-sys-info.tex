@@ -310,55 +310,81 @@ The exceptions to parameters passed on stack are as follows:
 If parameters of type \texttt{__m256} are required to be passed on the
 stack, the stack pointer must be aligned on a \code{0 mod 32} byte boundary
 at the time of the call.
+If parameters of type \texttt{__m512} are required to be passed on the
+stack, the stack pointer must be aligned on a \code{0 mod 64} byte boundary
+at the time of the call.
 
 \begin{table}
 \Hrule
   \caption{Register Usage}
   \label{fig-reg-usage}
+  \small
   \begin{center}
     \begin{tabular}{l|p{8.35cm}|l}
-      \noalign{\smallskip}
-      \multicolumn{1}{c}{} &
-      \multicolumn{1}{c}{}&
+      \hline\noalign{\smallskip}
+      \multicolumn{1}{c|}{} &
+      \multicolumn{1}{c|}{}&
       \multicolumn{1}{l}{Preserved across}\\
-      \multicolumn{1}{c}{Register} &
-      \multicolumn{1}{c}{Usage}&
+      \multicolumn{1}{c|}{Register} &
+      \multicolumn{1}{c|}{Usage}&
       \multicolumn{1}{l}{function calls}\\
       \hline
 \EAX & scratch register; also used to return integer and
 pointer values from functions; also stores the address of a
 returned struct or union & No \\
+\hline
 \EBX & callee-saved register; also used to hold the GOT pointer when
 making function calls via the PLT & Yes \\
+\hline
 \ECX & scratch register & No \\
+\hline
 \EDX & scratch register; also used to return the upper 32bits
 of some 64bit return types & No \\
+\hline
 \ESP & stack pointer & Yes \\
+\hline
 \EBP & callee-saved register; optionally used as frame pointer & Yes \\
-\ESI & callee-saved register & yes \\
-\EDI & callee-saved register & yes \\
-\reg{xmm0}, \reg{ymm0} & scratch registers; also used to pass and return
-\code{__m128}, \code{__m256} parameters & No\\
+\hline
+\ESI & callee-saved register & Yes \\
+\hline
+\EDI & callee-saved register & Yes \\
+\hline
+\reg{xmm0}, \reg{ymm0}, & scratch registers; also used to pass and
+return \\
+\reg{zmm0} & \code{__m128}, \code{__m256}, \code{__m512} parameters & No\\
+\hline
 \reg{xmm1}--\reg{xmm2},& scratch registers; also used to pass
-\code{__m128}, & No \\
-\reg{ymm1}--\reg{ymm2} & \code{__m256} parameters & \\
-\reg{xmm3}--\reg{xmm7},& scratch registers & No \\
-\reg{ymm3}--\reg{ymm7} & & \\
+\code{__m128}, & \\
+\reg{ymm1}--\reg{ymm2}, & \code{__m256}, \code{__m512} parameters & No \\
+\reg{zmm1}--\reg{zmm2} &  & \\
+\hline
+\reg{xmm3}--\reg{xmm7},& scratch registers & \\
+\reg{ymm3}--\reg{ymm7},& & No \\
+\reg{zmm3}--\reg{zmm7} & & \\
+\hline
 \reg{mm0} & scratch register; also used to pass and return
 \code{__m64} parameter & No\\
+\hline
 \reg{mm1}--\reg{mm2} & used to pass \code{__m64} parameters & No\\
+\hline
 \reg{mm3}--\reg{mm7}& scratch registers & No\\
+\hline
 \reg{st0} & scratch register; also used to return \code{float},
 \code{double}, \code{long double}, \code{__float80} parameters & No \\
+\hline
 \reg{st1}--\reg{st7} & scratch registers & No \\
+\hline
 \reg{gs}& Reserved for system (as thread specific data register) & No\\
-\code{mxcsr}& SSE2 control and status word & partial\\
+\hline
+\code{mxcsr}& SSE2 control and status word & Partial\\
+\hline
 \code{x87 SW}& x87 status word & No\\
+\hline
 \code{x87 CW}& x87 control word & Yes\\
+\hline
     \end{tabular}
 
   \end{center}
-\Hrule
 \end{table}
 
 \subsubsection{Returning Values}
@@ -447,6 +473,8 @@ and \texttt{unions}) are always returned in memory.
     Packed & \texttt{__m128} & \reg{xmm0} \\
     \cline{2-3}
     & \texttt{__m256} & \reg{ymm0} \\
+    \cline{2-3}
+    & \texttt{__m512} & \reg{zmm0} \\
 \noalign{\smallskip}
 \cline{1-3}
   \end{tabular}
@@ -495,15 +523,16 @@ typedef struct \{ \\
 \} structparm;\\
 structparm s;\\
 int i;\\
-__m128 v, x, y;\\
+__m128 v, y;\\
 __m256 w, z;\\
+__m512 x, t;\\
 \\
 extern structparm func (int i, __m128 v,\\
 \phantom{extern structparm func (}structparm s, __m256 w,\\
-\phantom{extern structparm func (}__m128 x, __m128 y,\\
-\phantom{extern structparm func (}__m256 z);\\
+\phantom{extern structparm func (}__m512 x, __m128 y,\\
+\phantom{extern structparm func (}__m256 z, __m256 t);\\
 \\
-func (i, v, s, w, x, y, z);\\
+func (i, v, s, w, x, y, z,  t);\\
 \cline{1-1}
 \end{tabular}
 }
@@ -525,9 +554,10 @@ Return value pointer & (\ESP) \\
 \code{v}             & \reg{xmm0} \\
 \code{s}             & 8(\ESP) \\
 \code{w}             & \reg{ymm1} \\
-\code{x}             & \reg{xmm2} \\
+\code{x}             & \reg{zmm2} \\
 \code{y}             & 32(\ESP) \\
 \code{z}             & 64(\ESP) \\
+\code{t}             & 128(\ESP) \\
 \end{tabular}
 \end{center}
 \Hrule
@@ -542,6 +572,10 @@ Return value pointer & (\ESP) \\
 \multicolumn{1}{c}{Contents} &
 \multicolumn{1}{c}{Length}\\
 \cline{1-2}
+\code{t}             & 64 bytes &\\
+\cline{1-2}
+padding              & 32 bytes &\\
+\cline{1-2}
 \code{z}             & 32 bytes &\\
 \cline{1-2}
 padding              & 16 bytes &\\
@@ -554,7 +588,7 @@ padding              & 8 bytes  &\\
 \cline{1-2}
 \code{i}             & 4 bytes  &\\
 \cline{1-2}
-Return value pointer & 4 bytes  & $\longleftarrow$ \ESP (32-byte aligned)\\
+Return value pointer & 4 bytes  & $\longleftarrow$ \ESP (64-byte aligned)\\
 \cline{1-2}
 \end{tabular}
 \end{center}
@@ -579,8 +613,9 @@ registers.  Portable C programs must use the header file
 \code{<stdarg.h>} in order to handle variable argument lists.
 
 When a function taking variable-arguments is called, all parameters are
-passed on the stack, including \texttt{__m64}, \texttt{__m128} and
-\texttt{__m256}.  This rule applies to both named and unnamed parameters.
+passed on the stack, including \texttt{__m64}, \texttt{__m128},
+\texttt{__m256} and \texttt{__m512}.
+This rule applies to both named and unnamed parameters.
 Because parameters are passed differently depending on whether or not the
 called function takes a variable argument list, it is necessary for such
 functions to be properly prototyped.  Failure to do so results in
