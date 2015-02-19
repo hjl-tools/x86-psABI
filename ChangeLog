@@ -1,3 +1,8 @@
+2015-02-12  Michael Matz  <matz@suse.de>
+
+	* macros.tex (toplevel): Change color style of hyperlinks
+	to be dark blue text, not red colored boxes.
+
 2015-01-19  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (Fundamental Types): Add __m512 type and

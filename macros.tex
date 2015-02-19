@@ -84,12 +84,14 @@
 % Long Hrule
 \newcommand{\Hrule}{\noindent\rule{\linewidth}{0.3mm}}
 
+\usepackage{xcolor}
 % Use Hyperref for PDF support - this should be last
 \ifpdf
-\usepackage[pdftex]{hyperref}
+\usepackage[pdftex,colorlinks,linkcolor={blue!50!black}]{hyperref}
 \usepackage{changebar}
 \else
-\usepackage[dvips]{hyperref,changebar}
+\usepackage[dvips,colorlinks,linkcolor={blue!50!black}]{hyperref}
+\usepackage{changebar}
 \fi
 
 % Make `_' an ordinary character.
