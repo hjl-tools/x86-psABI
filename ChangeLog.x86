@@ -1,3 +1,8 @@
+2015-02-19  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Return Value Locations for Fundamental
+	Data Types): Remove an extra |.
+
 2015-02-02  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* abi.tex: Remove Draft.
