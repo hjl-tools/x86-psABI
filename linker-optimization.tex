@@ -1,0 +1,63 @@
+\chapter{Linker Optimization}
+
+This chapter describes optimizations which may be performed by linker.
+
+\section{Combine GOTPLT and GOT Slots}
+In the small and medium models, when there are both PLT and GOT references
+to the same function symbol, normally linker creates a GOTPLT slot for PLT
+entry and a GOT slot for GOT reference.  A run-time JUMP_SLOT relocation is
+created to update the GOTPLT slot and a run-time GLOB_DAT relocation is
+created to update the GOT slot.  Both JUMP_SLOT and GLOB_DAT relocations
+apply the same symbol value to GOTPLT and GOT slots, respectively, at
+run-time.
+
+As an optimization, linker may combine GOTPLT and GOT slots into a single
+GOT slot and remove the run-time JUMP_SLOT relocation.  It replaces the
+regular PLT entry:
+
+\begin{figure}[H]
+\Hrule
+\caption{Procedure Linkage Table Entry Via GOTPLT Slot}
+\label{gotplt_plt}
+\begin{footnotesize}
+\begin{verbatim}
+  .PLT: jmp      [GOTPLT slot]
+        pushq    relocation index
+        jmp      .PLT0
+\end{verbatim}
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+\noindent
+with an GOT PLT entry with an indirect jump via the GOT slot:
+\indent
+
+\begin{figure}[H]
+\Hrule
+\caption{Procedure Linkage Table Entry Via GOT Slot}
+\label{got_plt}
+\begin{footnotesize}
+\begin{verbatim}
+  .PLT: jmp      [GOT slot]
+        nop
+\end{verbatim}
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+\noindent
+and resolves the PLT reference to the GOT PLT entry.  Indirect \code{jmp}
+is an 5-byte instruction.  \code{nop} can be encoded as a 3-byte
+instruction or a 11-byte instruction for 8-byte or 16-byte PLT slot.
+A separate PLT with 8-byte slots may be used for this optimization.
+\indent
+
+This optimization isn't applicable to the \texttt{STT_GNU_IFUNC} symbols
+since their GOTPLT slots are resolved to the selected implementation and
+their GOT slots are resolved to their PLT entries.
+
+This optimization must be avoided if pointer equality is needed since
+the symbol value won't be cleared in this case and the dynamic linker
+won't update the GOT slot.  Otherwise, the resulting binary will get
+into an infinite loop at run-time.
