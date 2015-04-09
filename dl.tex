@@ -183,12 +183,12 @@ redirect the entries without compromising the position-independence
 and shareability of the program's text.  Executable files and shared
 object files have separate procedure linkage tables.  Unlike
 \intelabi, this ABI uses the same procedure linkage table for both
-programs and shared objects (see figure~\ref{small_med_plt}).
+programs and shared objects (see figure~\ref{legacy_small_med_plt}).
 
 \begin{figure}[H]
 \Hrule
-\caption{Procedure Linkage Table (small and medium models)}
-\label{small_med_plt}
+\caption{Legacy Procedure Linkage Table (small and medium models)}
+\label{legacy_small_med_plt}
 \begin{footnotesize}
 \begin{verbatim}
   .PLT0: pushq    GOT+8(%rip)                 # GOT[1]
@@ -201,6 +201,74 @@ programs and shared objects (see figure~\ref{small_med_plt}).
          pushq    $index2
          jmp      .PLT0
   .PLT3: ...
+\end{verbatim}%$
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+To preserve bound registers for symbol lookup in branch instructions
+with the \texttt{BND} (\code{0xf2}) prefix, linker should generate the
+BND procedure linkage table (see figure \ref{bnd_small_med_plt}) together
+with an additioal procedure linkage table (see figure
+\ref{ext_small_med_plt}).
+
+\begin{figure}[H]
+\Hrule
+\caption{BND Procedure Linkage Table (small and medium models)}
+\label{bnd_small_med_plt}
+\begin{footnotesize}
+\begin{verbatim}
+  .PLT0: pushq    GOT+8(%rip)                 # GOT[1]
+         bnd jmp  *GOT+16(%rip)               # GOT[2]
+         nopl     (%rax)
+  .PLT1: pushq    $index1                     # 16 bytes from .PLT0
+         bnd jmp  PLT0
+         nopl     0(%rax,%rax,1)
+  .PLT2: pushq    $index2                     # 16 bytes from .PLT1
+         bnd jmp  .PLT0
+         nopl     0(%rax,%rax,1)
+  .PLT3: ...
+\end{verbatim}%$
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+\begin{figure}[H]
+\Hrule
+\caption{Additional Procedure Linkage Table (small and medium models)}
+\label{ext_small_med_plt}
+\begin{footnotesize}
+\begin{verbatim}
+  .APLT1: bnd jmp  name1@GOTPCREL(%rip)
+          nop
+  .APLT2: bnd jmp  name2@GOTPCREL(%rip)       # 8 bytes from .APLT1
+          nop
+  .APLT3: ...                                 # 8 bytes from .APLT2
+\end{verbatim}%$
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+To support indirect branches with the \texttt{BND} (\code{0xf2}) prefix
+(see figure \ref{indirect_branch}), branches in all BND procedure linkage
+table entries must have the \texttt{BND} (\code{0xf2}) prefix.
+
+\begin{figure}[H]
+\Hrule
+\caption{Indirect branch}
+\label{indirect_branch}
+\begin{footnotesize}
+\begin{verbatim}
+  movq     fp@GOTPCREL(%rip), %rax
+  bnd jmp  *(%rax)
+  ...
+  .globl   fp
+  .section .data.rel,"aw",@progbits
+  .align   8
+  .type    fp, @object
+  .size    fp, 8
+fp:
+  .quad    memcpy
 \end{verbatim}%$
 \end{footnotesize}
 \Hrule
@@ -223,7 +291,10 @@ linkage table and the global offset table.
 \item The first instruction jumps to the address in the global offset
   table entry for \code{name1}.  Initially the global offset table
   holds the address of the following \code{pushq} instruction, not the
-  real address of \code{name1}.
+  real address of \code{name1}.  When the BND procedure linkage table
+  is used, the initial value of the global offset table is the
+  address of the corresponding entry of the additional procedure
+  linkage table.
 \item Now the program pushes a relocation index (\textit{index}) on
   the stack. The relocation index is a 32-bit, non-negative index into
   the relocation table addressed by the \codeindex{DT_JMPREL} dynamic

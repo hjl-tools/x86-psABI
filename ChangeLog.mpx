@@ -1,0 +1,26 @@
+2015-04-09  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
+	    David Kreitzer  <david.l.kreitzer@intel.com>
+	    H.J. Lu  <hongjiu.lu@intel.com>
+	    Milind Girkar  <milind.girkar@intel.com>
+
+	* dl.tex (Procedure Linkage Table (small and medium models)):
+	Renamed to ...
+	(Legacy Procedure Linkage Table (small and medium models)): This.
+	(BND Procedure Linkage Table (small and medium models)): New.
+	(Additional Procedure Linkage Table (small and medium models)):
+	Likewise.
+	* low-level-sys-info.tex (Registers): Add info for Intel MPX
+	bound registers.
+	(Parameter Passing): Add POINTER class.
+	(Classification): Updated for POINTER class.
+	(Passing): Likewise.
+	(Registers Usage): Add \small.  Add bnd0 to bnd3.
+	(Bounds passing): New paragraph.
+	(Returning of Value): Updated for POINTER class.
+	(Returning of Bounds): New paragraph.
+	(Bounds Passing Example): New figure.
+	(Bounds Allocation Example): New figure.
+	(The Register Save Area): Updated for Intel MPX bound registers.
+	(The va_arg Macro): Likewise.
+	* object-files.tex (Relocation Types): Use \myfontsize instead of
+	\small.  Mark relocation numbers 39 and 40 as deprecated.
