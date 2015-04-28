@@ -85,7 +85,7 @@ and \code{__float128} types are optional.
     \cline{2-5}
     & \texttt{__float80}$^{\dagger\dagger}$  & 12 & 4 & 80-bit extended (IEEE-754) \\
     \cline{2-5}
-    & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 16 & 128-bit extended (IEEE-754) \\
+    & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 4 & 128-bit extended (IEEE-754) \\
     \hline
     Complex& \texttt{_Complex float} & 8 & 4 & complex single (IEEE-754) \\
     \cline{2-5}
@@ -94,13 +94,13 @@ and \code{__float128} types are optional.
     \cline{2-5}
     & \texttt{_Complex __float80}$^{\dagger\dagger}$  & 24 & 4 & complex 80-bit extended (IEEE-754) \\
     \cline{2-5}
-    & \texttt{_Complex __float128}$^{\dagger\dagger}$ & 32 & 16 & complex 128-bit extended (IEEE-754) \\
+    & \texttt{_Complex __float128}$^{\dagger\dagger}$ & 32 & 4 & complex 128-bit extended (IEEE-754) \\
     \hline
     Decimal-& \texttt{_Decimal32} & 4 & 4 & 32bit BID (IEEE-754R) \\
     \cline{2-5}
-    floating-& \texttt{_Decimal64} & 8 & 8 & 64bit BID (IEEE-754R) \\
+    floating-& \texttt{_Decimal64} & 8 & 4 & 64bit BID (IEEE-754R) \\
     \cline{2-5}
-    point & \texttt{_Decimal128} & 16 & 16 & 128bit BID (IEEE-754R) \\
+    point & \texttt{_Decimal128} & 16 & 4 & 128bit BID (IEEE-754R) \\
 \cline{1-5}
 \multicolumn{3}{l}{\small $^\dagger$ This type is called \texttt{bool}
 in C++.}\\
@@ -145,6 +145,12 @@ a multiple of the object`s alignment.
 
 Structure and union objects can require padding to meet size and
 alignment constraints.  The contents of any padding is undefined.
+
+\paragraph{Scalar-class Aggregates}
+
+Scalar-class aggregate types (\texttt{structs} and \texttt{unions}) are
+aggregate types no larger than 4 bytes, whose fields are scalars or
+other scalar-class aggregate types.
 
 %%% SUN <examples - add diagrams>
 
@@ -222,40 +228,19 @@ registers or pushed on the stack.
 
 \subsubsection{Passing Parameters}
 
-Most parameters are passed on the stack. Parameters are pushed onto the
+The first three parameters of scalar types no larger than 4 bytes or
+scalar-class aggregate types (\texttt{structs} and \texttt{unions})
+are passed in \reg{eax}, \reg{edx}, and \reg{ecx}.  The rest of parameters
+are passed on the stack. Parameters are pushed onto the
 stack in reverse order - the last argument in the parameter list has the
 highest address, that is, it is stored farthest away from the stack pointer
 at the time of the call.
 
 Padding may be needed to increase the size of each parameter to enforce
-alignment according to the values in Table~\ref{basic-types}.  There is
-an exception for \texttt{__m64} and \texttt{_Decimal64}, which are treated
-as having an
-alignment of four for the purposes of parameter passing.  Additional
+alignment according to the values in Table~\ref{basic-types}.  Additional
 padding may be necessary to ensure that the bottom of the parameter block
-(closest to the stack pointer) is at an address which is \code{0 mod 16},
+(closest to the stack pointer) is at an address which is \code{0 mod 4},
 to guarantee proper alignment to the callee.
-
-The exceptions to parameters passed on stack are as follows:
-\begin{itemize}
-  \item The first three parameters of type \texttt{__m64} are passed in
-	\reg{mm0}, \reg{mm1}, and \reg{mm2}.
-  \item The first three parameters of type \texttt{__m128} are passed in
-	\reg{xmm0}, \reg{xmm1}, and \reg{xmm2}.\footnote{The SSE, AVX
-	and AVX-512 registers share resources. Therefore, if the first
-	\texttt{__m128} parameter gets assigned to \reg{xmm0} , the
-	first \texttt{__m256}/\texttt{__m512} parameter after that is
-	assigned to \reg{ymm1}/\reg{zmm1} and not
-	\reg{ymm0}/\reg{zmm0}.}
-\end{itemize}
-
-If parameters of type \texttt{__m256} are required to be passed on the
-stack, the stack pointer must be aligned on a \code{0 mod 32} byte boundary
-at the time of the call.
-
-If parameters of type \texttt{__m512} are required to be passed on the
-stack, the stack pointer must be aligned on a \code{0 mod 64} byte boundary
-at the time of the call.
 
 \begin{table}
 \Hrule
@@ -311,7 +296,12 @@ of some 64bit return types & No \\
 
 Table~\ref{fig_returning_locations} lists the location used to return a
 value for each fundamental data type.  Aggregate types (\texttt{structs}
-and \texttt{unions}) are always returned in memory.
+and \texttt{unions}) are returned as follows:
+
+\begin{itemize}
+  \item Scalar-class aggregate types are returned in \reg{eax}.
+  \item Other aggregate types are returned in memory.
+\end{itemize}
 
 \begin{table}
   \caption{Return Value Locations for Fundamental Data Types}

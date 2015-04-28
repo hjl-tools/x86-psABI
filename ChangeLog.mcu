@@ -1,3 +1,12 @@
+2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Fundamental Types): Change alignments
+	of __float128, _Decimal64 and _Decimal128 to 4.
+	(Scalar-class Aggregates): New paragraph.
+	(Passing Parameters): Pass the first 3 scalars or scalar-class
+	aggregates in registers.  Remove vector arguments.
+	(Returning Values): Return scalar-class aggregates in EAX.
+
 2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (The Stack Frame): Require 4-byte stack
