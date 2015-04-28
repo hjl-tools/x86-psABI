@@ -1,6 +1,39 @@
 
 \chapter{Object Files}
 
+\section{ELF Header}
+
+\subsection{Machine Information}
+
+\subsubsection{File Class}
+
+For \xARCH objects, the file class value in \texttt{e_ident[EI_CLASS]}
+must be \texttt{ELFCLASS32}.
+
+\subsubsection{Data Encoding}
+
+For the data encoding in \texttt{e_ident[EI_DATA]}, \xARCH objects use
+\texttt{ELFDATA2LSB}.
+
+\subsubsection{Processor identification}
+
+Processor identification resides in the ELF headers
+\texttt{e_machine} member and must have the value
+\texttt{EM_IA_MCU}.\footnote{The value of this identifier is 6.}
+
+\subsection{Number of Program Headers}
+
+The \texttt{e_phnum} member contains the number of entries in the program
+header table. The product of
+\texttt{e_phentsize} and \texttt{e_phnum} gives the table's size in bytes.
+If a file has no program header table, \texttt{e_phnum} holds the value zero.
+
+If the number of program headers is greater than or equal to
+\code{PN_XNUM} (0xffff), this member has the value \code{PN_XNUM} (0xffff).
+The actual number of program header table entries is contained in
+the \texttt{sh_info} field of the section header at index 0. Otherwise,
+the \texttt{sh_info} member of the initial entry contains the value zero.
+
 \section{Sections}
 
 \subsection{Special Sections}
