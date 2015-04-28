@@ -1,5 +1,9 @@
 2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (enum): Bump to an unsigned int.
+
+2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* introduction.tex: Replace Intel386TM with Intel386{\texttrademark}.
 
 2015-03-04  H.J. Lu  <hongjiu.lu@intel.com>
