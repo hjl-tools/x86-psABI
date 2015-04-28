@@ -3,20 +3,8 @@
 This document is a supplement to the existing \xARCH System V
 Application Binary Interface (ABI) document available at
 \url{http://www.sco.com/developers/devspecs/abi386-4.pdf},
-which describes the Linux IA-32 ABI for processors compatible with the
+which describes the ABI for processors compatible with the
 \xARCH Architecture.
-
-Intel processors released after the Pentium processors (Pentium 4,
-Intel Core, and later), have introduced new architecture features,
-particularly new registers and corresponding instructions to operate on
-the registers, like the MMX, Intel SSE(1-4), and Intel AVX instruction
-set extensions. The C/C++ programming languages have evolved to allow
-programmers to use new data types (for example, \code{__m64},
-\code{__m128}, and \code{__m256}). Many compilers (including the Intel
-compiler and GCC) have supported these data types for some time. Other
-features in tools (for example, the decimal floating point types, 64-bit
-integers, exception handling, and so on) have also been developed since
-the original ABI was written.
 
 This document describes the conventions and constraints on the
 implementation of these new features for interoperability between
