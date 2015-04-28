@@ -204,10 +204,8 @@ stack.  This stack grows downwards from high addresses.  Table~
 \Hrule
 \end{table}
 
-The end of the input argument area shall be aligned on a 16 (32 or 64, if
-\texttt{__m256} or \texttt{__m512} is passed on stack) byte boundary.
-In other words, the value $(\ESP + 4)$ is always a multiple of $16$
-($32$ or $64$) when
+The end of the input argument area shall be aligned on a 4 byte boundary.
+In other words, the value $(\ESP + 4)$ is always a multiple of $4$ when
 control is transferred to the function entry point.  The
 stack pointer, \ESP, always points to the end of the latest allocated
 stack frame.  \footnote{The conventional use of \EBP{} as a frame
