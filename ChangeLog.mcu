@@ -1,0 +1,7 @@
+2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex (author): Move David, Milind and Zia to Intel386 psABI.
+	Replace Intel386 Architecture Processor with Intel Architecture
+	MCU.
+	* macros.tex (version): Set to 0.0.1.
+	Replace Intel386 with IA MCU.
