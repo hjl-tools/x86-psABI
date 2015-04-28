@@ -31,8 +31,7 @@ object, and the term \emph{\textindex{\sixteenbyte{}}} refers to a
 
 Table~\ref{basic-types} shows the correspondence between ISO C
 scalar types and the processor scalar types.  \code{__float80},
-\code{__float128}, \code{__m64}, \code{__m128}, \code{__m256} and
-\code{__m512} types are optional.
+and \code{__float128} types are optional.
 
 \begin{table}
   \caption{Scalar Types}\label{basic-types}
@@ -82,20 +81,18 @@ scalar types and the processor scalar types.  \code{__float80},
     Floating-& \texttt{float} & 4 & 4 & single (IEEE-754) \\
     \cline{2-5}
     point & \texttt{double} & 8 & 4 & double (IEEE-754) \\
-    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & & & \\
+    & \texttt{long double} & & & \\
     \cline{2-5}
     & \texttt{__float80}$^{\dagger\dagger}$  & 12 & 4 & 80-bit extended (IEEE-754) \\
-    & \texttt{long double}$^{\dagger\dagger\dagger\dagger}$  & & & \\
     \cline{2-5}
     & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 16 & 128-bit extended (IEEE-754) \\
     \hline
     Complex& \texttt{_Complex float} & 8 & 4 & complex single (IEEE-754) \\
     \cline{2-5}
     Floating-& \texttt{_Complex double} & 16 & 4 & complex double (IEEE-754) \\
-    point & \texttt{_Complex long double}$^{\dagger\dagger\dagger\dagger}$ & & & \\
+    point & \texttt{_Complex long double} & & & \\
     \cline{2-5}
     & \texttt{_Complex __float80}$^{\dagger\dagger}$  & 24 & 4 & complex 80-bit extended (IEEE-754) \\
-    & \texttt{_Complex long double}$^{\dagger\dagger\dagger\dagger}$  & & & \\
     \cline{2-5}
     & \texttt{_Complex __float128}$^{\dagger\dagger}$ & 32 & 16 & complex 128-bit extended (IEEE-754) \\
     \hline
@@ -104,15 +101,6 @@ scalar types and the processor scalar types.  \code{__float80},
     floating-& \texttt{_Decimal64} & 8 & 8 & 64bit BID (IEEE-754R) \\
     \cline{2-5}
     point & \texttt{_Decimal128} & 16 & 16 & 128bit BID (IEEE-754R) \\
-    \hline
-    Packed & \texttt{__m64}$^{\dagger\dagger}$ & 8 & 8 & \MMX{} and \threednow \\
-    \cline{2-5}
-    & \texttt{__m128}$^{\dagger\dagger}$ & 16 & 16 & SSE and SSE-2 \\
-    \cline{2-5}
-    & \texttt{__m256}$^{\dagger\dagger}$ & 32 & 32 & AVX \\
-    \cline{2-5}
-    & \texttt{__m512}$^{\dagger\dagger}$ & 64 & 64 & AVX-512 \\
-\noalign{\smallskip}
 \cline{1-5}
 \multicolumn{3}{l}{\small $^\dagger$ This type is called \texttt{bool}
 in C++.}\\
@@ -120,25 +108,18 @@ in C++.}\\
 \multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger}$ C++ and some
 implementations of C permit enums larger than an int.  The underlying
 type is bumped to an unsigned int.}\\
-\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger}$
-The \texttt{long double} type is 64-bit, the same as the \texttt{double}
-type, on the Android{\texttrademark} platform.  More information on the
-Android{\texttrademark} platform is available from
-\url{http://www.android.com/}.}\\
   \end{tabular}
 }
 \end{table}
 
 The 128-bit floating-point type uses a 15-bit exponent, a 113-bit
 mantissa (the high order significant bit is implicit) and an exponent
-bias of 16383.\footnote{Initial implementations of the \xARCH
-  architecture are expected to support operations on the
-  128-bit floating-point  type only via software emulation.}
+bias of 16383.
 
 The 80-bit floating-point type uses a 15 bit exponent, a 64-bit mantissa
 with an explicit high order significant bit and an exponent bias of
-16383.\footnote{This type is the x87 double extended precision data
-  type.} 
+16383.\footnote{This type is the same as the x87 double extended
+  precision data type.}
 
 A null pointer (for all types) has the value zero.
 

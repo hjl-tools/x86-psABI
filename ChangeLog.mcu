@@ -1,5 +1,9 @@
 2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Fundamental Types): Remove vector types.
+
+2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* object-files.tex (ELF Header): Add EM_IA_MCU.
 
 2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
