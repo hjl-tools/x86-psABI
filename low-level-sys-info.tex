@@ -164,43 +164,12 @@ possible.
 \label{subsec-registers}
 
 The \xARCH architecture provides 8 general purpose 32-bit registers.
-In addition the architecture provides 8 SSE registers, each 128 bits
-wide and 8 x87 floating point registers, each 80 bits wide.  Each of
-the x87 floating point registers may be referred to in \MMX
-mode as a 64-bit register.  All of these registers are global to all
-procedures active for a given thread.
+All registers are global to all procedures active for a given thread.
 
-Intel AVX (Advanced Vector Extensions) provides 8 256-bit wide AVX registers
-(\reg{ymm0} - \reg{ymm7}).  The lower 128-bits of \reg{ymm0} - \reg{ymm7}
-are aliased to the respective 128b-bit SSE registers (\reg{xmm0} -
-\reg{xmm7}).  Intel AVX-512 provides 8 512-bit wide SIMD registers
-(\reg{zmm0} - \reg{zmm7}).  The lower 128-bits of \reg{zmm0} - \reg{zmm7}
-are aliased to the respective 128b-bit SSE registers
-(\reg{xmm0} - \reg{xmm7}.
-The lower 256-bits of \reg{zmm0} - \reg{zmm7}
-are aliased to the respective 256-bit AVX registers
-(\reg{ymm0} - \reg{ymm7}.
-For purposes of parameter passing
-and function return, \reg{xmmN}, \reg{ymmN} and \reg{zmmN} refer to the
-same register. Only one of them can be used at the same time.  We use
-vector register to refer to either SSE, AVX or AVX-512 register.  In
-addition, Intel AVX-512 also provides 8 vector mask registers (\reg{k0}
-- \reg{k7}), each 64-bit wide.
-
-The CPU shall be in x87 mode upon entry to a function.  Therefore,
-every function that uses the \MMX registers is required to issue an
-\op{emms} or \op{femms} instruction after using \MMX registers, before
-returning or calling another function.  \footnote{All x87 registers
-are caller-saved, so callees that make use of the \MMX registers may
-use the faster \op{femms} instruction.}  The direction flag \code{DF} in the
+The direction flag \code{DF} in the
 \reg{EFLAGS} register must be clear (set to ``forward'' direction) on function
 entry and return.  Other user flags have no specified role in the
 standard calling sequence and are {\em not} preserved across calls.
-
-The control bits of the \code{MXCSR} register are callee-saved
-(preserved across calls), while the status bits are caller-saved (not
-preserved).  The x87 status word register is caller-saved, whereas
-the x87 control word is callee-saved.
 
 \subsection{The Stack Frame}
 \label{sec-stack-frame}

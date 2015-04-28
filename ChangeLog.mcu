@@ -1,5 +1,10 @@
 2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Registers): Remove vector and x87
+	registers.
+
+2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Fundamental Types): Remove alignment
 	exceptions.
 
