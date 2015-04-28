@@ -1,5 +1,10 @@
 2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Fundamental Types): Remove alignment
+	exceptions.
+
+2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Fundamental Types): Remove vector types.
 
 2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
