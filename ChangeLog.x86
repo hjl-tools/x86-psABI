@@ -1,3 +1,8 @@
+2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Aggregates and Unions): Renamed to ...
+	(Structures and Unions): This.
+
 2015-04-28  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (enum): Bump to an unsigned int.
