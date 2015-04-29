@@ -399,20 +399,18 @@ before calling the function.
 \begin{tabular}{|l|}
 \cline{1-1}
 typedef struct \{ \\
-\ \ int a, b;\\
-\ \ double d;\\
+\ \ char a, b;\\
+\ \ short d;\\
 \} structparm;\\
 structparm s;\\
 int i;\\
-__m128 v, x, y;\\
-__m256 w, z;\\
+float f;
+double d;
 \\
-extern structparm func (int i, __m128 v,\\
-\phantom{extern structparm func (}structparm s, __m256 w,\\
-\phantom{extern structparm func (}__m128 x, __m128 y,\\
-\phantom{extern structparm func (}__m256 z);\\
+extern void func (int i, float f, double d,\\
+\phantom{extern void func (}structparm s); \\
 \\
-func (i, v, s, w, x, y, z);\\
+func (i, f, d, s);\\
 \cline{1-1}
 \end{tabular}
 }
@@ -425,18 +423,13 @@ func (i, v, s, w, x, y, z);\\
 \caption{Register Allocation for Parameter Passing Example}
 \label{fig_allocation_example}
 \begin{center}
-\begin{tabular}{c|r}
-\multicolumn{1}{c}{Parameter} &
-\multicolumn{1}{c}{Location before the call}\\
+\begin{tabular}{ll|ll}
+\multicolumn{2}{c}{General Purpose Registers} &
+\multicolumn{2}{c}{Stack Frame Offset}\\
 \hline
-Return value pointer & (\ESP) \\
-\code{i}             & 4(\ESP) \\
-\code{v}             & \reg{xmm0} \\
-\code{s}             & 8(\ESP) \\
-\code{w}             & \reg{ymm1} \\
-\code{x}             & \reg{xmm2} \\
-\code{y}             & 32(\ESP) \\
-\code{z}             & 64(\ESP) \\
+\EAX: &\code{i} & \code{0:} &\code{d} \\
+\EDX: &\code{f} & & \\
+\ECX: &\code{s} & & \\
 \end{tabular}
 \end{center}
 \Hrule
@@ -447,23 +440,11 @@ Return value pointer & (\ESP) \\
 \caption{Stack Layout at the Call}
 \label{fig_stack_frame_layout}
 \begin{center}
-\begin{tabular}{|c|r|l}
+\begin{tabular}{c|rl}
 \multicolumn{1}{c}{Contents} &
 \multicolumn{1}{c}{Length}\\
 \cline{1-2}
-\code{z}             & 32 bytes &\\
-\cline{1-2}
-padding              & 16 bytes &\\
-\cline{1-2}
-\code{y}             & 16 bytes &\\
-\cline{1-2}
-padding              & 8 bytes  &\\
-\cline{1-2}
-\code{s}             & 16 bytes &\\
-\cline{1-2}
-\code{i}             & 4 bytes  &\\
-\cline{1-2}
-Return value pointer & 4 bytes  & $\longleftarrow$ \ESP (32-byte aligned)\\
+\code{d} & 8 bytes  & $\longleftarrow$ \ESP (4-byte aligned)\\
 \cline{1-2}
 \end{tabular}
 \end{center}

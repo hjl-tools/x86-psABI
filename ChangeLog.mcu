@@ -1,5 +1,11 @@
 2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Parameter Passing Example): Updated.
+	(Register Allocation for Parameter Passing Example): Likewise.
+	(Stack Layout at the Call): Likewise.
+
+2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Returning Values): Remove x87 register
 	stack handling.
 
