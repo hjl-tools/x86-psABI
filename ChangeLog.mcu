@@ -1,5 +1,9 @@
 2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Variable Argument Lists): Updated.
+
+2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Parameter Passing Example): Updated.
 	(Register Allocation for Parameter Passing Example): Likewise.
 	(Stack Layout at the Call): Likewise.

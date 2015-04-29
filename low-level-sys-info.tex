@@ -469,8 +469,8 @@ registers.  Portable C programs must use the header file
 \code{<stdarg.h>} in order to handle variable argument lists.
 
 When a function taking variable-arguments is called, all parameters are
-passed on the stack, including \texttt{__m64}, \texttt{__m128} and
-\texttt{__m256}.  This rule applies to both named and unnamed parameters.
+passed on the stack.  This rule applies to both named and unnamed
+parameters.
 Because parameters are passed differently depending on whether or not the
 called function takes a variable argument list, it is necessary for such
 functions to be properly prototyped.  Failure to do so results in
