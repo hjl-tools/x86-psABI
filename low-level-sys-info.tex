@@ -482,55 +482,6 @@ undefined behavior.
 
 \subsubsection{Special Registers}
 
-The \xARCH architecture defines floating point instructions.  At
-process startup the two floating point units, SSE2 and x87, both have
-all floating-point exception status flags cleared.  The status of the
-control words is as defined in tables~\ref{x87-fpucw} and
-\ref{mxcsr-status}.
-
-\begin{table}[H]
-\Hrule
-  \caption{x87 Floating-Point Control Word}
-  \label{x87-fpucw}
-  \begin{center}
-    \begin{tabular}[t]{l|l|l}
-      \multicolumn{1}{c}{Field} & \multicolumn{1}{c}{Value}& \multicolumn{1}{c}{Note} \\
-      \hline
-      \texttt{RC} & 0 & Round to nearest\\
-      \texttt{PC} & 11& Double extended precision\\
-      \texttt{PM} & 1 & Precision masked\\
-      \texttt{UM} & 1 & Underflow masked\\
-      \texttt{OM} & 1 & Overflow masked\\
-      \texttt{ZM} & 1 & Zero divide masked\\
-      \texttt{DM} & 1 & De-normal operand masked\\
-      \texttt{IM} & 1 & Invalid operation masked\\
-    \end{tabular}
-  \end{center}
-\Hrule
-\end{table}
-
-\begin{table}[H]
-\Hrule
-  \caption{MXCSR Status Bits}
-  \label{mxcsr-status}
-  \begin{center}
-    \begin{tabular}[t]{l|l|l}
-      \multicolumn{1}{c}{Field} & \multicolumn{1}{c}{Value}& \multicolumn{1}{c}{Note} \\
-      \hline
-      \texttt{FZ}  & 0 & Do not flush to zero\\
-      \texttt{RC}  & 0 & Round to nearest\\
-      \texttt{PM}  & 1 & Precision masked\\
-      \texttt{UM}  & 1 & Underflow masked\\
-      \texttt{OM}  & 1 & Overflow masked\\
-      \texttt{ZM}  & 1 & Zero divide masked\\
-      \texttt{DM}  & 1 & De-normal operand masked\\
-      \texttt{IM}  & 1 & Invalid operation masked\\
-      \texttt{DAZ} & 0 & De-normals are not zero\\
-    \end{tabular}
-  \end{center}
-\Hrule
-\end{table}
-
 The \code{EFLAGS} register contains the system flags, such as the
 direction flag and the carry flag.  The low 16 bits (FLAGS portion)
 of \code{EFLAGS} are accessible by
