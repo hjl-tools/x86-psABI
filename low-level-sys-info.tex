@@ -370,14 +370,6 @@ and \texttt{unions}) are returned as follows:
 }
 \end{table}
 
-Functions that return scalar floating-point values in registers return
-them on the top of the x87 register stack, that is, \reg{st0}. It is the
-responsibility of the calling function to pop this value from the stack
-regardless of whether or not the value is actually used.  Failure to do so
-results in undefined behavior.  An implication of this requirement is that
-functions returning scalar floating-point values must be properly
-prototyped.  Again, failure to do so results in undefined behavior.
-
 \subsubsection{Returning Values in Memory}
 
 Some fundamental types and all aggregate types are returned in memory.
