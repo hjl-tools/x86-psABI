@@ -1,5 +1,10 @@
 2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Register Usage): Remove FP and vector
+	registers.
+
+2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Fundamental Types): Change alignments
 	of __float128, _Decimal64 and _Decimal128 to 4.
 	(Scalar-class Aggregates): New paragraph.
