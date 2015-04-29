@@ -774,12 +774,7 @@ General Purpose Register ESI & 6 &\ESI\\
 General Purpose Register EDI & 7 &\EDI\\
 Return Address RA            & 8 &\\
 Flag Register                   & 9     & \reg{EFLAGS} \\
-Reserved                        & 10    &\\
-Floating Point Registers 0--7   & 11-18 & \reg{st0}--\reg{st7} \\
-Reserved                        & 19-20 &\\
-Vector Registers 0--7           & 21-28 & \reg{xmm0}--\reg{xmm7} \\
-MMX Registers 0--7              & 29-36 & \reg{mm0}--\reg{mm7} \\
-Media Control and Status        & 39   & \reg{mxcsr} \\
+Reserved                        & 10-39  &\\
 Segment Register ES             & 40    & \reg{es} \\
 Segment Register CS             & 41    & \reg{cs} \\
 Segment Register SS             & 42    & \reg{ss} \\
@@ -789,7 +784,7 @@ Segment Register GS             & 45    & \reg{gs} \\
 Reserved                        & 46-47 & \\
 Task Register                   & 48    & \reg{tr} \\
 LDT Register                    & 49    & \reg{ldtr} \\
-Reserved                        & 50-92 & \\
+Reserved                        & 50-100 & \\
 \end{tabular}
 \end{center}
 \Hrule

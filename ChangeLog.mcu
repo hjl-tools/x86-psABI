@@ -1,5 +1,9 @@
 2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (DWARF Register Number Mapping): Updated.
+
+2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Special Registers): Remove x87 and SSE
 	status registers.
 
