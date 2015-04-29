@@ -1,5 +1,10 @@
 2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Passing Parameters): Document stack
+	alignment requirement for passing __m512.
+
+2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Aggregates and Unions): Renamed to ...
 	(Structures and Unions): This.
 

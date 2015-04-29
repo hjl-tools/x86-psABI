@@ -310,6 +310,10 @@ If parameters of type \texttt{__m256} are required to be passed on the
 stack, the stack pointer must be aligned on a \code{0 mod 32} byte boundary
 at the time of the call.
 
+If parameters of type \texttt{__m512} are required to be passed on the
+stack, the stack pointer must be aligned on a \code{0 mod 64} byte boundary
+at the time of the call.
+
 \begin{table}
 \Hrule
   \caption{Register Usage}
