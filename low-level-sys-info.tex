@@ -332,13 +332,14 @@ and \texttt{unions}) are returned as follows:
     & \texttt{\textit{any-type} *} & \EAX \\
     & \texttt{\textit{any-type} (*)()} & \\
     \hline
-    & \texttt{float} & \reg{st0} \\
+    & \texttt{float} & \EAX \\
     \cline{2-3}
-    Floating- & \texttt{double} & \reg{st0} \\
+    Floating- & \texttt{double} & \EDX:\EAX \\
+    point & \texttt{long double} & The most significant 32 bits are
+				  returned in \EDX.  The least\\
+    & & significant 32 bits are returned in \EAX.\\
     \cline{2-3}
-    point & \texttt{long double} & \reg{st0} \\
-    \cline{2-3}
-    & \texttt{__float80} & \reg{st0} \\
+    & \texttt{__float80} & memory \\
     \cline{2-3}
     & \texttt{__float128} & memory \\
     \hline
@@ -363,14 +364,6 @@ and \texttt{unions}) are returned as follows:
     point & & significant 32 bits are returned in \EAX.\\
     \cline{2-3}
     & \texttt{_Decimal128} & memory \\
-    \hline
-    & \texttt{__m64} & \reg{mm0} \\
-    \cline{2-3}
-    Packed & \texttt{__m128} & \reg{xmm0} \\
-    \cline{2-3}
-    & \texttt{__m256} & \reg{ymm0} \\
-    \cline{2-3}
-    & \texttt{__m512} & \reg{zmm0} \\
 \noalign{\smallskip}
 \cline{1-3}
   \end{tabular}
