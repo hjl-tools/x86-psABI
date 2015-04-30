@@ -1,5 +1,11 @@
 2015-04-30  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* abi.tex: Change "Intel Architecture MCU" to "Intel MCU
+	Architecture".
+	* macros.tex: Rename "IA MCU" to "Intel MCU".
+
+2015-04-30  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* introduction.tex: Require Intel Pentium ISA.
 
 2015-04-30  H.J. Lu  <hongjiu.lu@intel.com>
