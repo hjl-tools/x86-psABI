@@ -1,3 +1,8 @@
+2015-04-30  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Fundamental Types): Make _Decimal32,
+	_Decimal64 and _Decimal128 optional.
+
 2015-04-29  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (DWARF Register Number Mapping): Updated.
