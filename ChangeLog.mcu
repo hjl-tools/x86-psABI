@@ -1,5 +1,10 @@
 2015-05-01  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Passing Parameters): Add a footnote
+	for EAX.
+
+2015-05-01  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Scalar-class Aggregates): Make it
 	8 bytes or less.
 	(Passing Parameters): Pass 8 bytes or less in registers.

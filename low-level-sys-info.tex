@@ -230,7 +230,10 @@ registers or pushed on the stack.
 
 The first three parameters of scalar types no larger than 8 bytes or
 scalar-class aggregate types (\texttt{structs} and \texttt{unions})
-are passed in \reg{eax}, \reg{edx}, and \reg{ecx}.  The rest of parameters
+are passed in \reg{eax}, \reg{edx}, and \reg{ecx}.\footnote{If
+  \reg{eax} is used to return a value in memory, only \reg{edx} and
+  \reg{ecx} are available to pass parameters.}
+The rest of parameters
 are passed on the stack. Parameters are pushed onto the
 stack in reverse order - the last argument in the parameter list has the
 highest address, that is, it is stored farthest away from the stack pointer
