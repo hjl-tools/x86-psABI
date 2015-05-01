@@ -150,8 +150,7 @@ alignment constraints.  The contents of any padding is undefined.
 \paragraph{Scalar-class Aggregates}
 
 Scalar-class aggregate types (\texttt{structs} and \texttt{unions}) are
-aggregate types no larger than 4 bytes, whose fields are scalars or
-other scalar-class aggregate types.
+aggregate types no larger than 8 bytes.
 
 %%% SUN <examples - add diagrams>
 
@@ -229,7 +228,7 @@ registers or pushed on the stack.
 
 \subsubsection{Passing Parameters}
 
-The first three parameters of scalar types no larger than 4 bytes or
+The first three parameters of scalar types no larger than 8 bytes or
 scalar-class aggregate types (\texttt{structs} and \texttt{unions})
 are passed in \reg{eax}, \reg{edx}, and \reg{ecx}.  The rest of parameters
 are passed on the stack. Parameters are pushed onto the
@@ -286,7 +285,10 @@ value for each fundamental data type.  Aggregate types (\texttt{structs}
 and \texttt{unions}) are returned as follows:
 
 \begin{itemize}
-  \item Scalar-class aggregate types are returned in \reg{eax}.
+  \item Scalar-class aggregate types no larger than 8 bytes are returned
+	in \reg{edx}:\reg{eax}.  The most significant 32 bits are
+	returned in \reg{edx}. The least significant 32 bits are returned
+	in \reg{eax}.
   \item Other aggregate types are returned in memory.
 \end{itemize}
 
