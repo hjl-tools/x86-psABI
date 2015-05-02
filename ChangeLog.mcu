@@ -1,3 +1,10 @@
+2015-05-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Register Usage): Make GS register
+	optional.
+	* object-files.tex (Relocation Types): Add a footnote for TLS
+	relocations.
+
 2015-05-01  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (Passing Parameters): Add a footnote

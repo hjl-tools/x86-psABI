@@ -274,11 +274,13 @@ types & No \\
 \EBP & callee-saved register; optionally used as frame pointer & Yes \\
 \ESI & callee-saved register & yes \\
 \EDI & callee-saved register & yes \\
-\reg{gs}& Reserved for system (as thread specific data register) & No\\
+\reg{gs}& Reserved for system (as thread specific data register)
+	  $^\dagger$ & No\\
+\cline{1-3}
+\multicolumn{3}{l}{\small $^\dagger$ Segment register is optional.}
     \end{tabular}
 
   \end{center}
-\Hrule
 \end{table}
 
 \subsubsection{Returning Values}

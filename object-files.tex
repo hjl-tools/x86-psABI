@@ -381,7 +381,9 @@ The relocations \texttt{R_386_TLS_TPOFF},
 \texttt{R_386_TLS_LDM_POP}, \texttt{R_386_TLS_LDO_32},
 \texttt{R_386_TLS_IE_32}, \texttt{R_386_TLS_LE_32},
 \texttt{R_386_TLS_DTPMOD32}, \texttt{R_386_TLS_DTPOFF32} and
-\texttt{R_386_TLS_TPOFF32} are listed for completeness.  They are part
+\texttt{R_386_TLS_TPOFF32} are listed for completeness\footnote{The
+  relocations for Thread-Local Storage are optional, which depend on
+  the optional segment register \reg{gs}.}.  They are part
 of the Thread-Local Storage ABI extensions and are documented in the
 document called ``ELF Handling for Thread-Local
 Storage''\footnote{This document is currently available via
