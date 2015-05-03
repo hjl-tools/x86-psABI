@@ -1,5 +1,10 @@
 2015-05-03  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* macros.tex (version): Set to 0.5.
+	* abi.tex (description): Updated.
+
+2015-05-03  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Scalar-class Aggregates): Renamed to
 	...
 	(Short Aggregates): This.
