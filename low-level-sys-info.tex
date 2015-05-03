@@ -147,9 +147,9 @@ a multiple of the object`s alignment.
 Structure and union objects can require padding to meet size and
 alignment constraints.  The contents of any padding is undefined.
 
-\paragraph{Scalar-class Aggregates}
+\paragraph{Short Aggregates}
 
-Scalar-class aggregate types (\texttt{structs} and \texttt{unions}) are
+Short aggregate types (\texttt{structs} and \texttt{unions}) are
 aggregate types no larger than 8 bytes.
 
 %%% SUN <examples - add diagrams>
@@ -229,7 +229,7 @@ registers or pushed on the stack.
 \subsubsection{Passing Parameters}
 
 The first three parameters of scalar types no larger than 8 bytes or
-scalar-class aggregate types (\texttt{structs} and \texttt{unions})
+short aggregate types (\texttt{structs} and \texttt{unions})
 are passed in \reg{eax}, \reg{edx}, and \reg{ecx}\footnote{If
   \reg{eax} is used to return a value in memory, only \reg{edx} and
   \reg{ecx} are available to pass parameters.}\footnote{A parameter is
@@ -262,7 +262,7 @@ to guarantee proper alignment to the callee.
       \multicolumn{1}{l}{function calls}\\
       \hline
 \EAX & scratch register; used to pass 1$^{\rm st}$ argument to
-functions; also used to return 32-bit scalar and scalar-class
+functions; also used to return 32-bit scalar and short
 aggregate values from functions; also stores the address of a
 returned struct or union & No \\
 \EBX & callee-saved register; also used to hold the GOT pointer when
@@ -292,7 +292,7 @@ value for each fundamental data type.  Aggregate types (\texttt{structs}
 and \texttt{unions}) are returned as follows:
 
 \begin{itemize}
-  \item Scalar-class aggregate types no larger than 8 bytes are returned
+  \item Short aggregate types no larger than 8 bytes are returned
 	in \reg{edx}:\reg{eax}.  The most significant 32 bits are
 	returned in \reg{edx}. The least significant 32 bits are returned
 	in \reg{eax}.
