@@ -1,5 +1,10 @@
 2015-05-02  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* abi.tex: Include development.tex.
+	* development.tex: New file.
+
+2015-05-02  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Passing Parameters): Add a footnote
 	for passing the whole parameter in registers.
 
