@@ -1,5 +1,10 @@
 2015-05-04  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* low-level-sys-info.tex (Stack State): Make stack 4-byte
+	aligned at process entry.
+
+2015-05-04  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* abi-index.tex: Make single column index.
 
 2015-05-04  H.J. Lu  <hongjiu.lu@intel.com>
