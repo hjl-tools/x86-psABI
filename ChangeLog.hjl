@@ -1,3 +1,7 @@
+2015-05-04  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi-index.tex: Make single column index.
+
 2014-11-12  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* .gitignore: New file.
