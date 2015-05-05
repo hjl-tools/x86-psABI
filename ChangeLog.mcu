@@ -1,5 +1,12 @@
 2015-05-05  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* introduction.tex (Changes from Intel386 System V ABI): Register
+	EDX has undefined value at process entry.
+	* low-level-sys-info.tex (Initial Stack and Register State): Remove
+	register EDX.
+
+2015-05-05  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* introduction.tex (Changes from Intel386 System V ABI): New.
 
 2015-05-04  H.J. Lu  <hongjiu.lu@intel.com>
