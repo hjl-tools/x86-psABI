@@ -25,6 +25,27 @@ this document specifies the information that compilers have to generate
 and the library routines that do the frame unwinding for exception
 handling.
 
+\section{Changes from Intel386 System V ABI}
+
+The calling conventions specified in \xARCH System V ABI are
+incompatible with Intel386 System V ABI:
+
+\begin{itemize}
+  \item Scalar types larger than 4 bytes are aligned to 4 bytes.
+  \item There are no vector types.
+  \item \code{_Decimal32}, \code{_Decimal64}, and \code{_Decimal128}
+	types are optional.
+  \item \code{long double} type is the same as \code{double}.
+  \item \code{float}, \code{double} and \code{long double} types are
+	passed and returned in general purpose registers.
+  \item \code{_Decimal32} and \code{_Decimal64} types are passed
+	in general purpose registers.
+  \item Aggregate types no larger than 8 bytes are passed and returned
+	in general purpose registers.
+  \item Stack is 4-byte aligned.
+\end{itemize}
+
+
 \section{Related Information}
 
 Links to useful documents:
