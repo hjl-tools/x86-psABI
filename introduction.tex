@@ -31,6 +31,10 @@ The calling conventions specified in \xARCH System V ABI are
 incompatible with Intel386 System V ABI:
 
 \begin{itemize}
+  \item There are no x87 floating point registers.
+  \item There are no vector registers.
+  \item Segment registers are optional.
+  \item Support for TLS relocations are optional.
   \item Scalar types larger than 4 bytes are aligned to 4 bytes.
   \item There are no vector types.
   \item \code{_Decimal32}, \code{_Decimal64}, and \code{_Decimal128}
