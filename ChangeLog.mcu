@@ -1,6 +1,11 @@
 2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* introduction.tex (Changes from Intel386 System V ABI): New
+	predefined C/C++ pre-processor symbols.
+
+2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* introduction.tex (Changes from Intel386 System V ABI): New
 	ELF machine code EM_IAMCU.
 	* object-files.tex (ELF Header): Rename EM_IA_MCU to EM_IAMCU.
 	Mention EM_486 in footnote.
