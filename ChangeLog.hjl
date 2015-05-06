@@ -1,5 +1,9 @@
 2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* object-files.tex: Update TLS and TLSDESC spec URLs.
+
+2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* conventions.tex: Update C++ ABI URL.
 
 2015-05-04  H.J. Lu  <hongjiu.lu@intel.com>
