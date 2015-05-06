@@ -1,5 +1,12 @@
 2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* introduction.tex (Changes from Intel386 System V ABI): New
+	ELF machine code EM_IAMCU.
+	* object-files.tex (ELF Header): Rename EM_IA_MCU to EM_IAMCU.
+	Mention EM_486 in footnote.
+
+2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* introduction.tex (Changes from Intel386 System V ABI): There
 	are no x87 floating point registers nor vector registers. Segment
 	registers and support for TLS relocations are optional.
