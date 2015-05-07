@@ -599,11 +599,6 @@ Applications which need to execute code on the stack or data
 segments should take proper precautions, e.g., by calling
 \code{mprotect()}.
 
-\subsection{Thread State}
-
-New threads inherit the floating-point state of the parent thread
-and the state is private to the thread thereafter.
-
 \subsection{Auxiliary Vector}
 
 The \textindex{auxiliary vector} is an array of the following structures
