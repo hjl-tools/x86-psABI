@@ -1,5 +1,11 @@
 2015-05-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* introduction.tex (Changes from Intel386 System V ABI): The
+	auxiliary vector support is optional.
+	* low-level-sys-info.tex (Auxiliary Vector): Add a footnote.
+
+2015-05-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Thread State): Removed.
 
 2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
