@@ -388,11 +388,7 @@ For functions that return a value in memory, the caller passes a pointer
 to the memory location where the called function must write the return
 value. This pointer is passed to called function as an implicit first
 argument. The memory location must be properly aligned according to the
-rules in section~\ref{data_representation}.  In addition to writing the
-return value to the proper location, the called function is responsible
-for popping the implicit pointer argument off the stack and storing it in
-\EAX prior to returning. The calling function may choose to reference the
-return value via \EAX after the function returns.
+rules in section~\ref{data_representation}.
 
 As an example of the register passing conventions, consider the
 declarations and the function call shown in
