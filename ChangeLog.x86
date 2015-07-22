@@ -1,3 +1,9 @@
+2015-11-20  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
+	    H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex: Include mpx.tex.
+	* mpx.tex: New file.
+
 2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* introduction.tex: Update C++ ABI and TLSDESC spec URLs.

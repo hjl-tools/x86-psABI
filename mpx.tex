@@ -1,0 +1,64 @@
+%%% vim:ai:tw=72:
+\chapter{Intel MPX Extension}
+
+Intel MPX (Memory Protection Extensions) provides 4 64-bit wide bound
+registers (\reg{bnd0} - \reg{bnd3}).  For purpose of function return,
+the lower 32 bits of \reg{bnd0} specify lower bound of function return,
+and the upper 32 bits specify upper bound of function return.  The upper
+bound is represented in one's complement form.
+
+\section{Parameter Passing and Returning of Values}
+\label{mpx-calling-conventions}
+
+\subsection{Bounds Passing}
+\label{bounds_passing}
+Intel MPX provides ISA extensions that allow passing bounds for a pointer
+argument that specify memory area that may be legally accessed by
+dereferencing the pointer.  This paragraph desribes how the bounds are
+passed to the callee.
+
+Several functions used in the description below are defined as follows:
+\begin{description}
+\item[BOUND_MAP_STORE(bnd, addr, ptr)] This function executes Intel MPX \code{bndstx}
+  instruction.  \code{ptr} argument is used to initialize index field of the memory
+  operand of the \code{bndstx} instruction, \code{addr} is encoded in base and/or
+  displacement fields of the memory operand, \code{bnd} is encoded in the register
+  operand.
+\item[BOUND_MAP_LOAD(addr, ptr)] This function executes Intel MPX \code{bndldx}
+  instruction. \code{ptr} argument is used to initialize index field of the memory
+  operand of the \code{bndldx} instruction, \code{addr} is encoded in base and/or
+  displacement fields of the memory operand.
+\end{description}
+
+The bounds associated with each pointer contained in the fourbyte are
+passed in a CPU defined manner by executing
+\code{BOUND_MAP_STORE(bnd, addr, ptr)} function, where \code{bnd} is the
+current bounds of the pointer argument, \code{addr} is the address of the
+pointer argument's stack location, \code{ptr} is the actual value of the
+pointer argument.  If the fourbyte may contain parts of partially
+overlapping pointers, then bounds associated with the pointers are ignored
+and special bounds that allow accessing all memory are passed for such
+pointers.  The callee fetches the passed bounds using
+\code{BOUND_MAP_LOAD(addr, ptr)}, where \code{addr} is the same address
+passed to the corresponding \code{BOUND_MAP_STORE} in the caller, and
+\code{ptr} is the actual value of the pointer parameter fetched by the
+callee from a stack location.
+
+When passing arguments with bounds to functions, function prototypes
+must be provided.  Otherwise, the run-time behavior is undefined.
+
+\subsection{Returning of Bounds}
+The returning of bounds is done according to the following algorithm:
+\begin{enumerate}
+\item When the value is returned in memory, on return \reg{bnd0} must
+  contain bounds of the ``hidden'' first argument that has been passed
+  in by the caller.
+
+\item When a pointer value is returned, on return \reg{bnd0} must
+  contain bounds of the pointer value.
+\end{enumerate}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "abi"
+%%% End:
