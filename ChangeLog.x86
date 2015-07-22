@@ -1,3 +1,9 @@
+2015-11-20  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
+	    H.J. Lu  <hongjiu.lu@intel.com>
+
+	* abi.tex: Include mpx.tex.
+	* mpx.tex: New file.
+
 2015-10-21  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* low-level-sys-info.tex (DWARF Register Number Mapping): Add
