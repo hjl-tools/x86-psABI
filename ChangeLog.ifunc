@@ -1,0 +1,4 @@
+2015-08-11  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex (Symbol Table): Add a footnote for
+	STT_GNU_IFUNC.

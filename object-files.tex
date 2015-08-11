@@ -356,7 +356,9 @@ executable code which takes no arguments and returns a function pointer.
 If an \texttt{STT_GNU_IFUNC} symbol is referred to by a relocation, then
 evaluation of that relocation is delayed until load-time.  The value
 used in the relocation is the function pointer returned by an invocation
-of the \texttt{STT_GNU_IFUNC} symbol.
+of the \texttt{STT_GNU_IFUNC} symbol\footnote{If the returned function
+has non-local binding, the run-time behavior is undefined as it may
+be preempted at run-time.}.
  
 The purpose of the \texttt{STT_GNU_IFUNC} symbol type is to allow the
 run-time to select between multiple versions of the implementation of
