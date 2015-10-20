@@ -61,3 +61,58 @@ This optimization must be avoided if pointer equality is needed since
 the symbol value won't be cleared in this case and the dynamic linker
 won't update the GOT slot.  Otherwise, the resulting binary will get
 into an infinite loop at run-time.
+
+\section{Optimize GOTPCRELX Relocations}
+
+The \xARCH instruction encoding supports converting certain instructions
+on memory operand with \texttt{R_X86_64_GOTPCRELX} or
+\texttt{R_X86_64_REX_GOTPCRELX} relocations against symbol, \texttt{foo},
+into a different form on immediate operand if \texttt{foo} is defined
+locally.
+
+\begin{description}
+\item[\textindex{Convert call, jmp and mov}]
+  Convert memory operand of \code{call}, \code{jmp} and \code{mov} into
+  immediate operand.
+
+\begin{table}[H]
+\Hrule
+\caption{Call, Jmp and Mov Conversion}
+\begin{center}
+\small\code{
+\begin{tabular}{l|l}
+\multicolumn{1}{c}{Memory Operand} & \multicolumn{1}{c}{Immediate Operand} \\
+\hline
+call *foo@GOTPCREL(\%rip) & nop call foo \\
+call *foo@GOTPCREL(\%rip) & call foo nop \\
+jmp  *foo@GOTPCREL(\%rip) & jmp foo nop \\
+mov  foo@GOTPCREL(\%rip), \%reg & lea foo(\%rip), \%reg \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[\textindex{Convert Test and Binop}]
+  Convert memory operand of \code{test} and \code{binop} into immediate
+  operand, where \code{binop} is one of \code{adc}, \code{add},
+  \code{and}, \code{cmp}, \code{or}, \code{sbb}, \code{sub}, \code{xor}
+  instructions, when position-independent code is disabled.
+
+\begin{table}[H]
+\Hrule
+\caption{Test and Binop Conversion}
+\begin{center}
+\small\code{
+\begin{tabular}{l|l}
+\multicolumn{1}{c}{Memory Operand} & \multicolumn{1}{c}{Immediate Operand} \\
+\hline
+test \%reg, foo@GOTPCREL(\%rip) & test \$foo, \%reg \\
+binop foo@GOTPCREL(\%rip), \%reg & binop \$foo, \%reg \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\end{description}
