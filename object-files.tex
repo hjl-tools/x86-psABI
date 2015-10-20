@@ -272,7 +272,7 @@ The following notations are used for specifying relocations in table~
 \begin{table}[H]
 \Hrule
   \caption{Relocation Types}
-  \small
+  \myfontsize
   \label{tab-relocations}
   \begin{center}
     \myfontsize
@@ -322,11 +322,49 @@ The following notations are used for specifying relocations in table~
       \texttt{R_386_TLS_DESC_CALL} & 40 & none & none \\
       \texttt{R_386_TLS_DESC} & 41 & \textit{word32} &  \\
       \texttt{R_386_IRELATIVE} & 42 & \textit{word32} & \texttt{indirect (B + A)}\\
+      \texttt{R_386_GOT32X} & 43 & \textit{word32}
+      & \texttt{G + A - GOT} / \texttt{G + A}$^\dagger$ \\
      \cline{1-4}
+    \multicolumn{4}{l}{\myfontsize $^\dagger$ Used without base register
+    when position-independent code is disabled.} \\
     \end{tabular}
   \end{center}
 \Hrule
 \end{table}
+
+The \texttt{R_386_GOT32X} relocation can be used to compute the address
+of the symbol's global offset table entry without base register
+when position-independent code is disabled.  For \code{name@GOT} in:
+\begin{footnotesize}
+\begin{verbatim}
+        call       *name@GOT(%reg)
+        jmp        *name@GOT(%reg)
+        mov        name@GOT(%reg1), %reg2
+        test       %reg1, name@GOT(%reg2)
+        binop      name@GOT(%reg1), %reg2
+\end{verbatim}
+\end{footnotesize}
+
+\noindent
+as well as
+
+\begin{footnotesize}
+\begin{verbatim}
+        call       *name@GOT
+        jmp        *name@GOT
+        mov        name@GOT, %reg
+        test       %reg, name@GOT
+        binop      name@GOT, %reg
+\end{verbatim}
+\end{footnotesize}
+
+\noindent
+where \code{binop} is one of \code{adc}, \code{add}, \code{and},
+\code{cmp}, \code{or}, \code{sbb}, \code{sub}, \code{xor}
+instructions\footnote{\code{mov name@GOT, \%eax} must be encoded with
+opcode \code{0x8b}, not \code{0xa0}, to allow linker optimization.},
+the \texttt{R_386_GOT32X} relocation should be generated, instead of
+the \texttt{R_386_GOT32} relocation.
 
 \begin{sloppypar}
 A program or object file using \texttt{R_386_8},
