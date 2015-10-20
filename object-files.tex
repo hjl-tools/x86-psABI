@@ -438,7 +438,7 @@ or \texttt{Elf32_Rel} relocation entries.
 \begin{table}[H]
 \Hrule
   \caption{Relocation Types}
-  \small
+  \myfontsize
   \label{tab-relocations}
   \begin{center}
     \begin{tabular}[t]{l|r|l|l}
@@ -481,6 +481,8 @@ or \texttt{Elf32_Rel} relocation entries.
       \texttt{R_X86_64_TLSDESC} & 36 & \textit{word64}$\times 2$ & \\
       \texttt{R_X86_64_IRELATIVE} & 37 & \textit{wordclass} & \texttt{indirect (B + A)}\\
       \texttt{R_X86_64_RELATIVE64} $^{\dagger\dagger}$ & 38 & \textit{word64} & \texttt{B + A} \\
+      \texttt{R_X86_64_GOTPCRELX} & 41 & \textit{word32} & \texttt{G + GOT + A - P} \\
+      \texttt{R_X86_64_REX_GOTPCRELX} & 42 & \textit{word32} & \texttt{G + GOT + A - P} \\
 %      \texttt{R_X86_64_GOT64} & 16 & \textit{word64} & \texttt{G + A} \\
 %      \texttt{R_X86_64_PLT64} & 17 & \textit{word64} & \texttt{L + A - P} \\
      \cline{1-4}
@@ -516,6 +518,26 @@ using a single instruction.  The calculation done by the
 in the GOT where the symbol's address is given and the location where the
 relocation is applied.
 \end{sloppypar}
+
+For \code{name@GOTPCREL} in:
+
+\begin{footnotesize}
+\begin{verbatim}
+        call       *name@GOTPCREL(%rip)
+        jmp        *name@GOTPCREL(%rip)
+        mov        name@GOTPCREL(%rip), %reg
+        test       %reg, name@GOTPCREL(%rip)
+        binop      name@GOTPCREL(%rip), %reg
+\end{verbatim}
+\end{footnotesize}
+
+\noindent
+where \code{binop} is one of \code{adc}, \code{add}, \code{and},
+\code{cmp}, \code{or}, \code{sbb}, \code{sub}, \code{xor}
+instructions, the \texttt{R_X86_64_GOTPCRELX} relocation,
+\texttt{R_X86_64_REX_GOTPCRELX} if the \code{REX} prefix presents,
+should be generated, instead of the \texttt{R_X86_64_GOTPCREL}
+relocation.
 
 \begin{sloppypar}
 The \texttt{R_X86_64_32} and \texttt{R_X86_64_32S} relocations truncate
