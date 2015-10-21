@@ -1,3 +1,8 @@
+2015-10-21  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (DWARF Register Number Mapping): Add
+	FS Base address and GS Base address.
+
 2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* introduction.tex: Update C++ ABI and TLSDESC spec URLs.
