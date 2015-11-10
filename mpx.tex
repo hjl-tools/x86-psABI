@@ -234,24 +234,6 @@ The \code{va_arg(l, type)} implementation is updated as follows:
   \code{l->reg_save_area} with an offset of \code{l->gp_offset}.
 \end{enumerate}
 
-\section{DWARF Bound Register Number Mapping}
-
-Table~\ref{tbl-bnd-reg-num-map} shows the bound register number mapping
-for Intel MPX.
-
-\begin{figure}
-\Hrule
-\caption{DWARF Bound Register Number Mapping} \label{tbl-bnd-reg-num-map}
-\begin{center}
-\begin{tabular}{l|r|l}
-\multicolumn{1}{c}{Register Name}&\multicolumn{1}{c}{Number}&\multicolumn{1}{c}{Abbreviation}\\
-\hline
-Bound Registers 0--3 & 126-129 & \reg{bnd0}--\reg{bnd3} \\
-\end{tabular}
-\end{center}
-\Hrule
-\end{figure}
-
 \section{Program Loading and Dynamic Linking}
 
 To preserve bound registers for symbol lookup in branch instructions
