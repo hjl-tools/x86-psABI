@@ -1,3 +1,7 @@
+2015-11-10  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* mpx.tex (DWARF Bound Register Number Mapping): Removed.
+
 2015-07-22  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
 	    David Kreitzer  <david.l.kreitzer@intel.com>
 	    H.J. Lu  <hongjiu.lu@intel.com>
