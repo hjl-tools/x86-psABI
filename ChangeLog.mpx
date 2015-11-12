@@ -1,3 +1,7 @@
+2015-11-12  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* mpx.tex (Program Loading and Dynamic Linking): Fix a typo.
+
 2015-11-10  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* mpx.tex (DWARF Bound Register Number Mapping): Removed.
