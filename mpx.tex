@@ -124,6 +124,9 @@ where \code{addr} is the same address passed to the corresponding \code{BOUND_MA
 in the caller, and \code{ptr} is the actual value of the pointer parameter fetched
 by the callee either from a general purpose register or from a stack location.
 
+When passing arguments with bounds to functions, function prototypes must
+be provided.  Otherwise, the run-time behavior is undefined.
+
 \subsection{Returning of Values}
 
 The returning of values is updated:

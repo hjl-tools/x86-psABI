@@ -1,5 +1,9 @@
 2015-11-12  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* mpx.tex (Bounds passing): MPX needs function prototypes.
+
+2015-11-12  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* mpx.tex (Program Loading and Dynamic Linking): Fix a typo.
 
 2015-11-10  H.J. Lu  <hongjiu.lu@intel.com>
