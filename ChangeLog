@@ -1,3 +1,9 @@
+2015-08-21  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* Makefile (INCLUDES): Add linker-optimization.tex.
+	* abi.tex: Include linker-optimization.tex.
+	* linker-optimization.tex: New file.
+
 2015-07-22  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
 	    David Kreitzer  <david.l.kreitzer@intel.com>
 	    H.J. Lu  <hongjiu.lu@intel.com>
