@@ -1,3 +1,8 @@
+2015-11-18  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex (Relocation Types): Replace \multicolumn{3}
+	with \multicolumn{4} on notes.
+
 2015-05-06  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* dl.tex: Update TLSDESC spec URL.
