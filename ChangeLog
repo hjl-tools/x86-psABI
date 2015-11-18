@@ -1,3 +1,15 @@
+2015-07-22  Vyacheslav Zakharin  <vyacheslav.p.zakharin@intel.com>
+	    David Kreitzer  <david.l.kreitzer@intel.com>
+	    H.J. Lu  <hongjiu.lu@intel.com>
+	    Milind Girkar  <milind.girkar@intel.com>
+
+	* abi.tex: Include mpx.tex.
+	* low-level-sys-info.tex (DWARF Register Number Mapping): Mark
+	126-129 as reserved.
+	* mpx.tex: New file.
+	* object-files.tex (Relocation Types): Use \myfontsize instead of
+	\small.  Mark relocation numbers 39 and 40 as deprecated.
+
 2015-02-19  Michael Matz  <matz@suse.de>
 
 	* low-level-sys-info.tex (DWARF): Remove reference to
