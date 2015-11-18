@@ -1,3 +1,10 @@
+2015-10-20  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex (Relocation Types): Add R_X86_64_GOTPCRELX
+	and R_X86_64_REX_GOTPCRELX, mention optimization.
+	* linker-optimization.tex ((Optimize GOTPCRELX Relocations):
+	New section.
+
 2015-08-21  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* Makefile (INCLUDES): Add linker-optimization.tex.
