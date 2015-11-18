@@ -23,7 +23,7 @@ and \code{INTEGER} class is updated as follows:
 
 \subsection{Classification}
 
-\code{POINTER} class and \code{INTEGER} class are classified as:
+Pointers and integers are classified as:
 
 \begin{itemize}
 \item Pointers are in the POINTER class.
@@ -36,9 +36,8 @@ The classification of aggregate (structures and arrays) and union
 types is updated as follows:
 
 \begin{enumerate}
-\item If a C++ object is replaced in the parameter list by a pointer that
-    has class POINTER.
-    classified separately.  Each \eightbyte gets initialized to class NO_CLASS.
+\item When a C++ object is passed by invisible reference, the object is
+      replaced in the parameter list by a pointer that has class POINTER.
 \item If one of the classes is POINTER, the result is the POINTER.
 \end{enumerate}
 
