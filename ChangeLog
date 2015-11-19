@@ -1,3 +1,13 @@
+2015-11-19  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* object-files.tex (Relocation Types): Replace \multicolumn{3}
+	with \multicolumn{4} on notes.
+	* dl.tex: Update TLSDESC spec URL.
+	* object-files.tex: Update TLS and TLSDESC spec URLs.
+	* conventions.tex: Update C++ ABI URL.
+	* abi-index.tex: Make single column index.
+	* mpx.tex: Update and remove DWARF mapping for bound regs.
+
 2015-11-18  Michael Matz  <matz@suse.de>
 
 	* macros.tex (version): Bump to 0.99.8.

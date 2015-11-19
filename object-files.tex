@@ -486,8 +486,8 @@ or \texttt{Elf32_Rel} relocation entries.
       \texttt{R_X86_64_GOTPCRELX} & 41 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_REX_GOTPCRELX} & 42 & \textit{word32} & \texttt{G + GOT + A - P} \\
      \cline{1-4}
-    \multicolumn{3}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
-    \multicolumn{3}{l}{\small $^{\dagger\dagger}$ This relocation only
+    \multicolumn{4}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
+    \multicolumn{4}{l}{\small $^{\dagger\dagger}$ This relocation only
     appears in ILP32 executable files or shared objects.}\\
     \end{tabular}
   \end{center}
@@ -568,14 +568,14 @@ The relocations \texttt{R_X86_64_DTPMOD64},
 of the Thread-Local Storage ABI extensions and are documented in the
 document called ``ELF Handling for Thread-Local
 Storage''\footnote{This document is currently available via
-  \url{http://people.redhat.com/drepper/tls.pdf}}\index{Thread-Local
+  \url{http://www.akkadia.org/drepper/tls.pdf}}\index{Thread-Local
   Storage}.  The relocations \texttt{R_X86_64_GOTPC32_TLSDESC},
 \texttt{R_X86_64_TLSDESC_CALL} and \texttt{R_X86_64_TLSDESC} are also
 used for Thread-Local Storage, but are not documented there as of this
 writing.  A description can be found in the document ``Thread-Local
 Storage Descriptors for IA32 and AMD64/EM64T''\footnote{This document
   is currently available via
-  \url{http://people.redhat.com/aoliva/writeups/TLS/RFC-TLSDESC-x86.txt}}.
+  \url{http://www.fsfla.org/~lxoliva/writeups/TLS/RFC-TLSDESC-x86.txt}}.
 \end{sloppypar}
 
 In order to make this document self-contained, a description of the
