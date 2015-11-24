@@ -7,6 +7,27 @@ the lower 32 bits of \reg{bnd0} specify lower bound of function return,
 and the upper 32 bits specify upper bound of function return.  The upper
 bound is represented in one's complement form.
 
+\begin{figure}
+\Hrule
+  \caption{Bound Register Usage}
+  \label{fig-bnd-reg-usage}
+  \begin{center}
+    \begin{tabular}{l|p{7cm}|l}
+      \noalign{\smallskip}
+      \multicolumn{1}{c}{} &
+      \multicolumn{1}{c}{}&
+      \multicolumn{1}{l}{Preserved across}\\
+      \multicolumn{1}{c}{Register} &
+      \multicolumn{1}{c}{Usage}&
+      \multicolumn{1}{l}{function calls}\\
+      \hline
+\reg{bnd0} & used to return bounds of pointer return value & No\\
+\reg{bnd1}--\reg{bnd3} & scratch registers & No\\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{figure}
+
 \section{Parameter Passing and Returning of Values}
 \label{mpx-calling-conventions}
 
