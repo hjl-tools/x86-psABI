@@ -1,5 +1,10 @@
 2015-12-07  H.J. Lu  <hongjiu.lu@intel.com>
 
+	* abi.tex (Revision History): Set version 1.1 date to
+	2015-12-07.
+
+2015-12-07  H.J. Lu  <hongjiu.lu@intel.com>
+
 	* low-level-sys-info.tex (Registers): Add missing closing
 	parentheses.
 
