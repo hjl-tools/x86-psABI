@@ -1,3 +1,8 @@
+2015-12-07  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* low-level-sys-info.tex (Registers): Add missing closing
+	parentheses.
+
 2015-11-24  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* mpx.tex (Bound Register Usage): New table.
