@@ -555,11 +555,20 @@ left-to-right order) for passing as follows:
 \item If the class is X87, X87UP or COMPLEX\_X87, it is passed in memory.
 \end{enumerate}
 
-When a value of type \code{_Bool} is returned or passed in a register or
-on the stack, bit 0 contains the truth value and bits 1 to 7 shall be
-zero\footnote{Other bits are left unspecified, hence the consumer
-side of those values can rely on it being 0 or 1 when truncated to 8
-bit.}.
+When a value of type \code{_Bool} is returned in a register, bit 0
+contains the truth value and bits 1 to 7 shall be zero\footnote{Hence
+the consumer side of those values can rely on it being 0 or 1 when
+truncated to 8 bits.} and other bits are left unspecified.
+When an argument of
+type \code{_Bool} is passed in a register or on the stack, bit 0
+contains the truth value and bits 1 to 31 shall be zero.
+
+When a value of type signed/unsigned \code{char} or \code{short} is
+returned in a register, bits 0 to 7 for \code{char} and bits 0 to 15
+for \code{short} contain the value and other bits are left unspecified.
+When an argument of signed/unsigned type \code{char} or \code{short} is
+passed in a register or on the stack, it shall be sign/zero extended to
+signed/unsigned \code{int}.
 
 \begin{figure}
 \Hrule
