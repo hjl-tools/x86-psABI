@@ -455,8 +455,24 @@ struct complexT {
 \end{verbatim}
 \item A variable of type \code{complex long double} is classified as
   type COMPLEX\_X87.
-\end{itemize}
 
+\item Empty record is defined as
+  \begin{enumerate}
+  \item Collection is a structure, union or C++ class.
+  \item Empty collection is one of
+    \begin{itemize}
+    \item A collection without member.
+    \item A collection with only empty collections.
+    \item An array of empty collections.
+    \end{itemize}
+  \item Empty record is Plain Old Data (POD) for the purpose of layout
+	and one of
+    \begin{itemize}
+    \item A collection without member.
+    \item A collection with only empty collections.
+    \end{itemize}
+  \end{enumerate}
+\end{itemize}
 
 The classification of aggregate (structures and arrays) and union
 types works as follows:
@@ -499,6 +515,9 @@ types works as follows:
    constructor or a non-trivial destructor cannot be passed by value
    because such objects must have well defined addresses.  Similar
    issues apply when returning an object from a function.}.
+
+\item No memory slot nor register should be used to pass or return an
+object of empty record.
 
 \item If the size of the aggregate exceeds a single \eightbyte, each is
     classified separately.  Each \eightbyte gets initialized to class NO_CLASS.
