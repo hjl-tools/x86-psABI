@@ -226,27 +226,18 @@ stack frame.  \footnote{The conventional use of \EBP{} as a frame
 After the argument values have been computed, they are placed either in
 registers or pushed on the stack.
 
-\subsubsection{Empty Record}
+\subsubsection{Empty Type}
 
-Empty record is defined as
+Empty type is defined as
 \begin{enumerate}
-\item Collection is a structure, union or C++ class.
-\item Empty collection is one of
-  \begin{itemize}
-  \item A collection without member.
-  \item A collection with only empty collections.
-  \item An array of empty collections.
-  \end{itemize}
-\item Empty record is Plain Old Data (POD) for the purpose of layout
-      and one of
-  \begin{itemize}
-  \item A collection without member.
-  \item A collection with only empty collections.
-  \end{itemize}
+\item Class type is a structure, union or C++ class.
+\item Empty type is Plain Old Data (POD) for the purpose of layout,
+  and a type where it and all of its subobjects are of class or array
+  type.
 \end{enumerate}
 
 No memory slot nor register should be used to pass or return an object
-of empty record.
+of empty type.
 
 \subsubsection{Passing Parameters}
 
