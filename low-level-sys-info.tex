@@ -456,13 +456,8 @@ struct complexT {
 \item A variable of type \code{complex long double} is classified as
   type COMPLEX\_X87.
 
-\item Empty type is defined as
-  \begin{enumerate}
-  \item Class type is a structure, union or C++ class.
-  \item Empty type is Plain Old Data (POD) for the purposes of layout,
-    and a type where it and all of its subobjects are of class or array
-    type.
-  \end{enumerate}
+\item \texttt{Empty type} is defined as a trivially-copyable aggregate
+  occupying zero bytes (excluding any padding).
 \end{itemize}
 
 The classification of aggregate (structures and arrays) and union
@@ -508,7 +503,8 @@ types works as follows:
    issues apply when returning an object from a function.}.
 
 \item No memory slot nor register should be used to pass or return an
-object of empty type.
+object of \texttt{empty type} \footnote{Array of \texttt{empty type} can
+only passed by reference in C and C++.}.
 
 \item If the size of the aggregate exceeds a single \eightbyte, each is
     classified separately.  Each \eightbyte gets initialized to class NO_CLASS.
