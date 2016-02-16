@@ -279,16 +279,11 @@ registers or pushed on the stack.
 
 \subsubsection{Empty Type}
 
-Empty type is defined as
-\begin{enumerate}
-\item Class type is a structure, union or C++ class.
-\item Empty type is Plain Old Data (POD) for the purpose of layout,
-  and a type where it and all of its subobjects are of class or array
-  type.
-\end{enumerate}
-
-No memory slot nor register should be used to pass or return an object
-of empty type.
+\texttt{Empty type} is defined as a trivially-copyable aggregate
+occupying zero bytes (excluding any padding).  No memory slot nor
+register should be used to pass or return an object object of
+\texttt{empty type} \footnote{Array of \texttt{empty type} can only
+passed by reference in C and C++.}.
 
 \subsubsection{Passing Parameters}
 
