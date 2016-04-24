@@ -1904,6 +1904,76 @@ normally requires.  When:
 
 \end{description}
 
+\subsection{Function Calls without PLT}
+
+Procedure Linkage Table (PLT), (see Section~\ref{plt} for details), is
+used to support lazy resolution when calling external function or take
+address of external function, which is defined in shared object.  The
+drawbacks of PLT are
+
+\begin{description}
+  \item[Direct branch] to the PLT slot is used to call external
+    function.  This is an extra branch.
+  \item[Writable GOT slot] is updated when the external function is
+    called the first time.  This could be a security risk.
+\end{description}
+
+For small and medium models, we can use different code sequences to
+avoid PLT:
+
+\begin{figure}[H]
+\Hrule
+\caption{Function Call without PLT (Small and Medium Models)}
+\begin{center}
+\code{
+\begin{tabular}{|l|c|l|}
+\cline{1-1}\cline{3-3}
+extern void func ();  &&.globl func\\
+func ();              &&call *func@GOTPCREL(\%rip)\\
+\cline{1-1}\cline{3-3}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+The direct branch is replaced by an indirect branch via the GOT slot,
+which is similar to the first instruction in the PLT slot.
+
+\begin{figure}[H]
+\Hrule
+\caption{Function Address without PLT (Small and Medium Models)}
+\begin{center}
+\code{
+\begin{tabular}{|l|c|l|}
+\cline{1-1}\cline{3-3}
+extern void func ();      &&.globl func\\
+void* ptr ()              && \\
+\{                        &&movq func@GOTPCREL(\%rip), \%rax  \\
+~~return func;            &&ret \\
+\}			  && \\
+\cline{1-1}\cline{3-3}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+Instead using the PLT slot as function address, the function address
+is retrieved from the GOT slot.
+
+If linker determines the function is defined locally, it converts
+indirect branch via the GOT slot to direct branch with a \code{nop}
+prefix and converts load via the GOT slot to load immediate or
+\code{lea}, see Section~\ref{opt_gotpcrelx} for details.
+
+Since indirect branch is 6 byte long and direct branch is 5 byte long,
+when indirect branch via the GOT slot is used to call a local function,
+code size will be increased by one byte for each call.  Since one PLT
+slot is 16 bytes, there will be code size increase when indirect branch
+via the GOT slot is used to call an external function more than 16
+times.
+
 \subsection{Branching}
 
 \subsubsection{Small and Medium Models}
