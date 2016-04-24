@@ -110,13 +110,13 @@ mov  foo@GOT(\%reg1), \%reg2 & lea foo@GOTOFF(\%reg1), \%reg2 \\
 call *foo@GOT & nop call foo \\
 call *foo@GOT & call foo nop \\
 jmp  *foo@GOT & jmp foo nop \\
-mov  foo@GOT, \%reg & lea foo, \%reg \\
+mov  foo@GOT, \%reg & mov \$foo, \%reg \\
 test \%reg, foo@GOT & test \$foo, \%reg \\
 binop foo@GOT, \%reg & binop \$foo, \%reg \\
 call *foo@GOT(\%reg) & nop call foo \\
 call *foo@GOT(\%reg) & call foo nop \\
 jmp  *foo@GOT(\%reg) & jmp foo nop \\
-mov foo@GOT(\%reg1), \%reg2 & lea foo, \%reg2 \\
+mov foo@GOT(\%reg1), \%reg2 & mov \$foo, \%reg2 \\
 test  \%reg1, name@GOT(\%reg2) & test \$foo, \%reg1 \\
 binop name@GOT(\%reg1), \%reg2 & binop \$foo, \%reg2 \\
 \end{tabular}
