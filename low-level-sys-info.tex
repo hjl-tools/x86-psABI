@@ -541,7 +541,7 @@ left-to-right order) for passing as follows:
     preserved, nor is it used to pass arguments.  Making this register
     available as scratch register means that code in the PLT need not
     spill any registers when computing the address to which control
-    needs to be transferred.  \RAX is used to indicate the number of
+    needs to be transferred.  \reg{al} is used to indicate the number of
     vector arguments passed to a function requiring a variable number of
     arguments. \reg{r10} is used for passing a function's static chain
     pointer.}.
@@ -2073,14 +2073,12 @@ the \xARCH architecture because some arguments are passed in
 registers.  Portable C programs must use the header file
 \code{<stdarg.h>} in order to handle variable argument lists.
 
-When a function taking variable-arguments is called, \RAX\index{\RAX}
+When a function taking variable-arguments is called, \reg{al}\index{\RAX}
 must be set to the total number of floating point parameters passed to
 the function in vector registers.%
-\footnote{This implies that the only legal values for \RAX when
+\footnote{This implies that the only legal values for \reg{al} when
   calling a function with variable-argument lists are 0 to 8
   (inclusive).}
-%%% XXX: Really only floating pointer parameters?
-%%% XXX: Use %al or %rax?
 
 When \texttt{__m256} or \texttt{__m512} is passed as variable-argument,
 it should always be passed on stack. Only named \texttt{__m256} and
@@ -2148,7 +2146,7 @@ macro, or by the fact that the named
   arguments already are exhausted the argument registers entirely.},
 the register save area may be omitted entirely.
 
-The prologue should use \RAX to avoid unnecessarily saving XMM
+The prologue should use \reg{al} to avoid unnecessarily saving XMM
 registers.  This is especially important for integer only programs to
 prevent the initialization of the XMM unit.
 

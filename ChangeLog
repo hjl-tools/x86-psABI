@@ -1,3 +1,9 @@
+2016-02-29  Michael Matz  <matz@suse.de>
+
+	* low-level-sys-info.tex (Register pass classification,
+	Variable argument list, Register save area): Mention %al,
+	not %rax to avoid confusion.
+
 2015-11-19  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* object-files.tex (Relocation Types): Replace \multicolumn{3}
