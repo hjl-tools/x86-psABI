@@ -1,7 +1,7 @@
 INCLUDES  := low-level-sys-info.tex \
 	     introduction.tex libraries.tex \
 	     macros.tex conventions.tex abi-index.tex object-files.tex \
-	     linker-optimization.tex
+	     linker-optimization.tex secure.tex
 
 ALL_FILES := abi.tex $(INCLUDES)
 

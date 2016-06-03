@@ -1,0 +1,304 @@
+\chapter{Alternate Code Sequences For Security}
+
+\section{Code Sequences without PLT}
+
+Procedure Linkage Table (PLT) is
+used to access external functions defined in shared object and support
+
+\begin{description}
+  \item[Lazy symbol resolution] The function address is resolved only
+    when it is called the first time at run-time.
+  \item[Canonical function address] The PLT entry of the external
+    function is used as its address, aka function pointer.
+\end{description}
+
+The first instruction in the PLT entry is an indirect branch via the
+Global Offset Table (GOT) entry of
+the external function, which is set up in such a way that it will be
+updated to the address of the function body the first time when the
+function is called.  Since the GOT entry is writable, any address may
+be written to it at run-time, which is a potential security risk.
+
+\subsection{Indirect Call via the GOT Slot}
+
+Different code sequences are used to avoid PLT when position independent
+code (PIC) is enabled and disabled:
+
+\begin{figure}[H]
+\Hrule
+\caption{Function Call without PLT (PIC)}
+\begin{center}
+\small\code{
+\begin{tabular}{|l|c|l|}
+\cline{1-1}\cline{3-3}
+extern void func (void);  &&.globl func\\
+                          &&Load GOT base into reg \\
+func ();                  &&call *func@GOT(\%reg)\\
+\cline{1-1}\cline{3-3}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+\noindent
+Either caller-save or callee-save registers can be used for GOT base
+to call an external function with PIC.
+
+\begin{figure}[H]
+\Hrule
+\caption{Function Call without PLT (Non-PIC)}
+\begin{center}
+\small\code{
+\begin{tabular}{|l|c|l|}
+\cline{1-1}\cline{3-3}
+extern void func (void);  &&.globl func\\
+func ();                  &&call *func@GOT\\
+\cline{1-1}\cline{3-3}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+In both PIC and non-PIC cases, the direct branch is replaced by an
+indirect branch via the GOT slot, which is similar to the first
+instruction in the PLT slot.
+
+\begin{figure}[H]
+\Hrule
+\caption{Function Address without PLT (PIC)}
+\begin{center}
+\small\code{
+\begin{tabular}{|l|c|l|}
+\cline{1-1}\cline{3-3}
+extern void func (void);  &&~~.globl func\\
+void* ptr (void)          && func: \\
+\{                        &&~~Load GOT base into eax \\
+                          &&~~movl func@GOT(\%eax), \%eax \\
+~~return func;            &&~~ret \\
+\}			  && \\
+\cline{1-1}\cline{3-3}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+\begin{figure}[H]
+\Hrule
+\caption{Function Address without PLT (Non-PIC)}
+\begin{center}
+\small\code{
+\begin{tabular}{|l|c|l|}
+\cline{1-1}\cline{3-3}
+extern void func (void);  &&~~.globl func\\
+void* ptr (void)          && func: \\
+\{                        &&~~movl func@GOT, \%eax \\
+~~return func;            &&~~ret \\
+\}			  && \\
+\cline{1-1}\cline{3-3}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+Instead using the PLT slot as function address, the function address
+is retrieved from the GOT slot.
+
+If linker determines the function is defined locally, it converts
+indirect branch via the GOT slot to direct branch with a \code{nop}
+prefix and converts load via the GOT slot to load immediate or
+\code{lea}, see Section~\ref{opt_got32x} for details.
+
+After dynamic linker resolved all symbols by updating GOT entries with
+symbol addresses, GOT can be made read-only and overwriting GOT becomes
+a hard error immediately.  Since PLT is no longer used to call external
+function, lazy symbol resolution is disabled and a function can only be
+interposed during symbol resolution at startup.  Tools and features which
+depend on lazy symbol resolution will not work properly.  However, there
+are also a few side benefits:
+
+\begin{description}
+\item[No extra direct branch to PLT entry]  Since indirect branch is 6
+  byte long and direct branch is 5 byte long, when indirect branch via
+  the GOT slot is used to call a local function, code size will be
+  increased by one byte for each call.  Since one PLT slot has 16 bytes,
+  there will be code size increase when indirect branch via the GOT slot
+  is used to call an external function more than 16 times.
+\item[Custom calling convention]  Since external function is called
+  directly via the GOT slot, instead of invoking dynamic linker to
+  lookup function symbol when called the first time, parameters can be
+  passed differently from what is specified in this document.
+\end{description}
+
+\subsection{Thread-Local Storage without PLT}
+
+TLS code sequences for general and local dynamic models can be updated to
+replace direct call to \code{___tls_get_addr} via the PLT entry,
+with indirect call to \code{___tls_get_addr} via the GOT slot, see
+Figure~\ref{___tls_get_addr}.  Since direct
+\code{call} instruction is 4-byte long and indirect \code{call}
+instruction is 5-byte long, the extra one byte must be handled properly.
+
+\begin{figure}[H]
+\Hrule
+\caption{\code{___tls_get_addr} Call}
+\label{___tls_get_addr}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{ll|ll}
+\multicolumn{2}{c}{Direct via PLT} & \multicolumn{2}{c}{Indirect via GOT} \\
+\hline
+call & ___tls_get_addr@PLT & call & *___tls_get_addr@GOT(\%reg) \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+\subsubsection{General Dynamic Model for Global Variable}
+
+For general dynamic model, encoding of \code{lea} instruction before
+\code{call} instruction is changed from 7 bytes to 6 bytes to make
+room for indirect call:
+
+\begin{verbatim}
+extern __thread int x;
+\end{verbatim}
+
+\noindent
+the following alternate code sequence loads address of \code{x} into
+\reg{eax} without PLT:
+
+\begin{table}[H]
+\Hrule
+\caption{General Dynamic Model Code Sequence}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{With PLT} & \multicolumn{3}{c}{Without PLT} \\
+\hline
+0x00 & leal & x@tlsgd(,\%ebx,1), \%eax & 0x00 & leal & x@tlsgd(\%reg), \%eax \\
+0x07 & call  & ___tls_get_addr@PLT & 0x06 & call & *___tls_get_addr@GOT(\%reg) \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\noindent
+Either caller-save or callee-save registers can be used as GOT base
+for \texttt{R_386_TLS_GD} relocation against \code{x} and calling
+\code{___tls_get_addr}.
+
+\subsubsection{Static Thread-Local Variable}
+
+For local dynamic model, indirect call is used, instead of direct call:
+
+\begin{verbatim}
+static __thread int x;
+\end{verbatim}
+
+\noindent
+the following alternate code sequence loads the address of the
+TLS block of the module, which contains variable \code{x}, into
+\reg{eax} without PLT:
+
+\begin{table}[H]
+\Hrule
+\caption{Local Dynamic Model Code Sequence}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{With PLT} & \multicolumn{3}{c}{Without PLT} \\
+\hline
+0x00 & leal & x@tlsldm(\%ebx), \%eax & 0x00 & leal & x@tlsldm(\%reg), \%eax \\
+0x06 & call  & ___tls_get_addr@PLT & 0x06 & call & *___tls_get_addr@GOT(\%reg) \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\noindent
+As with general dynamic model, either caller-save or callee-save
+registers can be used as GOT base for \texttt{R_386_TLS_LDM}
+relocation against \code{x} and calling \code{___tls_get_addr}.
+
+\subsubsection{TLS Linker Optimization}
+
+Since the code sequence with indirect call for general dynamic model
+has the same length as the one with direct call, linker just needs to
+recognize new instruction pattern to convert general dynamic access to
+initial exec or local exec accesses.
+
+\begin{description}
+
+\item[General Dynamic to Initial Exec]
+To load address of \code{x} into \reg{eax}:
+
+\begin{table}[H]
+\Hrule
+\caption{GD -> IE Code Transition}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{GD} & \multicolumn{3}{c}{IE} \\
+\hline
+0x00 & leal & x@tlsgd(\%reg), \%eax & 0x00 & movl & \%gs:0, \%eax \\
+0x06 & call & *___tls_get_addr@GOT(\%reg) & 0x06  & subl & \$x@gottpoff(\%reg), \%eax\\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[General Dynamic to Local Exec]
+To load address of \code{x} into \reg{eax}:
+
+\begin{table}[H]
+\Hrule
+\caption{GD -> LE Code Transition}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{GD} & \multicolumn{3}{c}{LE} \\
+\hline
+0x00 & leal & x@tlsgd(\%reg), \%eax & 0x00 & movl & \%gs:0, \%eax \\
+0x06 & call & *___tls_get_addr@GOT(\%reg) & 0x06  & subl & \$x@tpoff, \%eax\\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\end{description}
+
+\begin{description}
+\item[Local Dynamic to Local Exec]
+For local dynamic model to local exec model transition, linker generates
+a 6-byte \code{nop} instruction, instead of a 1-byte \code{nop}
+instruction plus a 4-byte \code{nop} instruction, after \code{mov}
+instruction, to account for the extra byte with indirect branch.  To load
+the address of the TLS block of the module, which contains variable
+\code{x}, into \reg{eax} without PLT:
+
+\begin{table}[H]
+\Hrule
+\caption{LD -> LE Code Transition}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LD} & \multicolumn{3}{c}{LE} \\
+\hline
+0x00 & leal & x@tlsldm(\%reg), \%eax & 0x00 & movl & \%gs:0, \%eax \\
+0x06 & call & *___tls_get_addr@GOT(\%reg) & 0x06  & leal & 0(\%esi), \%esi \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\end{description}
