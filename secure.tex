@@ -1,0 +1,344 @@
+\chapter{Alternate Code Sequences For Security}
+
+\section{Code Sequences without PLT}
+
+Procedure Linkage Table (PLT), see Section~\ref{plt} for detail, is
+used to access external functions defined in shared object and support
+
+\begin{description}
+  \item[Lazy symbol resolution] The function address is resolved only
+    when it is called the first time at run-time.
+  \item[Canonical function address] The PLT entry of the external
+    function is used as its address, aka function pointer.
+\end{description}
+
+The first instruction in the PLT entry is an indirect branch via the
+Global Offset Table (GOT), see Section~\ref{got} for detail, entry of
+the external function, which is set up in such a way that it will be
+updated to the address of the function body the first time when the
+function is called.  Since the GOT entry is writable, any address may
+be written to it at run-time, which is a potential security risk.
+
+\subsection{Indirect Call via the GOT Slot}
+
+For small and medium models, different code sequence is used to avoid
+PLT:
+
+\begin{figure}[H]
+\Hrule
+\caption{Function Call without PLT (Small and Medium Models)}
+\begin{center}
+\small\code{
+\begin{tabular}{|l|c|l|}
+\cline{1-1}\cline{3-3}
+extern void func (void);  &&.globl func\\
+func (void);              &&call *func@GOTPCREL(\%rip)\\
+\cline{1-1}\cline{3-3}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+The direct branch is replaced by an indirect branch via the GOT slot,
+which is similar to the first instruction in the PLT slot.
+
+\begin{figure}[H]
+\Hrule
+\caption{Function Address without PLT (Small and Medium Models)}
+\begin{center}
+\small\code{
+\begin{tabular}{|l|c|l|}
+\cline{1-1}\cline{3-3}
+extern void func (void);  &&~~.globl func\\
+void* ptr (void)          && func: \\
+\{                        &&~~movq func@GOTPCREL(\%rip), \%rax  \\
+~~return func;            &&~~ret \\
+\}			  && \\
+\cline{1-1}\cline{3-3}
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+Instead using the PLT slot as function address, the function address
+is retrieved from the GOT slot.
+
+If linker determines the function is defined locally, it converts
+indirect branch via the GOT slot to direct branch with a \code{nop}
+prefix and converts load via the GOT slot to load immediate or
+\code{lea}, see Section~\ref{opt_gotpcrelx} for details.
+
+After dynamic linker resolved all symbols by updating GOT entries with
+symbol addresses, GOT can be made read-only.  Since PLT is no longer
+used to call external function, lazy symbol resolution is disabled and
+a function can only be interposed during symbol resolution at startup.
+However, there are also 2 side benefits:
+
+\begin{description}
+\item[No extra direct branch to PLT entry]  Since indirect branch is 6
+  byte long and direct branch is 5 byte long, when indirect branch via
+  the GOT slot is used to call a local function, code size will be
+  increased by one byte for each call.  Since one PLT slot has 16 bytes,
+  there will be code size increase when indirect branch via the GOT slot
+  is used to call an external function more than 16 times.
+\item[Custom calling convention]  Since external function is called
+  directly via the GOT slot, instead of invoking dynamic linker to
+  lookup function symbol when called the first time, parameters can be
+  passed differently from what is specified in this document.
+\end{description}
+
+\subsection{Thread-Local Storage without PLT}
+
+TLS code sequences for general and local dynamic models can be updated to
+replace direct call to \code{__tls_get_addr} via the PLT entry,
+with indirect call to \code{__tls_get_addr} via the GOT slot, see
+Figure~\ref{__tls_get_addr}.  Since direct
+\code{call} instruction is 4-byte long and indirect \code{call}
+instruction is 5-byte long, the extra one byte must be handled properly.
+
+\begin{figure}[H]
+\Hrule
+\caption{\code{__tls_get_addr} Call}
+\label{__tls_get_addr}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{ll|ll}
+\multicolumn{2}{c}{Direct via PLT} & \multicolumn{2}{c}{Indirect via GOT} \\
+\hline
+call  & __tls_get_addr@PLT	& call & *__tls_get_addr@GOTPCREL(\%rip) \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{figure}
+
+\subsubsection{General Dynamic Model for Global Variable}
+
+For general dynamic model, one \code{0x66} prefix before \code{call}
+instruction is removed to make room for indirect call:
+
+\begin{verbatim}
+extern __thread int x;
+\end{verbatim}
+
+\noindent
+the following alternate code sequence loads address of \code{x} into
+\reg{rax} without PLT:
+
+\begin{table}[H]
+\Hrule
+\caption{General Dynamic Model Code Sequence (LP64)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{With PLT} & \multicolumn{3}{c}{Without PLT} \\
+\hline
+0x00 & .byte & 0x66			& 0x00 & .byte & 0x66 \\
+0x01 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x01 & leaq & x@tlsgd(\%rip),\%rdi \\
+0x08 & .word & 0x6666			& 0x08 & .byte & 0x66  \\
+0x0a & rex64 &				& 0x09 & rex64 & \\
+0x0b & call  & __tls_get_addr@PLT	& 0x0a & call & *__tls_get_addr@GOTPCREL(\%rip) \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\begin{table}[H]
+\Hrule
+\caption{General Dynamic Model Code Sequence (ILP32)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{With PLT} & \multicolumn{3}{c}{Without PLT} \\
+\hline
+0x00 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x00 & leaq & x@tlsgd(\%rip),\%rdi \\
+0x07 & .word & 0x6666			& 0x07 & .byte & 0x66  \\
+0x09 & rex64 &				& 0x08 & rex64 & \\
+0x0a & call  & __tls_get_addr@PLT	& 0x09 & call & *__tls_get_addr@GOTPCREL(\%rip) \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\subsubsection{Static Thread-Local Variable}
+
+For local dynamic model, indirect call is used instead of direct call:
+
+\begin{verbatim}
+static __thread int x;
+\end{verbatim}
+
+\noindent
+the following alternate code sequence loads the address of the
+TLS block of the module, which contains variable \code{x}, into
+\reg{rax} without PLT:
+
+\begin{table}[H]
+\Hrule
+\caption{Local Dynamic Model Code Sequence (LP64)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{With PLT} & \multicolumn{3}{c}{Without PLT} \\
+\hline
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & leaq & x@tlsld(\%rip),\%rdi\\
+0x07 & call  & __tls_get_addr@PLT	& 0x07 & call & *__tls_get_addr@GOTPCREL(\%rip) \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\begin{table}[H]
+\Hrule
+\caption{Local Dynamic Model Code Sequence (ILP32)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{With PLT} & \multicolumn{3}{c}{Without PLT} \\
+\hline
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & leaq & x@tlsld(\%rip),\%rdi\\
+0x07 & call  & __tls_get_addr@PLT	& 0x07 & call & *__tls_get_addr@GOTPCREL(\%rip) \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\subsubsection{TLS Linker Optimization}
+
+Since the code sequence with indirect call for general dynamic model
+has the same length as the one with direct call, linker just needs to
+recognize new instruction pattern to convert general dynamic access to
+initial exec or local exec accesses.
+
+\begin{description}
+
+\item[General Dynamic to Initial Exec]
+To load address of \code{x} into \reg{rax}:
+
+\begin{table}[H]
+\Hrule
+\caption{GD -> IE Code Transition (LP64)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{GD} & \multicolumn{3}{c}{IE} \\
+\hline
+0x00 & .byte & 0x66 			& 0x00 & movq & \%fs:0, \%rax \\
+0x01 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x09 & addq & x@gottpoff(\%rip),\%rax  \\
+0x09 & .byte & 0x66			&      &      & \\
+0x0a & rex64 &				&      &      &  \\
+0x0b & call  & *__tls_get_addr@GOTPCREL(\%rip) &      &       & \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\begin{table}[H]
+\Hrule
+\caption{GD -> IE Code Transition (ILP32)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{GD} & \multicolumn{3}{c}{IE} \\
+\hline
+0x00 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x00 & movl & \%fs:0, \%eax \\
+0x07 & .byte & 0x66                     & 0x08 & addq & x@gottpoff(\%rip),\%rax  \\
+0x08 & rex64 &				&      &      &  \\
+0x0a & call  & *__tls_get_addr@GOTPCREL(\%rip) &      &       & \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\item[General Dynamic to Local Exec]
+To load address of \code{x} into \reg{rax}:
+
+\begin{table}[H]
+\Hrule
+\caption{GD -> LE Code Transition (LP64)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{GD} & \multicolumn{3}{c}{LE} \\
+\hline
+0x00 & .byte & 0x66                     & 0x00 & movq  & \%fs:0, \%rax \\
+0x01 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x09 & leaq  & x@tpoff(\%rax),\%rax\\
+0x08 & .byte & 0x66			&      &       & \\
+0x09 & rex64 &				&      &       & \\
+0x0a & call  & *__tls_get_addr@GOTPCREL(\%rip)	&      &       & \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\begin{table}[H]
+\Hrule
+\caption{GD -> LE Code Transition (ILP32)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{GD} & \multicolumn{3}{c}{LE} \\
+\hline
+0x00 & leaq  & x@tlsgd(\%rip),\%rdi	& 0x00 & movl  & \%fs:0, \%eax \\
+0x07 & .byte & 0x66			& 0x08 & leaq  & x@tpoff(\%rax),\%rax\\
+0x08 & rex64 &				&      &       & \\
+0x09 & call  & *__tls_get_addr@GOTPCREL(\%rip)	&      &       & \\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\end{description}
+
+\begin{description}
+\item[Local Dynamic to Local Exec]
+For local dynamic model to local exec model transition, linker generates
+4 \code{0x66} prefixes, instead of 3, before \code{mov} instruction
+for LP64 and generate a 5-byte \code{nop}, instead of 4-byte, before
+\code{mov} instruction for ILP32.  To load the address of the TLS block
+of the module, which contains variable \code{x}, into \reg{rax} without
+PLT:
+
+\begin{table}[H]
+\Hrule
+\caption{LD -> LE Code Transition (LP64)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LD} & \multicolumn{3}{c}{LE} \\
+\hline
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & .long & 0x66666666 \\
+0x07 & call  & *__tls_get_addr@GOTPCREL(\%rip)	& 0x04 & movq & \%fs:0,\%rax\\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\begin{table}[H]
+\Hrule
+\caption{LD -> LE Code Transition (ILP32)}
+\begin{center}
+\myfontsize\code{
+\begin{tabular}{lll|lll}
+\multicolumn{3}{c}{LD} & \multicolumn{3}{c}{LE} \\
+\hline
+0x00 & leaq  & x@tlsld(\%rip),\%rdi	& 0x00 & nopw & 0x0(\%rax) \\
+0x07 & call  & *__tls_get_addr@GOTPCREL(\%rip)	& 0x05 & movl & \%fs:0,\%eax\\
+\end{tabular}
+}
+\end{center}
+\Hrule
+\end{table}
+
+\end{description}
