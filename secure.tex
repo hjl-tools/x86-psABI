@@ -71,10 +71,12 @@ prefix and converts load via the GOT slot to load immediate or
 \code{lea}, see Section~\ref{opt_gotpcrelx} for details.
 
 After dynamic linker resolved all symbols by updating GOT entries with
-symbol addresses, GOT can be made read-only.  Since PLT is no longer
-used to call external function, lazy symbol resolution is disabled and
-a function can only be interposed during symbol resolution at startup.
-However, there are also 2 side benefits:
+symbol addresses, GOT can be made read-only and overwriting GOT becomes
+a hard error immediately.  Since PLT is no longer used to call external
+function, lazy symbol resolution is disabled and a function can only be
+interposed during symbol resolution at startup.  Tools and features which
+depend on lazy symbol resolution will not work properly.  However, there
+are also a few side benefits:
 
 \begin{description}
 \item[No extra direct branch to PLT entry]  Since indirect branch is 6
@@ -83,6 +85,8 @@ However, there are also 2 side benefits:
   increased by one byte for each call.  Since one PLT slot has 16 bytes,
   there will be code size increase when indirect branch via the GOT slot
   is used to call an external function more than 16 times.
+\item[Less memory usage] Since GOT pages are updated before program
+  starts, they can be shared by multiple instances of the same ELF image.
 \item[Custom calling convention]  Since external function is called
   directly via the GOT slot, instead of invoking dynamic linker to
   lookup function symbol when called the first time, parameters can be
