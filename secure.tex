@@ -85,8 +85,6 @@ are also a few side benefits:
   increased by one byte for each call.  Since one PLT slot has 16 bytes,
   there will be code size increase when indirect branch via the GOT slot
   is used to call an external function more than 16 times.
-\item[Less memory usage] Since GOT pages are updated before program
-  starts, they can be shared by multiple instances of the same ELF image.
 \item[Custom calling convention]  Since external function is called
   directly via the GOT slot, instead of invoking dynamic linker to
   lookup function symbol when called the first time, parameters can be
