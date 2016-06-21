@@ -285,7 +285,8 @@ The following notations are used for specifying relocations in table~
       \texttt{R_386_NONE}  & 0 & none & none \\
       \texttt{R_386_32}    & 1 & \textit{word32} & \texttt{S + A} \\
       \texttt{R_386_PC32}  & 2 & \textit{word32} & \texttt{S + A - P} \\
-      \texttt{R_386_GOT32} & 3 & \textit{word32} & \texttt{G + A - GOT} \\
+      \texttt{R_386_GOT32} & 3 & \textit{word32}
+      & \texttt{G + A - GOT} / \texttt{G + A}$^\dagger$ \\
       \texttt{R_386_PLT32} & 4 & \textit{word32} & \texttt{L + A - P} \\
       \texttt{R_386_COPY}  & 5 & none            & none \\
       \texttt{R_386_GLOB_DAT} & 6 & \textit{word32} & \texttt{S} \\
@@ -325,17 +326,32 @@ The following notations are used for specifying relocations in table~
       \texttt{R_386_GOT32X} & 43 & \textit{word32}
       & \texttt{G + A - GOT} / \texttt{G + A}$^\dagger$ \\
      \cline{1-4}
-    \multicolumn{4}{l}{\myfontsize $^\dagger$ Used without base register
-    when position-independent code is disabled.} \\
+    \multicolumn{4}{l}{\myfontsize $^\dagger$ Applied on memory operand
+    without base register when position-independent code is disabled.} \\
     \end{tabular}
   \end{center}
 \Hrule
 \end{table}
 
-The \texttt{R_386_GOT32X} relocation can be used to compute the address
-of the symbol's global offset table entry without base register
-when position-independent code is disabled.  For \code{name@GOT} in:
-\begin{footnotesize}
+\texttt{R_386_GOT32} and \texttt{R_386_GOT32X} relocations can refer
+to GOT address, which is a memory operand, or GOT index, which is an
+immediate operand:
+
+\begin{description}
+\item[\code{name@GOT}] It refers to the address of the symbol's global
+offset table entry.  When it is used without base register and with
+position-independent code disabled, as in
+
+\begin{verbatim}
+        op         name@GOT, %reg
+        op         %reg, name@GOT
+\end{verbatim}
+
+\noindent
+it is computed as \texttt{G + A}.  Otherwise, it is computed as
+\texttt{G + A - GOT}.
+
+For \code{name@GOT} in:
 \begin{verbatim}
         call       *name@GOT(%reg)
         jmp        *name@GOT(%reg)
@@ -343,12 +359,10 @@ when position-independent code is disabled.  For \code{name@GOT} in:
         test       %reg1, name@GOT(%reg2)
         binop      name@GOT(%reg1), %reg2
 \end{verbatim}
-\end{footnotesize}
 
 \noindent
 as well as
 
-\begin{footnotesize}
 \begin{verbatim}
         call       *name@GOT
         jmp        *name@GOT
@@ -356,7 +370,6 @@ as well as
         test       %reg, name@GOT
         binop      name@GOT, %reg
 \end{verbatim}
-\end{footnotesize}
 
 \noindent
 where \code{binop} is one of \code{adc}, \code{add}, \code{and},
@@ -365,6 +378,15 @@ instructions\footnote{\code{mov name@GOT, \%eax} must be encoded with
 opcode \code{0x8b}, not \code{0xa0}, to allow linker optimization.},
 the \texttt{R_386_GOT32X} relocation should be generated, instead of
 the \texttt{R_386_GOT32} relocation.
+
+\item[\code{\$name@GOT}] It refers to the index of the symbol's global
+offset table entry
+
+\begin{verbatim}
+        op         $name@GOT, %reg
+\end{verbatim}
+it is always computed as \texttt{G + A - GOT}.
+\end{description}
 
 \begin{sloppypar}
 A program or object file using \texttt{R_386_8},
