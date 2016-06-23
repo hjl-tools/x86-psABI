@@ -326,7 +326,7 @@ The following notations are used for specifying relocations in table~
       \texttt{R_386_GOT32X} & 43 & \textit{word32}
       & \texttt{G + A - GOT} / \texttt{G + A}$^\dagger$ \\
      \cline{1-4}
-    \multicolumn{4}{l}{\myfontsize $^\dagger$ Applied on memory operand
+    \multicolumn{4}{l}{\myfontsize $^\dagger$ Applied to memory operand
     without base register when position-independent code is disabled.} \\
     \end{tabular}
   \end{center}
@@ -377,7 +377,7 @@ where \code{binop} is one of \code{adc}, \code{add}, \code{and},
 instructions\footnote{\code{mov name@GOT, \%eax} must be encoded with
 opcode \code{0x8b}, not \code{0xa0}, to allow linker optimization.},
 the \texttt{R_386_GOT32X} relocation should be generated, instead of
-the \texttt{R_386_GOT32} relocation.
+the \texttt{R_386_GOT32} relocation.  See also section~\ref{opt_got32x}.
 
 \item[\code{\$name@GOT}] It refers to the index of the symbol's global
 offset table entry
