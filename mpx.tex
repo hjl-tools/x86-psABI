@@ -43,7 +43,7 @@ types is updated as follows:
 
 \subsection{Passing}
 
-For paramter passing, if the class is INTEGER or POINTER, the next
+For parameter passing, if the class is INTEGER or POINTER, the next
 available register of the sequence \RDI, \RSI, \RDX, \RCX, \reg{r8}
 and \reg{r9} is used.
 
@@ -101,7 +101,7 @@ eightbyte:
   \reg{bnd0}, \reg{bnd1}, \reg{bnd2} and \reg{bnd3}.  If there are no bound registers available
   for the bounds of an argument, then the bounds are passed in a CPU defined manner
   by executing \code{BOUND_MAP_STORE(bnd, addr, ptr)} function, where \code{bnd} is
-  the current bounds of the argument, \code{addr} is the address of stack location beyound
+  the current bounds of the argument, \code{addr} is the address of stack location beyond
   the location of the callee's return address (that will be put on stack by the corresponding
   call instruction), \code{ptr} is the actual value of the pointer argument.
   For each call, there may be up to two such pointer arguments,
