@@ -1,7 +1,8 @@
 INCLUDES  := execution.tex low-level-sys-info.tex development.tex      \
 	     introduction.tex sw-installation.tex dl.tex libraries.tex \
 	     macros.tex conventions.tex abi-index.tex object-files.tex \
-	     kernel.tex fortran.tex linker-optimization.tex
+	     kernel.tex fortran.tex linker-optimization.tex x32.tex \
+	     mpx.tex
 
 ALL_FILES := abi.tex $(INCLUDES)
 
