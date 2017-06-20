@@ -393,6 +393,7 @@ The following processor-specific program property types
       \hline
      \texttt{GNU_PROPERTY_X86_ISA_1_USED} & \texttt{0xc0000000} \\
      \texttt{GNU_PROPERTY_X86_ISA_1_NEEDED} & \texttt{0xc0000001} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_1_AND} & \texttt{0xc0000002} \\
     \end{tabular}
   \end{center}
 \Hrule
@@ -409,6 +410,9 @@ The following processor-specific program property types
    corresponding bits are used in program and they must be supported
    by the hardware.  A bit in the output \code{pr_data} field is
    set if  it is set in any relocatable input \code{pr_data} fields.
+ \item[GNU_PROPERTY_X86_FEATURE_1_AND] Its \code{pr_data} field contains
+   a 4-byte integer.  A bit in the output \code{pr_data} field is set
+   only if it is set in all relocatable input \code{pr_data} fields.
 \end{description}
 
 \begin{table}[H]
@@ -440,6 +444,33 @@ The following processor-specific program property types
   \end{center}
 \Hrule
 \end{table}
+
+The following bits are defined for \code{GNU_PROPERTY_X86_FEATURE_1_AND}:
+
+\begin{table}[H]
+\Hrule
+  \caption{GNU_PROPERTY_X86_FEATURE_1_AND Bit Flags}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_FEATURE_1_IBT} & \texttt{1U << 0} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_1_SHSTK} & \texttt{1U << 1} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
+\begin{description}
+ \item[GNU_PROPERTY_X86_FEATURE_1_IBT] This indicates that all executable
+   sections are compatible with IBT (see Section~\ref{ibt}) when
+   \code{endbr64} instruction starts each valid target where an indirect
+   branch instruction can land.
+ \item[GNU_PROPERTY_X86_FEATURE_1_SHSTK] This indicates that all
+   executable sections are compatible with SHSTK (see Section~\ref{shstk})
+   where return address popped from shadow stack always matches return
+   address popped from normal stack.
+\end{description}
 
 %%% Local Variables:
 %%% mode: latex
