@@ -1,0 +1,179 @@
+%%% vim:ai:tw=72:
+\chapter{Intel CET Extension}
+
+Intel CET (Control-flow Enforcement Technology) Extension includes:
+
+\begin{description}
+  \item[IBT (Indirect Branch Tracking)] Branch protection to defend
+    against Jump/Call Oriented Programming.
+  \item [SHSTK (Shadow Stack)] Return address protection to defend
+    against Return Oriented Programming,
+\end{description}
+
+\section{Program Loading}
+
+\subsection{Process \code{GNU_PROPERTY_X86_FEATURE_1_IBT}}
+\label{ibt}
+
+On an IBT capable processor, the following steps should be taken:
+
+\begin{enumerate}
+  \item
+    \begin{sloppypar}
+      When loading an executable without interpreter, enable IBT if
+      \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the executable.
+    \end{sloppypar}
+  \item
+    \begin{sloppypar}
+      When loading an executable with an interpreter, enable IBT if
+      \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the interpreter.
+      The interpreter should disable IBT if
+      \code{GNU_PROPERTY_X86_FEATURE_1_IBT} isn't set on the executable.
+    \end{sloppypar}
+  \item
+    \begin{sloppypar}
+      After IBT is enabled, when loading a shared object without
+      \code{GNU_PROPERTY_X86_FEATURE_1_IBT}:
+   \end{sloppypar}
+   \begin{enumerate}
+    \item If legacy interwork is allowed, then mark all pages in
+      executable \texttt{PT_LOAD} segments in legacy code page bitmap.
+      Failure of legacy code page bitmap allocation causes an error.
+    \item If legacy interwork isn't allowed, it causes an error.
+   \end{enumerate}
+\end{enumerate}
+
+\subsection{Process \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK}}
+\label{shstk}
+
+On a SHSTK capable processor, the following steps should be taken:
+
+\begin{enumerate}
+  \item
+    \begin{sloppypar}
+      When loading an executable without interpreter, enable SHSTK if
+      \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the executable.
+    \end{sloppypar}
+  \item
+    \begin{sloppypar}
+      When loading an executable with an interpreter, enable SHSTK if
+      \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the interpreter.
+      The interpreter should disable SHSTK if
+      \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} isn't set or any shared
+      objects loaded via the \code{DT_NEEDED} tag.
+    \end{sloppypar}
+  \item
+    \begin{sloppypar}
+      After SHSTK is enabled, when loading a shared object without
+      \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK}:
+    \end{sloppypar}
+    \begin{enumerate}
+      \item If legacy interwork is allowed, SHSTK should be disabled.
+      \item If legacy interwork isn't allowed, it causes an error.
+    \end{enumerate}
+\end{enumerate}
+
+\section{Dynamic Linking}
+
+To support IBT, linker should generate a IBT-enabled PLT (Procedure
+Linkage Table) (see figure \ref{ibt_small_med_plt}) together with a second
+PLT (see figure \ref{ibt_sec_small_med_plt}).
+
+\begin{figure}[H]
+\Hrule
+\caption{The IBT-enabled PLT (small and medium models)}
+\label{ibt_small_med_plt}
+\begin{footnotesize}
+\begin{verbatim}
+  .PLT0: pushq    GOT+8(%rip)             # GOT[1]
+         bnd jmp  *GOT+16(%rip)           # GOT[2]
+         nopl     (%rax)
+  .PLT1: endbr64                          # 16 bytes from .PLT0
+         pushq    $index1
+         bnd jmp  PLT0
+         nop
+  .PLT2: endbr64                          # 16 bytes from .PLT1
+         pushq    $index2
+         bnd jmp  .PLT0
+         nop
+  .PLT3: ...
+\end{verbatim}%$
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+\begin{figure}[H]
+\Hrule
+\caption{The Second IBT-enabled PLT (small and medium models)}
+\label{ibt_sec_small_med_plt}
+\begin{footnotesize}
+\begin{verbatim}
+  .SPLT1: endbr64
+          bnd jmp  *name1@GOTPCREL(%rip)
+          nopl     0x0(%rax,%rax,1)
+  .SPLT2: endbr64
+          bnd jmp  *name2@GOTPCREL(%rip)  # 16 bytes from .SPLT1
+          nopl     0x0(%rax,%rax,1)
+  .SPLT3: ...                             # 16 bytes from .SPLT2
+\end{verbatim}%$
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+The BND prefix is added so that the IBT-enabled procedure linkage table is
+also compatible with MPX.
+
+When the IBT-enabled procedure linkage table is used, the initial value of
+the global offset table entry for the external function is the address of
+the corresponding entry of the second procedure linkage table.
+
+\subsection{IBT-enabled PLTs For ILP32}
+
+Since MPX isn't supported in ILP32 programming model, there is no
+need to add the BND prefix.
+
+\begin{figure}[H]
+\Hrule
+\caption{The IBT-enabled PLT For ILP32}
+\label{ibt_small_med_plt}
+\begin{footnotesize}
+\begin{verbatim}
+  .PLT0: pushq    GOT+8(%rip)             # GOT[1]
+         jmp      *GOT+16(%rip)           # GOT[2]
+         nopl     0x0(%rax)
+  .PLT1: endbr64                          # 16 bytes from .PLT0
+         pushq    $index1
+         jmp  PLT0
+         xchg %ax,%ax
+  .PLT2: endbr64                          # 16 bytes from .PLT1
+         pushq    $index2
+         jmp  .PLT0
+         xchg %ax,%ax
+  .PLT3: ...
+\end{verbatim}%$
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+\begin{figure}[H]
+\Hrule
+\caption{The Second IBT-enabled PLT For ILP32}
+\label{ibt_sec_small_med_plt}
+\begin{footnotesize}
+\begin{verbatim}
+  .SPLT1: endbr64
+          jmp  name1@GOTPCREL(%rip)
+          nopw 0x0(%rax,%rax,1)
+  .SPLT2: endbr64
+          jmp  name2@GOTPCREL(%rip)       # 16 bytes from .SPLT1
+          nopw 0x0(%rax,%rax,1)
+  .SPLT3: ...                             # 16 bytes from .SPLT2
+\end{verbatim}%$
+\end{footnotesize}
+\Hrule
+\end{figure}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "abi"
+%%% End:

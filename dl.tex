@@ -378,6 +378,197 @@ finalization) functions specified by \codeindex{DT_FINI} and
 The user program plays no further part in executing the initialization
 and termination functions specified by these dynamic tags.
 
+\section {Program Property}
+
+The following processor-specific program property type ranges
+\footnote{See {\bf Linux Extensions to gABI} at
+\url{https://github.com/hjl-tools/linux-abi}} are defined:
+
+\begin{table}[H]
+\Hrule
+  \caption{Program Property Type Ranges}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_UINT32_AND_LO} & \texttt{0xc0000002} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_AND_HI} & \texttt{0xc0007fff} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_LO} & \texttt{0xc0008000} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_HI} & \texttt{0xc000ffff} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_AND_LO} & \texttt{0xc0010000} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_AND_HI} & \texttt{0xc0017fff} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
+The \code{pr_data} field of each property contains a 4-byte unsigned
+integer.
+
+\begin{description}
+ \item[GNU_PROPERTY_X86_UINT32_AND_LO..GNU_PROPERTY_X86_UINT32_AND_HI]
+   A bit in the output \code{pr_data} field is set only if it is set in
+   all relocatable input \code{pr_data} fields.  If all bits in the
+   the output \code{pr_data} field are zero, this property should be
+   removed from output.  If the bit is 1, all input relocatables have
+   the feature.  If the bit is 0 or the property is missing, it is
+   unknown whether all input relocatables have the feature.
+ \item[GNU_PROPERTY_X86_UINT32_OR_LO..GNU_PROPERTY_X86_UINT32_OR_HI]
+   A bit in the output \code{pr_data} field is set if it is set in any
+   relocatable input \code{pr_data} fields.  If all bits in the
+   the output \code{pr_data} field are zero, this property should be
+   removed from output.  If the bit is 1, some input relocatables have
+   the feature.  If the bit is 0 or the property is missing, it is
+   unknown whether any input relocatables have the feature.
+ \item[GNU_PROPERTY_X86_UINT32_OR_AND_LO..GNU_PROPERTY_X86_UINT32_OR_AND_HI]
+   A bit in the output \code{pr_data} field is set if it is set in any
+   relocatable input \code{pr_data} fields and this property is present
+   in all relocatable input files.  A missing property implies that its
+   bits have unknown values.  When all bits in the the output
+   \code{pr_data} field are zero, this property should not be removed
+   from output to indicate it has zero in all bits.  If the property
+   is in output, all input relocatables have the property.  If the bit
+   is 1, some input relocatables have the feature.  If the bit is 0,
+   none of input relocatables have the feature.
+\end{description}
+
+The following property types are defined:
+
+\begin{table}[H]
+\Hrule
+  \caption{Program Property Types}
+  \begin{center}
+    \myfontsize
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_FEATURE_1_AND} &
+     \texttt{GNU_PROPERTY_X86_UINT32_AND_LO + 0} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_USED} &
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_AND_LO + 1} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_NEEDED} &
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_LO + 1} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_USED} &
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_AND_LO + 0} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_NEEDED} &
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_LO + 0} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
+\begin{description}
+ \item[GNU_PROPERTY_X86_FEATURE_1_AND] The x86 processor features
+   indicated by the corresponding bits are used in program.
+ \item[GNU_PROPERTY_X86_FEATURE_2_USED] The x86 processor features
+   indicated by the corresponding bits are used in program.  Their
+   support in the hardware is optional.  Its absence in an x86 ELF
+   binary implies that any x86 processor features may be used.
+   \texttt{GNU_PROPERTY_X86_FEATURE_2_USED} can be used to check for
+   features used in the program.
+ \item[GNU_PROPERTY_X86_FEATURE_2_NEEDED] The x86 processor features
+   indicated by the corresponding bits are needed in program and they
+   must be supported by the hardware.  Loader may refuse to load
+   the program whose \texttt{GNU_PROPERTY_X86_FEATURE_2_NEEDED}
+   features aren't supported by the hardware.
+ \item[GNU_PROPERTY_X86_ISA_1_NEEDED] The x86 instruction sets indicated
+   by the corresponding bits are needed in program and they must be
+   supported by the hardware.  Loader may refuse to load the program
+   whose \texttt{GNU_PROPERTY_X86_ISA_1_NEEDED} ISAs aren't supported
+   by the hardware.
+ \item[GNU_PROPERTY_X86_ISA_1_USED] The x86 instruction sets indicated
+   by the corresponding bits are used in program.  Their support in the
+   hardware is optional.  \texttt{GNU_PROPERTY_X86_ISA_1_USED} can be
+   used to check for ISAs used in the program.
+\end{description}
+
+The following bits are defined for \code{GNU_PROPERTY_X86_FEATURE_1_AND}:
+
+\begin{table}[H]
+\Hrule
+  \caption{GNU_PROPERTY_X86_FEATURE_1_AND Bit Flags}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_FEATURE_1_IBT} & \texttt{1U << 0} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_1_SHSTK} & \texttt{1U << 1} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
+\begin{description}
+ \item[GNU_PROPERTY_X86_FEATURE_1_IBT] This indicates that all executable
+   sections are compatible with IBT (see Section~\ref{ibt}) when
+   \code{endbr64} instruction starts each valid target where an indirect
+   branch instruction can land.
+ \item[GNU_PROPERTY_X86_FEATURE_1_SHSTK] This indicates that all
+   executable sections are compatible with SHSTK (see Section~\ref{shstk})
+   where return address popped from shadow stack always matches return
+   address popped from normal stack.
+\end{description}
+
+\begin{table}[H]
+\Hrule
+  \caption{Bit Flags For X86 Instruction Sets}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_ISA_1_CMOV} & \texttt{1U << 0} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE} & \texttt{1U << 1} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE2} & \texttt{1U << 2} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE3} & \texttt{1U << 3} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSSE3} & \texttt{1U << 4} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE4_1} & \texttt{1U << 5} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE4_2} & \texttt{1U << 6} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX} & \texttt{1U << 7} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX2} & \texttt{1U << 8} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_FMA} & \texttt{1U << 9} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512F} & \texttt{1U << 10} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512CD} & \texttt{1U << 11} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512ER} & \texttt{1U << 12} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512PF} & \texttt{1U << 13} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512VL} & \texttt{1U << 14} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512DQ} & \texttt{1U << 15} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512BW} & \texttt{1U << 16} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512_4FMAPS} & \texttt{1U << 17} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512_4VNNIW} & \texttt{1U << 18} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512_BITALG} & \texttt{1U << 19} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512_IFMA} & \texttt{1U << 20} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512_VBMI} & \texttt{1U << 21} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512_VBMI2} & \texttt{1U << 22} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512_VNNI} & \texttt{1U << 23} \\
+    \cline{1-2}
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\begin{table}[H]
+\Hrule
+  \caption{Bit Flags For X86 Processor Features}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_X86} $^\dagger$ & \texttt{1U << 0} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_X87} & \texttt{1U << 1} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_MMX} & \texttt{1U << 2} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_XMM} & \texttt{1U << 3} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_YMM} & \texttt{1U << 4} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_ZMM} & \texttt{1U << 5} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_FXSR} & \texttt{1U << 6} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_XSAVE} & \texttt{1U << 7} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_XSAVEOPT} & \texttt{1U << 8} \\
+     \texttt{GNU_PROPERTY_X86_FEATURE_2_XSAVEC} & \texttt{1U << 9} \\
+    \cline{1-2}
+    \multicolumn{2}{p{13cm}}{\small $^\dagger$ This bit should always
+    be set when \texttt{GNU_PROPERTY_X86_FEATURE_2_USED} is used.}\\
+    \end{tabular}
+  \end{center}
+\end{table}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "abi"
