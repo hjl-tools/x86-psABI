@@ -378,6 +378,69 @@ finalization) functions specified by \codeindex{DT_FINI} and
 The user program plays no further part in executing the initialization
 and termination functions specified by these dynamic tags.
 
+\section {Program Property}
+
+The following processor-specific program property types
+\footnote{See {\bf Linux Extensions to gABI} at
+\url{https://github.com/hjl-tools/linux-abi}} are defined:
+
+\begin{table}[H]
+\Hrule
+  \caption{Program Property Type}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_ISA_1_USED} & \texttt{0xc0000000} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_NEEDED} & \texttt{0xc0000001} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
+\begin{description}
+ \item[GNU_PROPERTY_X86_ISA_1_USED] Its \code{pr_data} field contains
+   a 4-byte integer.  The x86 instruction sets indicated by the
+   corresponding bits are used in program.  Their support in the
+   hardware is optional.  A bit in the output \code{pr_data} field is
+   set if  it is set in any relocatable input \code{pr_data} fields.
+ \item[GNU_PROPERTY_X86_ISA_1_NEEDED] Its \code{pr_data} field contains
+   a 4-byte integer.  The x86 instruction sets indicated by the
+   corresponding bits are used in program and they must be supported
+   by the hardware.  A bit in the output \code{pr_data} field is
+   set if  it is set in any relocatable input \code{pr_data} fields.
+\end{description}
+
+\begin{table}[H]
+\Hrule
+  \caption{Bit Flags For X86 Instruction Sets}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_ISA_1_486} & \texttt{1U << 0} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_586} & \texttt{1U << 1} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_686} & \texttt{1U << 2} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE} & \texttt{1U << 3} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE2} & \texttt{1U << 4} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE3} & \texttt{1U << 5} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSSE3} & \texttt{1U << 6} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE4_1} & \texttt{1U << 7} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_SSE4_2} & \texttt{1U << 8} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX} & \texttt{1U << 9} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX2} & \texttt{1U << 10} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512F} & \texttt{1U << 11} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512CD} & \texttt{1U << 12} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512ER} & \texttt{1U << 13} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512PF} & \texttt{1U << 14} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512VL} & \texttt{1U << 15} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512DQ} & \texttt{1U << 16} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_AVX512BW} & \texttt{1U << 17} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "abi"
