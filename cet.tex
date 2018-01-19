@@ -18,9 +18,13 @@ Intel CET (Control-flow Enforcement Technology) Extension includes:
 On an IBT capable processor, the following steps should be taken:
 
 \begin{enumerate}
-  \item When loading an executable, if
-   \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the executable,
-   enable IBT.
+  \item When loading an executable without interpreter, enable and lock
+    IBT if \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the executable.
+  \item When loading an executable with an interpreter, enable IBT if
+    \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the interpreter.
+    The interpreter should disable IBT if
+    \code{GNU_PROPERTY_X86_FEATURE_1_IBT} isn't set on the executable,
+    otherwise lock IBT.
  \item
    \begin{sloppypar} After IBT is enabled, when loading a shared object
      without \code{GNU_PROPERTY_X86_FEATURE_1_IBT}:
@@ -39,10 +43,14 @@ On an IBT capable processor, the following steps should be taken:
 On a SHSTK capable processor, the following steps should be taken:
 
 \begin{enumerate}
-  \item When loading an executable,
-    if \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the executable
-    as well as all shared objects loaded via the \code{DT_NEEDED} tags,
-    enable SHSTK.
+  \item When loading an executable without interpreter, enable and lock
+    SHSTK if \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the
+    executable.
+  \item When loading an executable with an interpreter, enable SHSTK if
+    \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the interpreter.
+    The interpreter should disable SHSTK if
+    \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} isn't set or any shared
+    objects loaded via the \code{DT_NEEDED} tag, otherwise lock SHSTK.
   \item After SHSTK is enabled, it is an error to load a shared object
     without \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK}.
 \end{enumerate}
