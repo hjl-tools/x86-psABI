@@ -18,23 +18,31 @@ Intel CET (Control-flow Enforcement Technology) Extension includes:
 On an IBT capable processor, the following steps should be taken:
 
 \begin{enumerate}
-  \item When loading an executable without interpreter, enable and lock
-    IBT if \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the executable.
-  \item When loading an executable with an interpreter, enable IBT if
-    \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the interpreter.
-    The interpreter should disable IBT if
-    \code{GNU_PROPERTY_X86_FEATURE_1_IBT} isn't set on the executable,
-    otherwise lock IBT.
- \item
-   \begin{sloppypar} After IBT is enabled, when loading a shared object
-     without \code{GNU_PROPERTY_X86_FEATURE_1_IBT}:
-  \end{sloppypar}
-  \begin{enumerate}
+  \item
+    \begin{sloppypar}
+      When loading an executable without interpreter, enable and lock
+      IBT if \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the
+      executable.
+    \end{sloppypar}
+  \item
+    \begin{sloppypar}
+      When loading an executable with an interpreter, enable IBT if
+      \code{GNU_PROPERTY_X86_FEATURE_1_IBT} is set on the interpreter.
+      The interpreter should disable IBT if
+      \code{GNU_PROPERTY_X86_FEATURE_1_IBT} isn't set on the executable,
+      otherwise lock IBT.
+    \end{sloppypar}
+  \item
+    \begin{sloppypar}
+      After IBT is enabled, when loading a shared object without
+      \code{GNU_PROPERTY_X86_FEATURE_1_IBT}:
+   \end{sloppypar}
+   \begin{enumerate}
     \item If legacy interwork is allowed, then mark all pages in
       executable \texttt{PT_LOAD} segments in legacy code page bitmap.
       Failure of legacy code page bitmap allocation causes an error.
     \item If legacy interwork isn't allowed, it causes an error.
-  \end{enumerate}
+   \end{enumerate}
 \end{enumerate}
 
 \subsection{Process \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK}}
@@ -43,14 +51,20 @@ On an IBT capable processor, the following steps should be taken:
 On a SHSTK capable processor, the following steps should be taken:
 
 \begin{enumerate}
-  \item When loading an executable without interpreter, enable and lock
-    SHSTK if \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the
-    executable.
-  \item When loading an executable with an interpreter, enable SHSTK if
-    \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the interpreter.
-    The interpreter should disable SHSTK if
-    \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} isn't set or any shared
-    objects loaded via the \code{DT_NEEDED} tag, otherwise lock SHSTK.
+  \item
+    \begin{sloppypar}
+      When loading an executable without interpreter, enable and lock
+      SHSTK if \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the
+      executable.
+   \end{sloppypar}
+  \item
+    \begin{sloppypar}
+      When loading an executable with an interpreter, enable SHSTK if
+      \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} is set on the interpreter.
+      The interpreter should disable SHSTK if
+      \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK} isn't set or any shared
+      objects loaded via the \code{DT_NEEDED} tag, otherwise lock SHSTK.
+   \end{sloppypar}
   \item After SHSTK is enabled, it is an error to load a shared object
     without \code{GNU_PROPERTY_X86_FEATURE_1_SHSTK}.
 \end{enumerate}
