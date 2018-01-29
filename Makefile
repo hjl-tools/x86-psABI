@@ -5,6 +5,8 @@ INCLUDES  := execution.tex low-level-sys-info.tex development.tex      \
 
 ALL_FILES := abi.tex $(INCLUDES)
 
+TEXFLAGS = -interaction=nonstopmode -file-line-error
+
 .PHONY: all abi clean ps pdf update
 
 # default
@@ -14,14 +16,14 @@ all: abi.ps abi.pdf
 
 
 abi.dvi: $(ALL_FILES)
-	latex abi
+	latex $(TEXFLAGS) abi
 	makeindex abi
-	latex abi
-	latex abi
+	latex $(TEXFLAGS) abi
+	latex $(TEXFLAGS) abi
 
 # Depend on abi.dvi to get index.
 pdf abi.pdf: abi.dvi
-	pdflatex abi
+	pdflatex $(TEXFLAGS) abi
 
 ps abi.ps: abi.dvi
 	dvips abi.dvi -o abi.ps
