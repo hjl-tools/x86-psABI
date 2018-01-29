@@ -52,7 +52,7 @@ and \reg{r9} is used.
   \caption{Bound Register Usage}
   \label{fig-bnd-reg-usage}
   \begin{center}
-    \begin{tabular}{l|p{8.35cm}|l}
+    \begin{tabular}{l|p{7.35cm}|l}
       \noalign{\smallskip}
       \multicolumn{1}{c}{} &
       \multicolumn{1}{c}{}&
@@ -229,7 +229,8 @@ The \code{va_arg(l, type)} implementation is updated as follows:
   different register classes or requires an alignment greater than 8 for
   general purpose registers and 16 for XMM registers.  If type specifies
   a pointer, then the bounds of the argument being fetched are loaded
-  by executing \code{BOUND_MAP_LOAD(l->reg_save_area + l->gp_offset, ptr)}
+  by executing\\
+  \code{BOUND_MAP_LOAD(l->reg_save_area + l->gp_offset, ptr)}
   (\ref{bounds_passing}), where \code{ptr} is the actual value fetched from
   \code{l->reg_save_area} with an offset of \code{l->gp_offset}.
 \end{enumerate}
@@ -248,13 +249,13 @@ with an additional procedure linkage table (see figure
 \label{bnd_small_med_plt}
 \begin{footnotesize}
 \begin{verbatim}
-  .PLT0: pushq    GOT+8(%rip)                 # GOT[1]
-         bnd jmp  *GOT+16(%rip)               # GOT[2]
+  .PLT0: pushq    GOT+8(%rip)              # GOT[1]
+         bnd jmp  *GOT+16(%rip)            # GOT[2]
          nopl     (%rax)
-  .PLT1: pushq    $index1                     # 16 bytes from .PLT0
+  .PLT1: pushq    $index1                  # 16 bytes from .PLT0
          bnd jmp  PLT0
          nopl     0(%rax,%rax,1)
-  .PLT2: pushq    $index2                     # 16 bytes from .PLT1
+  .PLT2: pushq    $index2                  # 16 bytes from .PLT1
          bnd jmp  .PLT0
          nopl     0(%rax,%rax,1)
   .PLT3: ...
@@ -271,9 +272,9 @@ with an additional procedure linkage table (see figure
 \begin{verbatim}
   .APLT1: bnd jmp  name1@GOTPCREL(%rip)
           nop
-  .APLT2: bnd jmp  name2@GOTPCREL(%rip)       # 8 bytes from .APLT1
+  .APLT2: bnd jmp  name2@GOTPCREL(%rip)    # 8 bytes from .APLT1
           nop
-  .APLT3: ...                                 # 8 bytes from .APLT2
+  .APLT3: ...                              # 8 bytes from .APLT2
 \end{verbatim}%$
 \end{footnotesize}
 \Hrule

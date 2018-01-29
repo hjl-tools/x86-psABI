@@ -14,6 +14,9 @@
 
 \usepackage[T1]{fontenc}
 
+\emergencystretch=3em
+
+\usepackage{geometry}
 % To make typesetting easier
 \usepackage{xspace}
 
@@ -56,7 +59,7 @@
 \newcommand{\editornote}[1]{\footnote{#1}}
 
 %Typesetting of registers
-\newcommand{\reg}[1]{{\texttt{\%#1}}\xspace}
+\newcommand{\reg}[1]{{\texttt{\myfontsize{\%#1}}}\xspace}
 \newcommand{\RAX}{\reg{rax}}
 \newcommand{\RBX}{\reg{rbx}}
 \newcommand{\RCX}{\reg{rcx}}
@@ -79,7 +82,7 @@
 \newcommand{\path}[1]{\texttt{#1}\xspace}
 
 % Typesetting program code
-\newcommand{\code}[1]{\texttt{#1}\xspace}
+\newcommand{\code}[1]{\texttt{\myfontsize{#1}}\xspace}
 
 % Long Hrule
 \newcommand{\Hrule}{\noindent\rule{\linewidth}{0.3mm}}
@@ -87,7 +90,7 @@
 \usepackage{xcolor}
 % Use Hyperref for PDF support - this should be last
 \ifpdf
-\usepackage[pdftex,colorlinks,linkcolor={blue!50!black}]{hyperref}
+\usepackage[pdftex,colorlinks,linkcolor={blue!50!black},final]{hyperref}
 \usepackage{changebar}
 \else
 \usepackage[dvips,colorlinks,linkcolor={blue!50!black}]{hyperref}
@@ -110,6 +113,10 @@
 \newcommand*{\cbnew}{\marginpar{\textsf{New}}}
 
 \newcommand{\myfontsize}{\fontsize{9}{10}\selectfont}
+
+% some debug settings to show margins and mark overfulls
+% \usepackage{showframe}
+% \overfullrule=3mm
 
 %%% Local Variables:
 %%% mode: latex

@@ -35,11 +35,11 @@ scalar types and the processor's.  \code{__int128}, \code{__float80},
   % Has anybody an idea how to shrink the table so that it fits the page?
   \myfontsize
   \begin{tabular}{l|l|c|c|l}
-    \hline\noalign{\smallskip}
-     & &  & \multicolumn{1}{c|}{Alignment} & \multicolumn{1}{c|}{\xARCH} \\
+    \noalign{\smallskip}
+     & &  & \multicolumn{1}{c|}{Alignment} & \multicolumn{1}{c}{\xARCH} \\
     \multicolumn{1}{c|}{Type} & \multicolumn{1}{c|}{C}
      &  \texttt{sizeof} & (bytes)
-     & \multicolumn{1}{c|}{Architecture}  \\
+     & \multicolumn{1}{c}{Architecture}  \\
     \hline
     & \texttt{_Bool}$^\dagger$ & 1 & 1 & boolean \\
     \cline{2-5}
@@ -48,30 +48,25 @@ scalar types and the processor's.  \code{__int128}, \code{__float80},
     \cline{2-5}
     & \texttt{unsigned char} & 1 & 1 & unsigned byte \\
     \cline{2-5}
-    & \texttt{short} & 2 & 2 & signed \twobyte \\
-    & \texttt{signed short} & & \\
+    & \texttt{signed short} & 2 & 2 & signed \twobyte \\
     \cline{2-5}
     & \texttt{unsigned short} & 2 & 2 & unsigned \twobyte \\
     \cline{2-5}
-    & \texttt{int} & 4 & 4 & signed \fourbyte \\
-    Integral & \texttt{signed int} & & \\
+    Integral & \texttt{signed int} & 4 & 4 & signed \fourbyte \\
     & \texttt{enum}$^{\dagger\dagger\dagger}$ & & \\
     \cline{2-5}
     & \texttt{unsigned int} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
-    & \texttt{long (LP64)} & 8 & 8 & signed \eightbyte \\
-    & \texttt{signed long (LP64)} & & \\
+    & \texttt{signed long (LP64)} & 8 & 8 & signed \eightbyte \\
     \cline{2-5}
     & \texttt{unsigned long (LP64)} & 8 & 8 & unsigned \eightbyte \\
     \cline{2-5}
-    & \texttt{long (ILP32)} & 4 & 4 & signed \fourbyte \\
-    & \texttt{signed long (ILP32)} & & \\
+    & \texttt{signed long (ILP32)} & 4 & 4 & signed \fourbyte \\
     \cline{2-5}
     & \texttt{unsigned long (ILP32)} & 4 & 4 & unsigned \fourbyte \\
     \cline{2-5}
-    & \texttt{long long} & 8 &
+    & \texttt{signed long long} & 8 &
 	8$^{\dagger\dagger\dagger\dagger}$ & signed \eightbyte \\
-    & \texttt{signed long long} & & \\
     \cline{2-5}
     & \texttt{unsigned long long} & 8
 	& 8$^{\dagger\dagger\dagger\dagger}$ & unsigned \eightbyte \\
@@ -117,15 +112,15 @@ scalar types and the processor's.  \code{__int128}, \code{__float80},
 \multicolumn{3}{l}{\small $^\dagger$ This type is called \texttt{bool}
 in C++.}\\
 \multicolumn{3}{l}{\small $^{\dagger\dagger}$ These types are optional.}\\
-\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger}$ C++ and some
+\multicolumn{5}{p{13cm}}{\small $^{\dagger\dagger\dagger}$ C++ and some
 implementations of C permit enums larger than an int.  The underlying
 type is bumped to an unsigned int, long int or unsigned long int, in
 that order.}\\
-\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger}$
+\multicolumn{5}{p{13cm}}{\small $^{\dagger\dagger\dagger\dagger}$
 The \texttt{long long},  \texttt{signed long long},
 \texttt{unsigned long long} and \texttt{double} types have 4-byte
 alignment in the \intelabi.}\\
-\multicolumn{5}{p{14cm}}{\small $^{\dagger\dagger\dagger\dagger\dagger}$
+\multicolumn{5}{p{13cm}}{\small $^{\dagger\dagger\dagger\dagger\dagger}$
 The \texttt{long double} type is 128-bit, the same as the \texttt{__float128}
 type, on the Android{\texttrademark} platform.  More information on the
 Android{\texttrademark} platform is available from
@@ -555,14 +550,14 @@ bit.}.
   \caption{Register Usage}
   \label{fig-reg-usage}
   \begin{center}
-    \begin{tabular}{l|p{8.35cm}|l}
+    \begin{tabular}{l|p{7.95cm}|l}
       \noalign{\smallskip}
       \multicolumn{1}{c}{} &
       \multicolumn{1}{c}{}&
-      \multicolumn{1}{l}{Preserved across}\\
+      \multicolumn{1}{l}{callee}\\
       \multicolumn{1}{c}{Register} &
       \multicolumn{1}{c}{Usage}&
-      \multicolumn{1}{l}{function calls}\\
+      \multicolumn{1}{l}{saved}\\
       \hline
 \RAX & temporary register; with variable arguments passes
 information about the number of vector registers used; 1$^{\rm st}$
@@ -587,7 +582,7 @@ arguments & No\\
 \reg{xmm8}--\reg{xmm15} & temporary registers & No\\
 \reg{mm0}--\reg{mm7}& temporary registers & No\\
 \reg{k0}--\reg{k7} & temporary registers & No\\
-\reg{st0},\reg{st1} & temporary registers; used to return \code{long double} arguments & No \\
+\reg{st0},\reg{st1} & temporary registers, used to return \code{long double} arguments & No \\
 \reg{st2}--\reg{st7} & temporary registers & No \\
 \reg{fs}& Reserved for system (as thread specific data register) & No\\
 \code{mxcsr}& SSE2 control and status word & partial\\
@@ -1624,17 +1619,17 @@ model.
 \verb# static int dst;  # & \verb#  Ldst: .long                # \\
 \verb# extern int *ptr; # & \verb#        .extern  ptr         # \\
 \hline
-\verb# dst = src;       # & \verb#        movabs  $Lsrc,%rax   ; R_X86_64_64 # \\
-\verb#                  # & \verb#        movabs  $Ldst,%rdx   ; R_X86_64_64 # \\
+\verb# dst = src;       # & \verb#        movabs  $Lsrc,%rax   ;R_X86_64_64 # \\
+\verb#                  # & \verb#        movabs  $Ldst,%rdx   ;R_X86_64_64 # \\
 \verb#                  # & \verb#        movl    (%rax),%ecx  # \\
 \verb#                  # & \verb#        movl    %ecx,(%rdx)  # \\
 \hline
-\verb# ptr = &dst;      # & \verb#        movabs  $ptr,%rax    ; R_X86_64_64 # \\
-\verb#                  # & \verb#        movabs  $Ldst,%rdx   ; R_X86_64_64 # \\
+\verb# ptr = &dst;      # & \verb#        movabs  $ptr,%rax    ;R_X86_64_64 # \\
+\verb#                  # & \verb#        movabs  $Ldst,%rdx   ;R_X86_64_64 # \\
 \verb#                  # & \verb#        movq    %rdx,(%rax)  # \\
 \hline
-\verb# *ptr = src;      # & \verb#        movabs  $Lsrc,%rax   ; R_X86_64_64 # \\
-\verb#                  # & \verb#        movabs  $ptr,%rdx    ; R_X86_64_64 # \\
+\verb# *ptr = src;      # & \verb#        movabs  $Lsrc,%rax   ;R_X86_64_64 # \\
+\verb#                  # & \verb#        movabs  $ptr,%rdx    ;R_X86_64_64 # \\
 \verb#                  # & \verb#        movl    (%rax),%ecx  # \\
 \verb#                  # & \verb#        movq    (%rdx),%rdx  # \\ 
 \verb#                  # & \verb#        movl    %ecx,(%rdx)  # \\
@@ -1652,10 +1647,10 @@ model.
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\verb# *ptr = src; # & \verb#         movabs    $ptr,%rdx        ; R_X86_64_64 # \\
-\verb#             # & \verb#         movl      Lsrc(%rip),%ecx  # \\
-\verb#             # & \verb#         movq      (%rdx),%rdx      # \\
-\verb#             # & \verb#         movl      %ecx,(%rdx)      # \\
+\verb# *ptr = src; # & \verb#   movabs    $ptr,%rdx        ;R_X86_64_64 # \\
+\verb#             # & \verb#   movl      Lsrc(%rip),%ecx  # \\
+\verb#             # & \verb#   movq      (%rdx),%rdx      # \\
+\verb#             # & \verb#   movl      %ecx,(%rdx)      # \\
 \hline
 \end{tabular} %$
 \end{footnotesize}
@@ -1678,26 +1673,26 @@ addressing mode can be used instead. See example in figure~
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\verb#static int src;  # & \verb# Lsrc: .long                      # \\
-\verb#static int dst;  # & \verb# Ldst: .long                      # \\
-\verb#extern int *ptr; # & \verb#       .extern  ptr               # \\
+\verb#static int src; # & \verb# Lsrc: .long                      # \\
+\verb#static int dst; # & \verb# Ldst: .long                      # \\
+\verb#extern int *ptr;# & \verb#       .extern  ptr               # \\
 \hline 
-\verb# dst = src;      # & \verb#   movabs   $Lsrc@GOTOFF,%rax ; R_X86_64_GOTOFF64 # \\
-\verb#                 # & \verb#   movabs   $Ldst@GOTOFF,%rdx ; R_X86_64_GOTOFF64 # \\
-\verb#                 # & \verb#   movl     (%rax,%r15),%ecx  # \\
-\verb#                 # & \verb#   movl     %ecx,(%rdx,%r15)  # \\
+\verb# dst = src;     # & \verb# movabs $Lsrc@GOTOFF,%rax ;R_X86_64_GOTOFF64# \\
+\verb#                # & \verb# movabs $Ldst@GOTOFF,%rdx ;R_X86_64_GOTOFF64# \\
+\verb#                # & \verb# movl   (%rax,%r15),%ecx  # \\
+\verb#                # & \verb# movl   %ecx,(%rdx,%r15)  # \\
 \hline
-\verb# ptr = &dst;     # & \verb#   movabs $ptr@GOT,%rax       ; R_X86_64_GOT64 # \\
-\verb#                 # & \verb#   movabs $Ldst@GOTOFF,%rdx   ; R_X86_64_GOTOFF64 # \\
-\verb#                 # & \verb#   movq   (%rax,%r15),%rax    # \\
-\verb#                 # & \verb#   leaq   (%rdx,%r15),%rcx    # \\
-\verb#                 # & \verb#   movq   %rcx,(%rax)         # \\
+\verb# ptr = &dst;    # & \verb# movabs $ptr@GOT,%rax     ;R_X86_64_GOT64# \\
+\verb#                # & \verb# movabs $Ldst@GOTOFF,%rdx ;R_X86_64_GOTOFF64# \\
+\verb#                # & \verb# movq   (%rax,%r15),%rax    # \\
+\verb#                # & \verb# leaq   (%rdx,%r15),%rcx    # \\
+\verb#                # & \verb# movq   %rcx,(%rax)         # \\
 \hline
-\verb# *ptr = src;     # & \verb#   movabs $Lsrc@GOTOFF,%rax   ; R_X86_64_GOTOFF64 # \\
-\verb#                 # & \verb#   movabs $ptr@GOT,%rdx       ; R_X86_64_GOT64 # \\
-\verb#                 # & \verb#   movl   (%rax,%r15),%ecx    # \\
-\verb#                 # & \verb#   movq   (%rdx,%r15),%rdx    # \\
-\verb#                 # & \verb#   movl   %ecx,(%rdx)         # \\
+\verb# *ptr = src;    # & \verb# movabs $Lsrc@GOTOFF,%rax ;R_X86_64_GOTOFF64# \\
+\verb#                # & \verb# movabs $ptr@GOT,%rdx     ;R_X86_64_GOT64# \\
+\verb#                # & \verb# movl   (%rax,%r15),%ecx    # \\
+\verb#                # & \verb# movq   (%rdx,%r15),%rdx    # \\
+\verb#                # & \verb# movl   %ecx,(%rdx)         # \\
 \hline
 \end{tabular}
 \end{footnotesize}
@@ -1712,7 +1707,7 @@ addressing mode can be used instead. See example in figure~
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\verb# *ptr = src; # & \verb#     movabs    $ptr@GOT,%rdx    ; R_X86_64_GOT64 # \\
+\verb# *ptr = src; # & \verb#     movabs    $ptr@GOT,%rdx    ;R_X86_64_GOT64 # \\
 \verb#             # & \verb#     movl      Lsrc(%rip),%ecx  # \\
 \verb#             # & \verb#     movq      (%rdx,%r15),%rdx # \\
 \verb#             # & \verb#     movl      %ecx,(%rdx)      # \\
@@ -1776,22 +1771,22 @@ desired address reaching the whole 64-bit address space.
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\code{static void (*ptr) (void);} & \verb#Lptr: .quad                  # \\
-\code{extern void foo (void);}    & \verb#      .globl foo             # \\
-\code{static void bar (void);}    & \verb#Lbar: ...                    # \\
+\code{static (*ptr) (void);} & \verb#Lptr: .quad                  # \\
+\code{extern foo (void);}    & \verb#      .globl foo             # \\
+\code{static bar (void);}    & \verb#Lbar: ...                    # \\
 \hline
-\code{foo ();}                    & \verb#       movabs    $foo,%r11   ; R_X86_64_64 # \\
+\code{foo ();}                    & \verb#       movabs    $foo,%r11   ;R_X86_64_64# \\
                                   & \verb#       call      *%r11       # \\
-\code{bar ();}                    & \verb#       movabs    $Lbar,%r11  ; R_X86_64_64 # \\
+\code{bar ();}                    & \verb#       movabs    $Lbar,%r11  ;R_X86_64_64# \\
                                   & \verb#       call      *%r11       # \\
 \hline
-\code{ptr = foo;}                 & \verb#       movabs    $Lptr,%rax  ; R_X86_64_64 # \\
-                                  & \verb#       movabs    $foo,%r11   ; R_X86_64_64 # \\
+\code{ptr = foo;}                 & \verb#       movabs    $Lptr,%rax  ;R_X86_64_64# \\
+                                  & \verb#       movabs    $foo,%r11   ;R_X86_64_64# \\
                                   & \verb#       movq      %r11,(%rax) # \\
-\code{ptr = bar;}                 & \verb#       movabs    $Lbar,%r11  ; R_X86_64_64 # \\
+\code{ptr = bar;}                 & \verb#       movabs    $Lbar,%r11  ;R_X86_64_64# \\
                                   & \verb#       movq      %r11,(%rax) # \\
 \hline
-\code{(*ptr) ();}                 & \verb#       movabs    $Lptr,%r11  ; R_X86_64_64 # \\
+\code{(*ptr) ();}                 & \verb#       movabs    $Lptr,%r11  ;R_X86_64_64# \\
                                   & \verb#       call      *(%r11)     # \\
 \hline
 \end{tabular}
@@ -1808,26 +1803,26 @@ And in the case of position-independent objects
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\code{static void (*ptr) (void);} & \verb#Lptr: .quad                      # \\
-\code{extern void foo (void);}    & \verb#      .globl foo                 # \\
-\code{static void bar (void);}    & \verb#Lbar: ...                        # \\
+\code{static (*ptr) (void);} & \verb#Lptr: .quad                      # \\
+\code{extern foo (void);}    & \verb#      .globl foo                 # \\
+\code{static bar (void);}    & \verb#Lbar: ...                        # \\
 \hline
-\code{foo ();}                    & \verb#movabs   $foo@PLTOFF,%r11  ; R_x86_64_PLTOFF64 # \\
-                                  & \verb#call     *(%r11,%r15)      # \\
-\code{bar ();}                    & \verb#movabs   $Lbar@GOTOFF,%r11 ; R_X86_64_GOTOFF64 # \\
-                                  & \verb#leaq     (%r11,%r15),%r11  # \\
-                                  & \verb#call     *%r11             # \\
+\code{foo ();}               & \verb#movabs $foo@PLTOFF,%r11  ;R_X86_64_PLTOFF64#\\
+                             & \verb#call   *(%r11,%r15)      # \\
+\code{bar ();}               & \verb#movabs $Lbar@GOTOFF,%r11 ;R_X86_64_GOTOFF64#\\
+                             & \verb#leaq   (%r11,%r15),%r11  # \\
+                             & \verb#call   *%r11             # \\
 \hline
-\code{ptr = foo;}                 & \verb#movabs   $Lptr@GOTOFF,%rax ; R_X86_64_GOTOFF64 # \\
-                                  & \verb#movabs   $foo@PLTOFF,%r11  ; R_X86_64_PLTOFF64 # \\
-                                  & \verb#leaq     (%r11,%r15),%r11  # \\
-                                  & \verb#movq     %r11,(%rax,%r15)  # \\
-\code{ptr = bar;}                 & \verb#movabs   $Lbar@GOTOFF,%r11 ; R_X86_64_GOTOFF64 # \\
-                                  & \verb#leaq     (%r11,%r15),%r11  # \\
-                                  & \verb#movq     %r11,(%rax,%r15)  # \\
+\code{ptr = foo;}            & \verb#movabs $Lptr@GOTOFF,%rax ;R_X86_64_GOTOFF64#\\
+                             & \verb#movabs $foo@PLTOFF,%r11  ;R_X86_64_PLTOFF64#\\
+                             & \verb#leaq   (%r11,%r15),%r11  # \\
+                             & \verb#movq   %r11,(%rax,%r15)  # \\
+\code{ptr = bar;}            & \verb#movabs $Lbar@GOTOFF,%r11 ;R_X86_64_GOTOFF64#\\
+                             & \verb#leaq   (%r11,%r15),%r11  # \\
+                             & \verb#movq   %r11,(%rax,%r15)  # \\
 \hline
-\code{(*ptr) ();}                 & \verb#movabs $Lptr@GOTOFF,%r11   ; R_X86_64_GOTOFF64 # \\
-                                  & \verb#call     *(%r11,%r15)      # \\
+\code{(*ptr) ();}            & \verb#movabs $Lptr@GOTOFF,%r11 ;R_X86_64_GOTOFF64#\\
+                             & \verb#call   *(%r11,%r15)      # \\
 \hline
 \end{tabular}
 \end{footnotesize}
@@ -1847,7 +1842,7 @@ normally requires.  When:
 \hline
 \verb#bar ();#    & \verb# call   Lbar              # \\
 \hline
-\verb#ptr = bar;# & \verb# movabs $Lptr,%rax         ; R_X86_64_64 # \\
+\verb#ptr = bar;# & \verb# movabs $Lptr,%rax         ;R_X86_64_64 # \\
                   & \verb# leaq   $Lbar(%rip),%r11 # \\
                   & \verb# movq   %r11,(%rax)      # \\
 \hline
@@ -1859,7 +1854,7 @@ normally requires.  When:
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\code{foo ();}    & \verb# call   *(foo@GOT)  ; R_X86_64_GOTPCREL # \\
+\code{foo ();}    & \verb# call   *(foo@GOT)  ;R_X86_64_GOTPCREL # \\
 \hline
 \end{tabular}
 \end{footnotesize}
@@ -1869,8 +1864,8 @@ normally requires.  When:
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\code{ptr = foo;} & \verb# movabs $Lptr@GOTOFF,%rax   ; R_X86_64_GOTOFF64 # \\
-                  & \verb# leaq   $foo@PLT(%rip),%r11 ; R_X86_64_PLT32 # \\
+\code{ptr = foo;} & \verb# movabs $Lptr@GOTOFF,%rax   ;R_X86_64_GOTOFF64# \\
+                  & \verb# leaq   $foo@PLT(%rip),%r11 ;R_X86_64_PLT32# \\
                   & \verb# movq   %r11,(%rax,%r15)    # \\
 \hline
 \end{tabular}
@@ -1884,7 +1879,7 @@ normally requires.  When:
 \hline
 \code{bar ();}     & \verb#call      Lbar               # \\
 \hline
-\code{ptr = bar;}  & \verb#movabs    $Lptr@GOTOFF,%rax  ; R_X86_64_GOTOFF64 # \\
+\code{ptr = bar;}  & \verb#movabs    $Lptr@GOTOFF,%rax  ;R_X86_64_GOTOFF64# \\
                    & \verb#leaq      $Lbar(%rip),%r11   # \\
                    & \verb#movq      %r11,(%rax,%r15)   # \\
 \hline
@@ -1919,12 +1914,12 @@ implicitly (see figure~\ref{large_cal_tgt_addr})}. For absolute objects:
 \hline
 \verb# if (!a)     # & \verb#        testl     %eax,%eax   # \\
 \verb# {           # & \verb#        jnz       1f          # \\
-\verb#             # & \verb#        movabs    $2f,%r11    ; R_X86_64_64 # \\
+\verb#             # & \verb#        movabs    $2f,%r11    ;R_X86_64_64 # \\
 \verb#             # & \verb#        jmpq      *%r11       # \\
 \verb#        ...  # & \verb# 1:      ...                  # \\
 \verb# }           # & \verb# 2:                           # \\
 \hline
-\verb# goto Label; # & \verb#        movabs    $Label,%r11 ; R_X86_64_64 # \\
+\verb# goto Label; # & \verb#        movabs    $Label,%r11 ;R_X86_64_64 # \\
 \verb#             # & \verb#        jmpq      *%r11       # \\
 \verb# ...         # & \verb#        ...                   # \\
 \verb# Label:      # & \verb# Label:                       # \\
@@ -1960,21 +1955,21 @@ For position-independent objects:
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\verb# if (!a)      # & \verb#     testl      %eax,%eax          # \\
-\verb# {            # & \verb#     jnz        1f                 # \\
-\verb#              # & \verb#     movabs     $2f@GOTOFF,%r11    ; R_X86_64_GOTOFF64 # \\
-\verb#              # & \verb#     leaq       (%r11,%r15),%r11   # \\
-\verb#              # & \verb#     jmpq       *%r11              # \\
-\verb#              # & \verb# 1:  ...                           # \\
-\verb#         ...  # & \verb# 2:                                # \\
-\verb# }            # & \verb#                                   # \\
+\verb# if (!a)    # & \verb#     testl  %eax,%eax          # \\
+\verb# {          # & \verb#     jnz    1f                 # \\
+\verb#            # & \verb#     movabs $2f@GOTOFF,%r11    ;R_X86_64_GOTOFF64# \\
+\verb#            # & \verb#     leaq   (%r11,%r15),%r11   # \\
+\verb#            # & \verb#     jmpq   *%r11              # \\
+\verb#            # & \verb# 1:  ...                       # \\
+\verb#         ...# & \verb# 2:                            # \\
+\verb# }          # & \verb#                               # \\
 \hline
-\verb# goto Label;  # & \verb#     movabs     $Label@GOTOFF,%r11 ; R_X86_64_GOTOFF64 # \\
-\verb#              # & \verb#     leaq       (%r11,%r15),%r11   # \\
-\verb#              # & \verb#     jmpq       *%r11              # \\
-\verb# ...          # & \verb#                                   # \\
-\verb# ...          # & \verb#     Label:                        # \\
-\verb# Label:       # & \verb#                                   # \\
+\verb# goto Label;# & \verb#     movabs $Label@GOTOFF,%r11 ;R_X86_64_GOTOFF64# \\
+\verb#            # & \verb#     leaq   (%r11,%r15),%r11   # \\
+\verb#            # & \verb#     jmpq   *%r11              # \\
+\verb# ...        # & \verb#                               # \\
+\verb# ...        # & \verb#     Label:                    # \\
+\verb# Label:     # & \verb#                               # \\
 \hline
 \end{tabular}
 \end{footnotesize}
@@ -1988,18 +1983,19 @@ For absolute objects, the implementation of the \code{switch} statement is:
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\verb# switch (a)     # & \verb#            cmpl   $0,%eax           # \\
-\verb# {              # & \verb#            jl     .Ldefault         # \\
-\verb#                # & \verb#            cmpl   $2,%eax           # \\
-\verb#                # & \verb#            jg     .Ldefault         # \\
-\verb#                # & \verb#            movabs $.Ltable,%r11  ; R_X86_64_64 # \\
-\verb#                # & \verb#            jmpq   *(%r11,%eax,8)    # \\
-\verb#                # & \verb#            .section .lrodata,"aLM",@progbits,8 # \\
-\verb#                # & \verb#           .align 8                  # \\ 
-\verb#                # & \verb#  .Ltable: .quad .Lcase0          ; R_X86_64_64 # \\
-\verb#                # & \verb#           .quad .Ldefault        ; R_X86_64_64 # \\
-\verb#                # & \verb#           .quad .Lcase2          ; R_X86_64_64 # \\
-\verb#                # & \verb#           .previous                 # \\
+\verb# switch (a)     # & \verb#     cmpl   $0,%eax           # \\
+\verb# {              # & \verb#     jl     .Ldefault         # \\
+\verb#                # & \verb#     cmpl   $2,%eax           # \\
+\verb#                # & \verb#     jg     .Ldefault         # \\
+\verb#                # & \verb#     movabs $.Ltable,%r11  ;R_X86_64_64 # \\
+\verb#                # & \verb#     jmpq   *(%r11,%eax,8)    # \\
+\verb#                # & \verb#    .section .lrodata,"aLM",@progbits,8 # \\
+\verb#                # & \verb#    .align 8                  # \\ 
+\verb#                # & \verb#  .Ltable:                    # \\
+\verb#                # & \verb#     .quad .Lcase0          ;R_X86_64_64 # \\
+\verb#                # & \verb#     .quad .Ldefault        ;R_X86_64_64 # \\
+\verb#                # & \verb#     .quad .Lcase2          ;R_X86_64_64 # \\
+\verb#                # & \verb#    .previous                 # \\
 \verb#       default: # & \verb#  .Ldefault:                         # \\
 \verb#        ...     # & \verb#      ...                            # \\
 \verb#       case 0:  # & \verb#  .Lcase0:                           # \\
@@ -2021,28 +2017,29 @@ statement implementation changes to:
 \begin{footnotesize}
 \begin{tabular}{|l|l|}
 \hline
-\verb# switch (a)   # & \verb#   cmpl     $0,%eax              # \\
-\verb# {            # & \verb#   jl       .Ldefault            # \\
-\verb#              # & \verb#   cmpl     $2,%eax              # \\
-\verb#              # & \verb#   jg       .Ldefault            # \\
-\verb#              # & \verb#   movabs   $.Ltable@GOTOFF,%r11 ; R_X86_64_GOTOFF64 # \\
-\verb#              # & \verb#   leaq     (%r11,%r15),%r11     # \\
-\verb#              # & \verb#   movq     *(%r11,%eax,8),%r11  # \\
-\verb#              # & \verb#   leaq     (%r11,%r15),%r11     # \\
-\verb#              # & \verb#   jmpq     *%r11                # \\
-\verb#              # & \verb#   .section .lrodata,"aLM",@progbits,8 # \\
-\verb#              # & \verb#   .align 8                      # \\
-\verb#              # & \verb#.Ltable: .quad .Lcase0@GOTOFF    ; R_X86_64_GOTOFF64 # \\
-\verb#              # & \verb#         .quad .Ldefault@GOTOFF  ; R_X86_64_GOTOFF64 # \\
-\verb#              # & \verb#         .quad .Lcase2@GOTOFF    ; R_X86_64_GOTOFF64 # \\
-\verb#              # & \verb#         .previous               # \\
-\verb#     default: # & \verb#.Ldefault:                       # \\
-\verb#     ...      # & \verb#   ...                           # \\
-\verb#     case 0:  # & \verb#.Lcase0:                         # \\
-\verb#     ...      # & \verb#   ...                           # \\
-\verb#     case 2:  # & \verb#.Lcase2:                         # \\
-\verb#     ...      # & \verb#   ...                           # \\
-\verb# }            # & \verb#                                 # \\
+\verb# switch (a)  # & \verb#  cmpl   $0,%eax              # \\
+\verb# {           # & \verb#  jl     .Ldefault            # \\
+\verb#             # & \verb#  cmpl   $2,%eax              # \\
+\verb#             # & \verb#  jg     .Ldefault            # \\
+\verb#             # & \verb#  movabs $.Ltable@GOTOFF,%r11 ;R_X86_64_GOTOFF64#\\
+\verb#             # & \verb#  leaq   (%r11,%r15),%r11     # \\
+\verb#             # & \verb#  movq   *(%r11,%eax,8),%r11  # \\
+\verb#             # & \verb#  leaq   (%r11,%r15),%r11     # \\
+\verb#             # & \verb#  jmpq   *%r11                # \\
+\verb#             # & \verb#  .section .lrodata,"aLM",@progbits,8 # \\
+\verb#             # & \verb#  .align 8                      # \\
+\verb#             # & \verb#.Ltable:                        # \\
+\verb#             # & \verb#   .quad .Lcase0@GOTOFF       ;R_X86_64_GOTOFF64#\\
+\verb#             # & \verb#   .quad .Ldefault@GOTOFF     ;R_X86_64_GOTOFF64#\\
+\verb#             # & \verb#   .quad .Lcase2@GOTOFF       ;R_X86_64_GOTOFF64#\\
+\verb#             # & \verb#  .previous               # \\
+\verb#     default:# & \verb#.Ldefault:                       # \\
+\verb#     ...     # & \verb#   ...                           # \\
+\verb#     case 0: # & \verb#.Lcase0:                         # \\
+\verb#     ...     # & \verb#   ...                           # \\
+\verb#     case 2: # & \verb#.Lcase2:                         # \\
+\verb#     ...     # & \verb#   ...                           # \\
+\verb# }           # & \verb#                                 # \\
 \hline
 \end{tabular}
 \end{footnotesize}

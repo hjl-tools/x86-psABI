@@ -132,6 +132,7 @@ by a system supporting the large code model.
 \begin{table}[H]
 \Hrule
   \caption{Additional Special Sections for the Large Code Model}
+  \myfontsize
   \label{large_sections}
   \begin{center}
     \begin{tabular}[t]{l|l|l}
@@ -239,7 +240,7 @@ enhanced LSB Chapter 7 for \code{Eh_Frame_Hdr}.
 \caption{CIE Augmentation Section Content}
 \label{format-cieaug}
 \begin{center}
-\begin{tabular}{l|p{6em}|l|p{16em}}
+\begin{tabular}{l|p{7em}|l|p{14em}}
   \multicolumn{1}{c}{Char}
          & \multicolumn{1}{c}{Operands}
          & \multicolumn{1}{c}{Length (byte)}
@@ -317,7 +318,7 @@ enhanced LSB Chapter 7 for \code{Eh_Frame_Hdr}.
 \caption{FDE Augmentation Section Content}
 \label{format-fdeaug}
 \begin{center}
-\begin{tabular}{l|p{6em}|l|p{16em}}
+\begin{tabular}{l|p{5em}|l|p{15em}}
   \multicolumn{1}{c}{Char}
          & \multicolumn{1}{c}{Operands}
          & \multicolumn{1}{c}{Length (byte)}
@@ -349,7 +350,7 @@ defines some special values for symbol table fields.
 
 The \texttt{STT_GNU_IFUNC}
 \footnote{It is specified in {\bf ifunc.txt}
-at \url{http://sites.google.com/site/x32abi/documents}}
+at \raggedright{\url{http://sites.google.com/site/x32abi/documents}}}
 symbol type is optional. It is the same as
 \texttt{STT_FUNC} except that it always points to a function or piece of
 executable code which takes no arguments and returns a function pointer.
@@ -568,14 +569,14 @@ The relocations \texttt{R_X86_64_DTPMOD64},
 of the Thread-Local Storage ABI extensions and are documented in the
 document called ``ELF Handling for Thread-Local
 Storage''\footnote{This document is currently available via
-  \url{http://www.akkadia.org/drepper/tls.pdf}}\index{Thread-Local
+  \raggedright\url{http://www.akkadia.org/drepper/tls.pdf}}\index{Thread-Local
   Storage}.  The relocations \texttt{R_X86_64_GOTPC32_TLSDESC},
 \texttt{R_X86_64_TLSDESC_CALL} and \texttt{R_X86_64_TLSDESC} are also
 used for Thread-Local Storage, but are not documented there as of this
 writing.  A description can be found in the document ``Thread-Local
 Storage Descriptors for IA32 and AMD64/EM64T''\footnote{This document
   is currently available via
-  \url{http://www.fsfla.org/~lxoliva/writeups/TLS/RFC-TLSDESC-x86.txt}}.
+  \raggedright\url{http://www.fsfla.org/~lxoliva/writeups/TLS/RFC-TLSDESC-x86.txt}}.
 \end{sloppypar}
 
 In order to make this document self-contained, a description of the
