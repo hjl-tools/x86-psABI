@@ -42,6 +42,7 @@ The unwind library interface consists of at least the following routines:\\
 \codeindex{\_Unwind\_GetGR},\\
 \codeindex{\_Unwind\_SetGR},\\
 \codeindex{\_Unwind\_GetIP},\\
+\codeindex{\_Unwind\_GetIPInfo},\\
 \codeindex{\_Unwind\_SetIP},\\
 \codeindex{\_Unwind\_GetRegionStart},\\
 \codeindex{\_Unwind\_GetLanguageSpecificData},\\
@@ -523,6 +524,41 @@ instruction immediately following the call site in the function
 identified by the unwind context. This value may be outside of the
 procedure fragment for a function call that is known to not return
 (such as \code{\_Unwind\_Resume}).
+
+Applications which unwind through asynchronous signals and other
+non-call locations should use \code{\_Unwind\_GetIPInfo} below, and
+the additional flag that function provides.
+
+\subsubsection{\code{\_Unwind\_GetIPInfo}}
+
+\code{
+\begin{tabular}{l}
+    uint64 \_Unwind\_GetIPInfo\\
+    \ \ (struct \_Unwind\_Context *context, int *ip\_before\_insn);\\
+\end{tabular}
+}
+
+This function returns the same value as \code{\_Unwind\_GetIP}.  In
+addition, the argument \code{ip\_before\_insn} must not be not null, and
+\code{*ip\_before\_insn} is updated with a flag which indicates whether
+the returned pointer is at or after the first not yet fully executed
+instruction.
+
+If \code{*ip\_before\_insn} is false, the application calling
+\code{\_Unwind\_GetIPInfo} should assume that the instruction pointer
+provided points after a call instruction which has not yet returned.
+In general, this means that the application should use the preceding
+call instruction as the instruction pointer location of the unwind
+context.  Typically, this can be approximated by subtracting one from
+the returned instruction pointer.
+
+If \code{*ip\_before\_insn} is true, then the instruction pointer does not
+refer to an active call site.  Usually, this means that the
+instruction pointer refers to the point at which an asynchronous
+signal arrived.  In this case, the application should use the
+instruction pointer returned from \code{\_Unwind\_GetIPInfo} as the
+instruction pointer location of the unwind context, without
+adjustment.
 
 \subsubsection{\code{\_Unwind\_SetIP}}
 \code{

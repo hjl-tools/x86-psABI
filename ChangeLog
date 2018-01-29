@@ -1,3 +1,8 @@
+2016-10-21  Florian Weimer  <fweimer@redhat.com>
+
+	* libraries.tex (Unwind Library Interface): Add
+	_Unwind_GetIPInfo.
+
 2016-04-25  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* linker-optimization.tex (Optimize GOTPCRELX Relocations):
