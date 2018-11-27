@@ -408,14 +408,28 @@ integer.
 \begin{description}
  \item[GNU_PROPERTY_X86_UINT32_AND_LO..GNU_PROPERTY_X86_UINT32_AND_HI]
    A bit in the output \code{pr_data} field is set only if it is set in
-   all relocatable input \code{pr_data} fields.
+   all relocatable input \code{pr_data} fields.  If all bits in the
+   the output \code{pr_data} field are zero, this property should be
+   removed from output.  If the bit is 1, all input relocatables have
+   the feature.  If the bit is 0 or the property is missing, it is
+   unknown whether all input relocatables have the feature.
  \item[GNU_PROPERTY_X86_UINT32_OR_LO..GNU_PROPERTY_X86_UINT32_OR_HI]
    A bit in the output \code{pr_data} field is set if it is set in any
-   relocatable input \code{pr_data} fields.
+   relocatable input \code{pr_data} fields.  If all bits in the
+   the output \code{pr_data} field are zero, this property should be
+   removed from output.  If the bit is 1, some input relocatables have
+   the feature.  If the bit is 0 or the property is missing, it is
+   unknown whether any input relocatables have the feature.
  \item[GNU_PROPERTY_X86_UINT32_OR_AND_LO..GNU_PROPERTY_X86_UINT32_OR_AND_HI]
-   A bit in the output \code{pr_data} field is set if  it is set in any
+   A bit in the output \code{pr_data} field is set if it is set in any
    relocatable input \code{pr_data} fields and this property is present
-   in all relocatable input files.
+   in all relocatable input files.  A missing property implies that its
+   bits have unknown values.  When all bits in the the output
+   \code{pr_data} field are zero, this property should not be removed
+   from output to indicate it has zero in all bits.  If the property
+   is in output, all input relocatables have the property.  If the bit
+   is 1, some input relocatables have the feature.  If the bit is 0,
+   none of input relocatables have the feature.
 \end{description}
 
 The following property types are defined:
