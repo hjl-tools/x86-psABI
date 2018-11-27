@@ -462,28 +462,6 @@ The following property types are defined:
    \code{GNU_PROPERTY_X86_FEATURE_2_USED} type is also present,
 \end{description}
 
-A valid bit\footnote{The older linkers treat .note.gnu.property section
-as a generic note and just concatenate all .note.gnu.property sections
-from the inputs to the output. This can be used to differentiate outputs
-from the older linkers.} is defined for the \code{pr_data} field for all
-properties:
-
-\begin{table}[H]
-\Hrule
-  \caption{GNU_PROPERTY_X86_UINT32_VALID}
-  \begin{center}
-    \begin{tabular}[t]{l|l}
-      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
-      \hline
-     \texttt{GNU_PROPERTY_X86_UINT32_VALID} & \texttt{1U << 31} \\
-    \end{tabular}
-  \end{center}
-\Hrule
-\end{table}
-
-Linker should set the \code{GNU_PROPERTY_X86_UINT32_VALID} bit in
-the \code{pr_data} field for all properties in non-relocatable outputs.
-
 The following bits are defined for \code{GNU_PROPERTY_X86_FEATURE_1_AND}:
 
 \begin{table}[H]
