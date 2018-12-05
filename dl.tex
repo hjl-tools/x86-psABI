@@ -464,15 +464,22 @@ The following property types are defined:
    indicated by the corresponding bits are used in program.  Their
    support in the hardware is optional.  Its absence in an x86 ELF
    binary implies that any x86 processor features may be used.
+   \texttt{GNU_PROPERTY_X86_FEATURE_2_USED} can be used to check for
+   features used in the program.
  \item[GNU_PROPERTY_X86_FEATURE_2_NEEDED] The x86 processor features
    indicated by the corresponding bits are used in program and they
-   must be supported by the hardware.
+   must be supported by the hardware.  Loader may refuse to load
+   the program whose \texttt{GNU_PROPERTY_X86_FEATURE_2_NEEDED}
+   features aren't supported by the hardware.
  \item[GNU_PROPERTY_X86_ISA_1_NEEDED] The x86 instruction sets indicated
    by the corresponding bits are used in program and they must be
-   supported by the hardware.
+   supported by the hardware.  Loader may refuse to load the program
+   whose \texttt{GNU_PROPERTY_X86_ISA_1_NEEDED} ISAs aren't supported
+   by the hardware.
  \item[GNU_PROPERTY_X86_ISA_1_USED] The x86 instruction sets indicated
    by the corresponding bits are used in program.  Their support in the
-   hardware is optional.
+   hardware is optional.  \texttt{GNU_PROPERTY_X86_ISA_1_USED} can be
+   used to check for ISAs used in the program.
 \end{description}
 
 The following bits are defined for \code{GNU_PROPERTY_X86_FEATURE_1_AND}:
