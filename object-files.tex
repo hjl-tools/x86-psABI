@@ -325,6 +325,10 @@ The following notations are used for specifying relocations in table~
       \texttt{R_386_IRELATIVE} & 42 & \textit{word32} & \texttt{indirect (B + A)}\\
       \texttt{R_386_GOT32X} & 43 & \textit{word32}
       & \texttt{G + A - GOT} / \texttt{G + A}$^\dagger$ \\
+      \texttt{Reserved} & 44 & &  \\
+      \texttt{R_386_SEG16} & 45 & \textit{word16} & \texttt{A + (S >> 4)} \\
+      \texttt{R_386_SUB16} & 46 & \textit{word16} & \texttt{A - S} \\
+      \texttt{R_386_SUB32} & 47 & \textit{word32} & \texttt{A - S} \\
      \cline{1-4}
     \multicolumn{4}{l}{\myfontsize $^\dagger$ Applied to memory operand
     without base register when position-independent code is disabled.} \\
@@ -396,6 +400,14 @@ added for documentation purposes.  The \texttt{R_386_16}, and
 \texttt{R_386_8} relocations truncate the computed value to 16-bits
 and 8-bits respectively.
 \end{sloppypar}
+
+\texttt{R_386_SEG16}, \texttt{R_386_SUB16} and \texttt{R_386_SUB32}
+relocations should only be used in 16-bit real mode segmented code.
+Linker should ignore overflow of \texttt{R_386_16} and \texttt{R_386_SUB16}
+relocations when a pair of consecutive \texttt{R_386_16} and
+\texttt{R_386_SUB16} relocations are applied at the same offset.
+Multiple relocations at the same offset are cumulative.  The previous
+relocation result becomes the addend for the current relocation.
 
 \begin{sloppypar}
 The relocations \texttt{R_386_TLS_TPOFF},
