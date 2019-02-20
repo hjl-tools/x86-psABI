@@ -25,7 +25,8 @@ object, and the term \emph{\textindex{\sixteenbyte{}}} refers to a
 \subsubsection{Fundamental Types}
 
 Figure~\ref{basic-types} shows the correspondence between ISO C's
-scalar types and the processor's.  \code{__int128}, \code{__float80},
+scalar types and the processor's.  \code{__int128}, \code{_Float16},
+\code{__float80},
 \code{__float128}, \code{__m64}, \code{__m128}, \code{__m256} and
 \code{__m512} types are optional.
 
@@ -83,17 +84,19 @@ scalar types and the processor's.  \code{__int128}, \code{__float80},
     & \texttt{\textit{any-type} * (ILP32)} & 4 & 4 & unsigned \fourbyte \\
     & \texttt{\textit{any-type} (*)() (ILP32)} & & \\
     \hline
-    Floating-& \texttt{float} & 4 & 4 & single (IEEE-754) \\
+    & \texttt{_Float16}$^{\dagger\dagger\dagger\dagger\dagger\dagger}$ & 2 & 2 & 16-bit (IEEE-754) \\
     \cline{2-5}
-    point & \texttt{double} & 8
+    & \texttt{float} & 4 & 4 & single (IEEE-754) \\
+    \cline{2-5}
+    Floating- & \texttt{double} & 8
 	& 8$^{\dagger\dagger\dagger\dagger}$ & double (IEEE-754) \\
     \cline{2-5}
-    & \texttt{__float80}$^{\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
+    point & \texttt{__float80}$^{\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
     & \texttt{long double}$^{\dagger\dagger\dagger\dagger\dagger}$  & 16 & 16 & 80-bit extended (IEEE-754) \\
     \cline{2-5}
     & \texttt{__float128}$^{\dagger\dagger}$ & 16 & 16 & 128-bit extended (IEEE-754) \\
     & \texttt{long double}$^{\dagger\dagger\dagger\dagger\dagger}$  & 16 & 16 & 128-bit extended (IEEE-754) \\
-    \cline{2-5}
+    \hline
     Decimal-& \texttt{_Decimal32} & 4 & 4 & 32bit BID (IEEE-754R) \\
     \cline{2-5}
     floating-& \texttt{_Decimal64} & 8 & 8 & 64bit BID (IEEE-754R) \\
@@ -109,22 +112,24 @@ scalar types and the processor's.  \code{__int128}, \code{__float80},
     & \texttt{__m512}$^{\dagger\dagger}$ & 64 & 64 & AVX-512 \\
 \noalign{\smallskip}
 \cline{1-5}
-\multicolumn{3}{l}{\small $^\dagger$ This type is called \texttt{bool}
+\multicolumn{3}{l}{\myfontsize $^\dagger$ This type is called \texttt{bool}
 in C++.}\\
-\multicolumn{3}{l}{\small $^{\dagger\dagger}$ These types are optional.}\\
-\multicolumn{5}{p{13cm}}{\small $^{\dagger\dagger\dagger}$ C++ and some
+\multicolumn{3}{l}{\myfontsize $^{\dagger\dagger}$ These types are optional.}\\
+\multicolumn{5}{p{13cm}}{\myfontsize $^{\dagger\dagger\dagger}$ C++ and some
 implementations of C permit enums larger than an int.  The underlying
 type is bumped to an unsigned int, long int or unsigned long int, in
 that order.}\\
-\multicolumn{5}{p{13cm}}{\small $^{\dagger\dagger\dagger\dagger}$
+\multicolumn{5}{p{13cm}}{\myfontsize $^{\dagger\dagger\dagger\dagger}$
 The \texttt{long long},  \texttt{signed long long},
 \texttt{unsigned long long} and \texttt{double} types have 4-byte
 alignment in the \intelabi.}\\
-\multicolumn{5}{p{13cm}}{\small $^{\dagger\dagger\dagger\dagger\dagger}$
+\multicolumn{5}{p{13cm}}{\myfontsize $^{\dagger\dagger\dagger\dagger\dagger}$
 The \texttt{long double} type is 128-bit, the same as the \texttt{__float128}
 type, on the Android{\texttrademark} platform.  More information on the
 Android{\texttrademark} platform is available from
 \url{http://www.android.com/}.}\\
+\multicolumn{5}{p{13cm}}{\myfontsize $^{\dagger\dagger\dagger\dagger\dagger\dagger}$
+The \texttt{_Float16} type, from ISO/IEC TS 18661-3:2015, is optional.}\\
   \end{tabular}
 }
 \end{figure}
@@ -411,7 +416,8 @@ The basic types are assigned their natural classes:
 \item Arguments of types (signed and unsigned) \code{_Bool}, \code{char},
   \code{short}, \code{int}, \code{long}, \code{long long}, and
   pointers are in the INTEGER class.
-\item Arguments of types \code{float}, \code{double}, \code{_Decimal32},
+\item Arguments of types \code{_Float16}, \code{float}, \code{double},
+  \code{_Decimal32},
   \code{_Decimal64} and \code{__m64} are in class SSE.
 \item Arguments of types \code{__float128}, \code{_Decimal128}
   and \code{__m128} are split into two halves.  The least significant
@@ -440,7 +446,7 @@ with the exception that arguments of type \code{__int128} that are
 stored in memory must be aligned on a 16-byte boundary.
 
 \item Arguments of \code{complex T} where \code{T} is one of the types
-  \code{float or double} are treated as if they are
+  \code{_Float16, float or double} are treated as if they are
   implemented as:
 \begin{verbatim}
 struct complexT {
