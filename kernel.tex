@@ -46,11 +46,11 @@ the following differences:
 
 \subsection{Stack Layout}
 
-The Linux kernel does not honor the \textindex{red zone} (see section~
-\ref{sec-stack-frame} and therefore this area is not allowed to be
-used by kernel code.  Kernel code should be compiled by GCC with the
-option \code{-mno-red-zone}.
-
+The Linux kernel may align the end of the input argument area to a
+8, instead of 16, byte boundary.  It does not honor the
+\textindex{red zone} (see section~ \ref{sec-stack-frame}) and therefore
+this area is not allowed to be used by kernel code.  Kernel code should
+be compiled by GCC with the option \code{-mno-red-zone}.
 
 \subsection{Required Processor Features}
 
