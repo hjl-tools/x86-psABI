@@ -355,6 +355,8 @@ stack.  This stack grows downwards from high addresses.  Figure~
 
 The end of the input argument area shall be aligned on a 16 (32 or 64, if
 \texttt{__m256} or \texttt{__m512} is passed on stack) byte boundary.
+\footnote{The maximum aligned boundary is the maximum alignment of
+variable passed on stack.}
 In other words, the value $(\RSP + 8)$ is always a multiple of $16$
 ($32$ or $64$) when
 control is transferred to the function entry point.  The
