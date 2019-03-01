@@ -519,7 +519,7 @@ Once arguments are classified, the registers get assigned (in
 left-to-right order) for passing as follows:
 
 \begin{enumerate}
-\item If the class is MEMORY, pass the argument on the stack.
+\item If the class is MEMORY, align and pass the argument on the stack.
 
 \item If the class is INTEGER, the next available register of the
   sequence \RDI, \RSI, \RDX, \RCX, \reg{r8} and \reg{r9} is
